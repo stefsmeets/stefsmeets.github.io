@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="stylesheet" type="text/css" href="https://stefsmeets.nl/style.css">
+  <link rel="stylesheet" type="text/css" href="https://stefsmeets.nl/custom.css">
+
+  <link rel="icon" href="https://stefsmeets.nl/favicon.ico">
+  <link rel="apple-touch-icon" href="https://stefsmeets.nl/apple-touch-icon.png">
+
+  
+  
+  
+    
+  
+  
+
+  <title>OS X terminal alerts | Stef Smeets</title>
+  <meta name="description" content="Research Software Engineer writing open-source scientific software, mostly Python.">
+  <meta name="author" content="Stef Smeets">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="OS X terminal alerts | Stef Smeets">
+  <meta property="og:description" content="Research Software Engineer writing open-source scientific software, mostly Python.">
+  <meta name="twitter:card" content="summary">
+
+  <link rel="alternate" type="application/atom+xml" title="Stef Smeets" href="https://stefsmeets.nl/atom.xml">
+</head>
+
+<body>
+  <a class="skip" href="#main">skip to content</a>
+
+  
+  
+  <header class="topbar">
+    <nav class="topbar__inner" aria-label="Main">
+      <a href="https://stefsmeets.nl">~</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/posts/" aria-current="page">posts</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/articles/">articles</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/presentations/">presentations</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/code/">code</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/about/">about</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    
+<h1 class="title">
+  OS X terminal alerts
+</h1>
+<p class="subtitle"><strong>2012-06-22</strong></p>
+<div class="prose">
+  <p>Sometimes when I'm running a long command I want to be alerted when it's done, so I don't have to check the other window all the time to see if it's finished.</p>
+<p>To do so, simply append <code>printf '\a'</code> to your command, like so:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">sleep</span><span style="color: #DFBFFF;"> 5</span><span style="color: #CCCAC2B3;">;</span><span style="color: #F28779;"> printf</span><span style="color: #D5FF80;"> &#39;\a&#39;</span></span></code></pre>
+<p>This will add a 'bell' character to the message, which will bounce the dock icon and add a little badge if it is out of focus, very useful!</p>
+<p>Original post on <a rel="external" href="https://web.archive.org/web/20130416052427/http://eftrunk.blogspot.com/2012/06/os-x-terminal-alerts.html">web.archive.org</a></p>
+
+</div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <span>© 2026 Stef Smeets</span>
+      <span class="dot" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/atom.xml">atom</a>
+      <span class="dot" aria-hidden="true">/</span>
+      <span>powered by <a href="https://getzola.org" rel="noopener">Zola</a></span>
+    </div>
+  </footer>
+
+</body>
+
+</html>

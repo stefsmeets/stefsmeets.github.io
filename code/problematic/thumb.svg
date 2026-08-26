@@ -1,0 +1,204 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500">
+<style>@font-face{font-family:'Droid Sans Mono';font-weight:normal;font-style:normal;src:url("data:application/font-woff;charset=utf-8;base64,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")format("woff");}</style>
+<style>text{font-family:'Droid Sans Mono';font-weight:normal;font-style:normal;}</style>
+<text transform="translate(7,376)" font-size="364" style="fill:rgb(76, 80, 252)">h</text>
+<text transform="translate(197,268)" font-size="334" style="fill:rgb(38, 134, 245)">x y</text>
+<text transform="translate(391,254)" font-size="320" style="fill:rgb(210, 222, 129)">d</text>
+<text transform="translate(197,416)" font-size="173" style="fill:rgb(80, 244, 204)">y z'</text>
+<text transform="translate(519,453)" font-size="171" style="fill:rgb(36, 137, 245)">np</text>
+<text transform="translate(295,496)" font-size="162" style="fill:rgb(226, 209, 118)">l</text>
+<text transform="translate(6,66)" font-size="86" style="fill:rgb(232, 203, 114)">print</text>
+<text transform="translate(256,67)" font-size="75" style="fill:rgb(114, 254, 187)">format</text>
+<text transform="translate(582,70)" font-size="74" style="fill:rgb(255, 6, 3)">z' x</text>
+<text transform="translate(745,376)" font-size="71" style="fill:rgb(255, 22, 11)">m</text>
+<text transform="translate(15,441)" font-size="66" style="fill:rgb(61, 234, 213)">value</text>
+<text transform="translate(109,143)" font-size="65" style="fill:rgb(120, 13, 255)">y x</text>
+<text transform="translate(265,313)" font-size="64" style="fill:rgb(178, 243, 150)">fn</text>
+<text transform="translate(2,497)" font-size="46" style="fill:rgb(255, 162, 86)">orientation</text>
+<text transform="translate(411,468) rotate(-90)" font-size="43" style="fill:rgb(255, 165, 88)">n</text>
+<text transform="translate(450,490)" font-size="42" style="fill:rgb(46, 123, 247)">center</text>
+<text transform="translate(634,313) rotate(-90)" font-size="41" style="fill:rgb(86, 247, 202)">data</text>
+<text transform="translate(368,311)" font-size="41" style="fill:rgb(224, 211, 119)">score</text>
+<text transform="translate(297,371)" font-size="40" style="fill:rgb(180, 242, 149)">index</text>
+<text transform="translate(752,474) rotate(-90)" font-size="40" style="fill:rgb(255, 140, 73)">proj</text>
+<text transform="translate(573,259)" font-size="39" style="fill:rgb(208, 224, 130)">c</text>
+<text transform="translate(411,449)" font-size="39" style="fill:rgb(255, 19, 9)">x z'</text>
+<text transform="translate(91,93)" font-size="38" style="fill:rgb(13, 194, 232)">param</text>
+<text transform="translate(70,323)" font-size="38" style="fill:rgb(144, 254, 171)">z' y</text>
+<text transform="translate(564,418)" font-size="38" style="fill:rgb(82, 71, 252)">f</text>
+<text transform="translate(453,177)" font-size="38" style="fill:rgb(34, 214, 224)">len</text>
+<text transform="translate(170,184)" font-size="38" style="fill:rgb(93, 249, 199)">cell</text>
+<text transform="translate(385,280)" font-size="30" style="fill:rgb(158, 250, 162)">projection</text>
+<text transform="translate(4,399)" font-size="29" style="fill:rgb(94, 250, 198)">list</text>
+<text transform="translate(649,88)" font-size="29" style="fill:rgb(42, 221, 221)">prop</text>
+<text transform="translate(138,145)" font-size="29" style="fill:rgb(80, 74, 252)">s</text>
+<text transform="translate(589,199)" font-size="29" style="fill:rgb(171, 246, 155)">img</text>
+<text transform="translate(654,497)" font-size="29" style="fill:rgb(32, 142, 244)">indices</text>
+<text transform="translate(272,107)" font-size="29" style="fill:rgb(198, 231, 137)">ret</text>
+<text transform="translate(341,17)" font-size="29" style="fill:rgb(255, 71, 36)">np array</text>
+<text transform="translate(163,132)" font-size="29" style="fill:rgb(4, 176, 237)">t</text>
+<text transform="translate(26,260) rotate(-90)" font-size="29" style="fill:rgb(36, 137, 245)">os path</text>
+<text transform="translate(401,259) rotate(-90)" font-size="29" style="fill:rgb(210, 222, 129)">projector</text>
+<text transform="translate(294,336)" font-size="29" style="fill:rgb(134, 255, 176)">file</text>
+<text transform="translate(727,266)" font-size="29" style="fill:rgb(255, 155, 82)">plot</text>
+<text transform="translate(71,365)" font-size="29" style="fill:rgb(255, 50, 25)">phase</text>
+<text transform="translate(278,440)" font-size="29" style="fill:rgb(24, 205, 228)">j</text>
+<text transform="translate(706,328)" font-size="29" style="fill:rgb(56, 109, 249)">line</text>
+<text transform="translate(39,86)" font-size="29" style="fill:rgb(255, 157, 83)">re</text>
+<text transform="translate(520,425) rotate(-90)" font-size="29" style="fill:rgb(80, 244, 204)">kwargs</text>
+<text transform="translate(654,20)" font-size="24" style="fill:rgb(255, 142, 74)">alpha beta</text>
+<text transform="translate(85,253)" font-size="24" style="fill:rgb(77, 243, 206)">shape</text>
+<text transform="translate(669,140)" font-size="24" style="fill:rgb(102, 252, 194)">hkl</text>
+<text transform="translate(380,409)" font-size="24" style="fill:rgb(255, 41, 20)">b</text>
+<text transform="translate(716,292)" font-size="24" style="fill:rgb(100, 44, 254)">image</text>
+<text transform="translate(620,60)" font-size="24" style="fill:rgb(255, 28, 14)">merged</text>
+<text transform="translate(359,483)" font-size="24" style="fill:rgb(46, 123, 247)">number</text>
+<text transform="translate(578,203) rotate(-90)" font-size="24" style="fill:rgb(255, 115, 59)">parameter</text>
+<text transform="translate(68,460)" font-size="24" style="fill:rgb(44, 126, 247)">indexer</text>
+<text transform="translate(190,202)" font-size="24" style="fill:rgb(54, 112, 248)">peak</text>
+<text transform="translate(128,393)" font-size="24" style="fill:rgb(255, 165, 88)">system</text>
+<text transform="translate(248,331) rotate(-90)" font-size="24" style="fill:rgb(122, 9, 255)">df</text>
+<text transform="translate(314,476)" font-size="24" style="fill:rgb(188, 237, 143)">p</text>
+<text transform="translate(475,210)" font-size="24" style="fill:rgb(86, 247, 202)">key</text>
+<text transform="translate(203,290)" font-size="24" style="fill:rgb(57, 107, 249)">l h</text>
+<text transform="translate(70,293)" font-size="24" style="fill:rgb(203, 228, 134)">scale</text>
+<text transform="translate(205,87)" font-size="24" style="fill:rgb(6, 174, 237)">int</text>
+<text transform="translate(317,86)" font-size="24" style="fill:rgb(252, 183, 99)">method</text>
+<text transform="translate(468,137)" font-size="24" style="fill:rgb(255, 47, 24)">b c</text>
+<text transform="translate(569,19)" font-size="24" style="fill:rgb(255, 22, 11)">using</text>
+<text transform="translate(103,347)" font-size="24" style="fill:rgb(80, 74, 252)">ax</text>
+<text transform="translate(760,241)" font-size="24" style="fill:rgb(42, 221, 221)">al</text>
+<text transform="translate(681,160)" font-size="24" style="fill:rgb(162, 249, 160)">val</text>
+<text transform="translate(786,477) rotate(-90)" font-size="24" style="fill:rgb(255, 118, 61)">old_div</text>
+<text transform="translate(633,496) rotate(-90)" font-size="24" style="fill:rgb(98, 47, 254)">reflection</text>
+<text transform="translate(796,214) rotate(-90)" font-size="24" style="fill:rgb(20, 202, 229)">radians</text>
+<text transform="translate(25,370) rotate(-90)" font-size="24" style="fill:rgb(220, 214, 122)">setting</text>
+<text transform="translate(567,273)" font-size="24" style="fill:rgb(171, 246, 155)">arg</text>
+<text transform="translate(596,168) rotate(-90)" font-size="24" style="fill:rgb(100, 251, 195)">symop</text>
+<text transform="translate(3,13)" font-size="14" style="fill:rgb(28, 147, 243)">indexer Indexer</text>
+<text transform="translate(302,468) rotate(-90)" font-size="14" style="fill:rgb(58, 232, 214)">pixelsize</text>
+<text transform="translate(580,229)" font-size="14" style="fill:rgb(72, 241, 208)">idx</text>
+<text transform="translate(84,173)" font-size="14" style="fill:rgb(41, 129, 246)">first</text>
+<text transform="translate(588,85)" font-size="14" style="fill:rgb(88, 62, 253)">result</text>
+<text transform="translate(143,157)" font-size="14" style="fill:rgb(28, 147, 243)">__init__</text>
+<text transform="translate(798,474) rotate(-90)" font-size="14" style="fill:rgb(41, 129, 246)">info</text>
+<text transform="translate(427,358)" font-size="14" style="fill:rgb(255, 25, 13)">ga</text>
+<text transform="translate(417,461)" font-size="14" style="fill:rgb(16, 198, 230)">composition</text>
+<text transform="translate(355,203) rotate(-90)" font-size="14" style="fill:rgb(255, 109, 56)">dfx</text>
+<text transform="translate(370,227) rotate(-90)" font-size="14" style="fill:rgb(132, 255, 178)">img result</text>
+<text transform="translate(491,302)" font-size="14" style="fill:rgb(232, 203, 114)">np dot</text>
+<text transform="translate(205,236)" font-size="14" style="fill:rgb(20, 202, 229)">plt</text>
+<text transform="translate(527,351)" font-size="14" style="fill:rgb(17, 160, 241)">Returns</text>
+<text transform="translate(636,279)" font-size="14" style="fill:rgb(255, 121, 62)">sort</text>
+<text transform="translate(148,104)" font-size="14" style="fill:rgb(249, 187, 102)">verbose</text>
+<text transform="translate(754,46)" font-size="14" style="fill:rgb(24, 152, 242)">spgr</text>
+<text transform="translate(763,435) rotate(-90)" font-size="14" style="fill:rgb(166, 248, 157)">use</text>
+<text transform="translate(110,270)" font-size="14" style="fill:rgb(162, 249, 160)">given</text>
+<text transform="translate(372,324)" font-size="14" style="fill:rgb(98, 251, 196)">float</text>
+<text transform="translate(685,178)" font-size="14" style="fill:rgb(63, 235, 213)">ori</text>
+<text transform="translate(798,407) rotate(-90)" font-size="14" style="fill:rgb(104, 252, 193)">line startswith</text>
+<text transform="translate(651,106)" font-size="14" style="fill:rgb(134, 255, 176)">Layout flex</text>
+<text transform="translate(143,15)" font-size="14" style="fill:rgb(64, 98, 250)">flex auto'</text>
+<text transform="translate(366,347)" font-size="14" style="fill:rgb(255, 118, 61)">auto' width</text>
+<text transform="translate(105,224)" font-size="14" style="fill:rgb(58, 232, 214)">str</text>
+<text transform="translate(574,71) rotate(-90)" font-size="14" style="fill:rgb(155, 251, 165)">append</text>
+<text transform="translate(426,321)" font-size="14" style="fill:rgb(102, 41, 254)">name</text>
+<text transform="translate(388,381)" font-size="14" style="fill:rgb(90, 59, 253)">gamma</text>
+<text transform="translate(374,421) rotate(-90)" font-size="14" style="fill:rgb(255, 89, 45)">signal</text>
+<text transform="translate(449,190)" font-size="14" style="fill:rgb(88, 62, 253)">container</text>
+<text transform="translate(88,123) rotate(-90)" font-size="14" style="fill:rgb(22, 155, 242)">beta gamma</text>
+<text transform="translate(670,352)" font-size="14" style="fill:rgb(187, 238, 145)">numpy</text>
+<text transform="translate(254,82)" font-size="14" style="fill:rgb(162, 249, 160)">tuple</text>
+<text transform="translate(652,472)" font-size="14" style="fill:rgb(31, 211, 225)">thickness</text>
+<text transform="translate(274,118)" font-size="14" style="fill:rgb(136, 255, 175)">theta</text>
+<text transform="translate(78,382)" font-size="14" style="fill:rgb(139, 254, 174)">fout</text>
+<text transform="translate(298,21)" font-size="14" style="fill:rgb(255, 172, 92)">h l</text>
+<text transform="translate(689,33)" font-size="14" style="fill:rgb(198, 231, 137)">o</text>
+<text transform="translate(260,364) rotate(-90)" font-size="14" style="fill:rgb(64, 236, 212)">intensities</text>
+<text transform="translate(718,79)" font-size="13" style="fill:rgb(171, 246, 155)">SpaceGroup</text>
+<text transform="translate(13,129) rotate(-90)" font-size="13" style="fill:rgb(194, 234, 140)">find</text>
+<text transform="translate(222,299)" font-size="13" style="fill:rgb(196, 232, 138)">v</text>
+<text transform="translate(494,315)" font-size="13" style="fill:rgb(18, 200, 230)">abs</text>
+<text transform="translate(468,148)" font-size="13" style="fill:rgb(246, 190, 104)">kind</text>
+<text transform="translate(279,255)" font-size="13" style="fill:rgb(180, 242, 149)">dct</text>
+<text transform="translate(658,388)" font-size="13" style="fill:rgb(82, 245, 203)">y z</text>
+<text transform="translate(277,464) rotate(-90)" font-size="13" style="fill:rgb(136, 255, 175)">cos al</text>
+<text transform="translate(397,394)" font-size="13" style="fill:rgb(255, 16, 8)">map</text>
+<text transform="translate(8,466)" font-size="13" style="fill:rgb(255, 6, 3)">options</text>
+<text transform="translate(698,340)" font-size="13" style="fill:rgb(22, 155, 242)">ed</text>
+<text transform="translate(359,443)" font-size="13" style="fill:rgb(176, 243, 151)">radius</text>
+<text transform="translate(391,426)" font-size="13" style="fill:rgb(255, 56, 28)">nsolutions</text>
+<text transform="translate(241,56)" font-size="13" style="fill:rgb(7, 187, 234)">z x</text>
+<text transform="translate(579,321)" font-size="13" style="fill:rgb(204, 227, 133)">x y'</text>
+<text transform="translate(278,385)" font-size="13" style="fill:rgb(78, 243, 205)">z x'</text>
+<text transform="translate(393,495)" font-size="13" style="fill:rgb(29, 209, 226)">array</text>
+<text transform="translate(710,372)" font-size="13" style="fill:rgb(224, 211, 119)">load</text>
+<text transform="translate(714,353)" font-size="13" style="fill:rgb(255, 92, 47)">size</text>
+<text transform="translate(691,195)" font-size="13" style="fill:rgb(255, 147, 77)">z</text>
+<text transform="translate(462,223)" font-size="13" style="fill:rgb(244, 192, 105)">label</text>
+<text transform="translate(550,463)" font-size="13" style="fill:rgb(182, 241, 147)">UnitCell</text>
+<text transform="translate(93,260)" font-size="13" style="fill:rgb(6, 174, 237)">co</text>
+<text transform="translate(483,13)" font-size="13" style="fill:rgb(255, 59, 30)">dfn</text>
+<text transform="translate(449,401)" font-size="13" style="fill:rgb(68, 238, 210)">item</text>
+<text transform="translate(530,464) rotate(-90)" font-size="13" style="fill:rgb(22, 155, 242)">d instructions</text>
+<text transform="translate(403,75)" font-size="10" style="fill:rgb(47, 224, 219)">metadata Processing</text>
+<text transform="translate(91,467)" font-size="10" style="fill:rgb(102, 252, 194)">l ret</text>
+<text transform="translate(99,328)" font-size="10" style="fill:rgb(255, 59, 30)">cos ga</text>
+<text transform="translate(527,288)" font-size="10" style="fill:rgb(158, 250, 162)">isinstance</text>
+<text transform="translate(621,172) rotate(-90)" font-size="10" style="fill:rgb(255, 44, 22)">indexing</text>
+<text transform="translate(761,460) rotate(-90)" font-size="10" style="fill:rgb(208, 224, 130)">arr</text>
+<text transform="translate(652,43)" font-size="10" style="fill:rgb(166, 248, 157)">cls</text>
+<text transform="translate(647,247) rotate(-90)" font-size="10" style="fill:rgb(61, 234, 213)">vary_scale</text>
+<text transform="translate(123,376)" font-size="10" style="fill:rgb(140, 254, 173)">vector</text>
+<text transform="translate(578,210)" font-size="10" style="fill:rgb(26, 207, 227)">inplace</text>
+<text transform="translate(369,333)" font-size="10" style="fill:rgb(62, 101, 250)">df index</text>
+<text transform="translate(490,496)" font-size="7" style="fill:rgb(122, 255, 183)">projector Projector</text>
+<text transform="translate(311,469) rotate(-90)" font-size="7" style="fill:rgb(125, 255, 182)">center_x center_y</text>
+<text transform="translate(325,273)" font-size="7" style="fill:rgb(68, 238, 210)">space group</text>
+<text transform="translate(105,232)" font-size="7" style="fill:rgb(238, 198, 109)">names value'</text>
+<text transform="translate(695,204)" font-size="7" style="fill:rgb(230, 205, 115)">csv</text>
+<text transform="translate(663,118)" font-size="7" style="fill:rgb(66, 237, 211)">footprint</text>
+<text transform="translate(71,335)" font-size="7" style="fill:rgb(255, 62, 31)">sel</text>
+<text transform="translate(713,334)" font-size="7" style="fill:rgb(148, 253, 168)">property</text>
+<text transform="translate(431,81)" font-size="7" style="fill:rgb(158, 250, 162)">log</text>
+<text transform="translate(706,116)" font-size="7" style="fill:rgb(240, 196, 108)">denom</text>
+<text transform="translate(516,7)" font-size="7" style="fill:rgb(230, 205, 115)">ipywidgets</text>
+<text transform="translate(28,373)" font-size="7" style="fill:rgb(130, 255, 179)">u</text>
+<text transform="translate(5,448)" font-size="7" style="fill:rgb(255, 19, 9)">params add</text>
+<text transform="translate(418,258)" font-size="7" style="fill:rgb(178, 243, 150)">np sum</text>
+<text transform="translate(578,451) rotate(-90)" font-size="7" style="fill:rgb(8, 190, 233)">vmax</text>
+<text transform="translate(737,305)" font-size="7" style="fill:rgb(94, 250, 198)">filepat</text>
+<text transform="translate(629,316)" font-size="7" style="fill:rgb(52, 115, 248)">title</text>
+<text transform="translate(6,216)" font-size="7" style="fill:rgb(12, 167, 239)">frame</text>
+<text transform="translate(88,313)" font-size="7" style="fill:rgb(116, 254, 186)">reshape</text>
+<text transform="translate(140,49)" font-size="7" style="fill:rgb(255, 134, 70)">matrix</text>
+<text transform="translate(406,90)" font-size="7" style="fill:rgb(255, 3, 2)">object</text>
+<text transform="translate(644,263)" font-size="7" style="fill:rgb(134, 255, 176)">super</text>
+<text transform="translate(549,444)" font-size="7" style="fill:rgb(22, 155, 242)">axis</text>
+<text transform="translate(637,358)" font-size="7" style="fill:rgb(192, 235, 141)">order</text>
+<text transform="translate(280,241)" font-size="7" style="fill:rgb(112, 254, 188)">procs</text>
+<text transform="translate(471,381)" font-size="7" style="fill:rgb(255, 107, 55)">lauegr</text>
+<text transform="translate(77,135)" font-size="7" style="fill:rgb(106, 253, 192)">histogram</text>
+<text transform="translate(734,232)" font-size="7" style="fill:rgb(164, 248, 159)">sigma</text>
+<text transform="translate(317,444)" font-size="7" style="fill:rgb(94, 53, 254)">row</text>
+<text transform="translate(637,289)" font-size="7" style="fill:rgb(33, 140, 244)">plt show</text>
+<text transform="translate(723,26)" font-size="7" style="fill:rgb(26, 207, 227)">computing school</text>
+<text transform="translate(355,427)" font-size="7" style="fill:rgb(255, 150, 79)">np sin</text>
+<text transform="translate(20,96)" font-size="7" style="fill:rgb(61, 234, 213)">value result</text>
+<text transform="translate(431,496)" font-size="7" style="fill:rgb(92, 56, 253)">print print</text>
+<text transform="translate(624,67)" font-size="7" style="fill:rgb(28, 147, 243)">y' y</text>
+<text transform="translate(736,394)" font-size="7" style="fill:rgb(255, 74, 38)">x' z</text>
+<text transform="translate(377,101)" font-size="7" style="fill:rgb(64, 98, 250)">change new'</text>
+<text transform="translate(735,274)" font-size="7" style="fill:rgb(255, 65, 33)">cell parameters</text>
+<text transform="translate(124,315)" font-size="7" style="fill:rgb(156, 251, 164)">min</text>
+<text transform="translate(571,304)" font-size="7" style="fill:rgb(255, 31, 16)">max</text>
+<text transform="translate(203,319)" font-size="7" style="fill:rgb(23, 203, 228)">ax2</text>
+<text transform="translate(161,142)" font-size="7" style="fill:rgb(255, 145, 76)">coord</text>
+<text transform="translate(6,278) rotate(-90)" font-size="7" style="fill:rgb(32, 213, 225)">center_y</text>
+<text transform="translate(206,150)" font-size="7" style="fill:rgb(66, 95, 250)">description</text>
+<text transform="translate(91,148)" font-size="7" style="fill:rgb(255, 50, 25)">Take</text>
+<text transform="translate(260,263)" font-size="7" style="fill:rgb(31, 211, 225)">based</text>
+<text transform="translate(198,217)" font-size="7" style="fill:rgb(38, 134, 245)">enumerate</text>
+<text transform="translate(107,47)" font-size="7" style="fill:rgb(210, 222, 129)">par</text>
+<text transform="translate(361,131)" font-size="7" style="fill:rgb(110, 254, 190)">split</text>
+</svg>

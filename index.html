@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="stylesheet" type="text/css" href="https://stefsmeets.nl/style.css">
+  <link rel="stylesheet" type="text/css" href="https://stefsmeets.nl/custom.css">
+
+  <link rel="icon" href="https://stefsmeets.nl/favicon.ico">
+  <link rel="apple-touch-icon" href="https://stefsmeets.nl/apple-touch-icon.png">
+
+  
+  
+  
+  
+
+  <title>Stef Smeets</title>
+  <meta name="description" content="Research Software Engineer writing open-source scientific software, mostly Python.">
+  <meta name="author" content="Stef Smeets">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Stef Smeets">
+  <meta property="og:description" content="Research Software Engineer writing open-source scientific software, mostly Python.">
+  <meta name="twitter:card" content="summary">
+
+  <link rel="alternate" type="application/atom+xml" title="Stef Smeets" href="https://stefsmeets.nl/atom.xml">
+</head>
+
+<body>
+  <a class="skip" href="#main">skip to content</a>
+
+  
+  
+  <header class="topbar">
+    <nav class="topbar__inner" aria-label="Main">
+      <a href="https://stefsmeets.nl" aria-current="page">~</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/posts/">posts</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/articles/">articles</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/presentations/">presentations</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/code/">code</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/about/">about</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    
+
+<section class="hero">
+  <a class="avatar" href="https://stefsmeets.nl/about/" aria-label="About Stef Smeets">
+    <img src="https://stefsmeets.nl/avatar.webp" alt="Avatar" width="200" height="200" decoding="async">
+  </a>
+
+  <div class="identity">
+    <h1>Stef Smeets</h1>
+    <p class="role">research software engineer @ <a href="https://palmsens.com">palmsens</a></p>
+  </div>
+
+  <p class="intro">
+    This is my little corner of the web, where I develop
+    <a href="https://stefsmeets.nl/code/">open-source scientific software</a>, and
+    <a href="https://stefsmeets.nl/posts/">write</a> about things I learn along the way.
+  </p>
+
+  <p class="intro contact">
+    <a href="https://stefsmeets.nl/about/">Learn more</a>,
+    or say hello at <a class="email" href="#">mail<span>@smeets.</span>@stef<span>sme</span>ets.<span>nl</span></a>.
+  </p>
+
+  <ul class="socials">
+    <li><a href="https://github.com/stefsmeets" rel="me">github</a></li>
+    <li><a href="https://scholar.google.com/citations?user=aO6d5WYAAAAJ" rel="me">gscholar</a></li>
+    <li><a href="https://linkedin.com/in/stefsmeets" rel="me">linkedin</a></li>
+    <li><a href="https://orcid.org/0000-0002-5413-9038" rel="me">orcid</a></li>
+    <li><a href="https://medium.com/@stefsmeets" rel="me">medium</a></li>
+  </ul>
+</section>
+
+<script>
+    // Strip the decoy fragment the same way the CSS hides it, so the
+    // real address only exists at runtime.
+    document.querySelectorAll("a.email").forEach((a) => {
+        const address = a.textContent.replace("@smeets.", "");
+        a.href = "mailto:" + address;
+        a.setAttribute("aria-label", address);
+    });
+</script>
+
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <span>© 2026 Stef Smeets</span>
+      <span class="dot" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/atom.xml">atom</a>
+      <span class="dot" aria-hidden="true">/</span>
+      <span>powered by <a href="https://getzola.org" rel="noopener">Zola</a></span>
+    </div>
+  </footer>
+
+</body>
+
+</html>

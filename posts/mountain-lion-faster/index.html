@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="stylesheet" type="text/css" href="https://stefsmeets.nl/style.css">
+  <link rel="stylesheet" type="text/css" href="https://stefsmeets.nl/custom.css">
+
+  <link rel="icon" href="https://stefsmeets.nl/favicon.ico">
+  <link rel="apple-touch-icon" href="https://stefsmeets.nl/apple-touch-icon.png">
+
+  
+  
+  
+    
+  
+  
+
+  <title>Speed up Mountain Lion | Stef Smeets</title>
+  <meta name="description" content="Research Software Engineer writing open-source scientific software, mostly Python.">
+  <meta name="author" content="Stef Smeets">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Speed up Mountain Lion | Stef Smeets">
+  <meta property="og:description" content="Research Software Engineer writing open-source scientific software, mostly Python.">
+  <meta name="twitter:card" content="summary">
+
+  <link rel="alternate" type="application/atom+xml" title="Stef Smeets" href="https://stefsmeets.nl/atom.xml">
+</head>
+
+<body>
+  <a class="skip" href="#main">skip to content</a>
+
+  
+  
+  <header class="topbar">
+    <nav class="topbar__inner" aria-label="Main">
+      <a href="https://stefsmeets.nl">~</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/posts/" aria-current="page">posts</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/articles/">articles</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/presentations/">presentations</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/code/">code</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/about/">about</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    
+<h1 class="title">
+  Speed up Mountain Lion
+</h1>
+<p class="subtitle"><strong>2012-07-29</strong></p>
+<div class="prose">
+  <p>Some useful commands too speed up Mountain Lion I came across:</p>
+<p>Disable smooth scrolling:</p>
+<p><code>defaults write -g NSScrollAnimationEnabled -bool NO</code></p>
+<p>Disable rubber banding (Sadly doesn't work everywhere, applications will need to restart after):</p>
+<p><code>defaults write -g NSScrollViewRubberbanding -int 0</code></p>
+<p>Reset rubber banding:</p>
+<p><code>defaults delete -g NSScrollViewRubberbanding</code></p>
+<p>Speed up the Dock animation:</p>
+<p><code>defaults write com.apple.dock autohide-time-modifier -float 0.40;killall Dock</code></p>
+<p>Reset Dock animation:</p>
+<p><code>defaults delete com.apple.dock autohide-time-modifier;killall Dock</code></p>
+<p>2D dock, because the indicators on the new 3D dock are absolutely impossible to see:</p>
+<p><code>defaults write com.apple.dock no-glass -bool true</code></p>
+<p>That said, last year I posted some <a rel="external" href="https://web.archive.org/web/20130416052427/http://eftrunk.blogspot.ch/2011/10/speed-up-os-x-lion.html">Lion commands</a> that still work too :-)</p>
+<p>Speed up Mission Control, by reducing the length of animations and reduce the delay before switching spaces:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>defaults write com.apple.dock expose-animation-duration -float 0.15</span></span>
+<span class="giallo-l"><span>defaults write com.apple.dock workspaces-edge-delay -float 0.15</span></span>
+<span class="giallo-l"><span>killall Dock</span></span></code></pre>
+<p>You can modify the 0.15 to whatever you want, but this is my preferred settings.</p>
+<p>Remove mouse acceleration (needs a relog):</p>
+<p><code>defaults write .GlobalPreferences com.apple.mouse.scaling -1</code></p>
+<p>Original post on <a rel="external" href="https://web.archive.org/web/20130416052427/http://eftrunk.blogspot.com/2012/07/speed-up-mountain-lion.html">web.archive.org</a></p>
+
+</div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <span>© 2026 Stef Smeets</span>
+      <span class="dot" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/atom.xml">atom</a>
+      <span class="dot" aria-hidden="true">/</span>
+      <span>powered by <a href="https://getzola.org" rel="noopener">Zola</a></span>
+    </div>
+  </footer>
+
+</body>
+
+</html>

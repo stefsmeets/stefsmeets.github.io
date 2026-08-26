@@ -1,0 +1,204 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500">
+<style>@font-face{font-family:'Droid Sans Mono';font-weight:normal;font-style:normal;src:url("data:application/font-woff;charset=utf-8;base64,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")format("woff");}</style>
+<style>text{font-family:'Droid Sans Mono';font-weight:normal;font-style:normal;}</style>
+<text transform="translate(100,401)" font-size="235" style="fill:rgb(98, 251, 196)">item</text>
+<text transform="translate(7,162)" font-size="205" style="fill:rgb(62, 101, 250)">image</text>
+<text transform="translate(347,497)" font-size="124" style="fill:rgb(32, 213, 225)">coord</text>
+<text transform="translate(341,253)" font-size="76" style="fill:rgb(74, 242, 207)">np array</text>
+<text transform="translate(29,494)" font-size="72" style="fill:rgb(210, 222, 129)">marker</text>
+<text transform="translate(679,168) rotate(-90)" font-size="70" style="fill:rgb(222, 213, 121)">np</text>
+<text transform="translate(95,364) rotate(-90)" font-size="70" style="fill:rgb(230, 205, 115)">list</text>
+<text transform="translate(693,96)" font-size="68" style="fill:rgb(50, 227, 218)">d</text>
+<text transform="translate(188,223)" font-size="65" style="fill:rgb(8, 172, 238)">grid</text>
+<text transform="translate(756,366) rotate(-90)" font-size="64" style="fill:rgb(39, 218, 222)">shape</text>
+<text transform="translate(1,416)" font-size="62" style="fill:rgb(255, 160, 85)">int</text>
+<text transform="translate(193,47)" font-size="61" style="fill:rgb(10, 192, 232)">shift</text>
+<text transform="translate(394,37)" font-size="47" style="fill:rgb(240, 196, 108)">stagematrix</text>
+<text transform="translate(202,442)" font-size="43" style="fill:rgb(232, 203, 114)">key</text>
+<text transform="translate(525,207)" font-size="41" style="fill:rgb(44, 126, 247)">value</text>
+<text transform="translate(710,133)" font-size="39" style="fill:rgb(36, 216, 223)">str</text>
+<text transform="translate(798,382) rotate(-90)" font-size="38" style="fill:rgb(249, 187, 102)">Parameters</text>
+<text transform="translate(184,334)" font-size="38" style="fill:rgb(60, 104, 249)">plot</text>
+<text transform="translate(73,191)" font-size="38" style="fill:rgb(54, 112, 248)">print</text>
+<text transform="translate(93,34)" font-size="37" style="fill:rgb(244, 192, 105)">pair</text>
+<text transform="translate(501,428)" font-size="36" style="fill:rgb(176, 243, 151)">float</text>
+<text transform="translate(38,338) rotate(-90)" font-size="35" style="fill:rgb(255, 126, 65)">stitched</text>
+<text transform="translate(123,378) rotate(-90)" font-size="34" style="fill:rgb(187, 238, 145)">Returns</text>
+<text transform="translate(318,428)" font-size="33" style="fill:rgb(98, 47, 254)">threshold</text>
+<text transform="translate(314,374)" font-size="33" style="fill:rgb(80, 74, 252)">bool</text>
+<text transform="translate(86,85)" font-size="33" style="fill:rgb(255, 176, 95)">ax</text>
+<text transform="translate(62,444)" font-size="33" style="fill:rgb(56, 231, 215)">pixel</text>
+<text transform="translate(487,267)" font-size="17" style="fill:rgb(7, 187, 234)">stage coordinate</text>
+<text transform="translate(765,209)" font-size="17" style="fill:rgb(63, 235, 213)">x</text>
+<text transform="translate(85,99)" font-size="17" style="fill:rgb(255, 31, 16)">axis</text>
+<text transform="translate(725,422)" font-size="17" style="fill:rgb(100, 251, 195)">binning</text>
+<text transform="translate(2,146)" font-size="17" style="fill:rgb(255, 3, 2)">c</text>
+<text transform="translate(615,76)" font-size="17" style="fill:rgb(198, 231, 137)">kind</text>
+<text transform="translate(142,262)" font-size="17" style="fill:rgb(112, 254, 188)">stage_coord</text>
+<text transform="translate(657,65)" font-size="17" style="fill:rgb(34, 214, 224)">plt</text>
+<text transform="translate(122,219)" font-size="17" style="fill:rgb(214, 219, 126)">method</text>
+<text transform="translate(696,375)" font-size="17" style="fill:rgb(20, 202, 229)">append</text>
+<text transform="translate(2,432)" font-size="17" style="fill:rgb(146, 253, 169)">patch</text>
+<text transform="translate(748,87) rotate(-90)" font-size="17" style="fill:rgb(70, 239, 209)">score</text>
+<text transform="translate(712,494)" font-size="17" style="fill:rgb(255, 92, 47)">px_coord</text>
+<text transform="translate(705,24)" font-size="17" style="fill:rgb(203, 228, 134)">tuple</text>
+<text transform="translate(1,109)" font-size="17" style="fill:rgb(255, 147, 77)">label</text>
+<text transform="translate(307,469)" font-size="17" style="fill:rgb(68, 238, 210)">fft</text>
+<text transform="translate(392,312) rotate(-90)" font-size="17" style="fill:rgb(52, 115, 248)">s</text>
+<text transform="translate(692,144)" font-size="17" style="fill:rgb(255, 86, 44)">m</text>
+<text transform="translate(38,287)" font-size="17" style="fill:rgb(255, 162, 86)">mdoc</text>
+<text transform="translate(607,177)" font-size="17" style="fill:rgb(255, 150, 79)">plot bool</text>
+<text transform="translate(383,165) rotate(-90)" font-size="17" style="fill:rgb(255, 65, 33)">pixel coordinate</text>
+<text transform="translate(234,374)" font-size="17" style="fill:rgb(255, 9, 5)">dict</text>
+<text transform="translate(654,396)" font-size="14" style="fill:rgb(255, 77, 39)">difference_vector</text>
+<text transform="translate(278,439)" font-size="14" style="fill:rgb(78, 77, 252)">pixelsize</text>
+<text transform="translate(107,417)" font-size="14" style="fill:rgb(66, 95, 250)">coordinate</text>
+<text transform="translate(200,349)" font-size="14" style="fill:rgb(130, 255, 179)">len</text>
+<text transform="translate(709,83)" font-size="14" style="fill:rgb(255, 147, 77)">j</text>
+<text transform="translate(192,44) rotate(-90)" font-size="14" style="fill:rgb(16, 198, 230)">line</text>
+<text transform="translate(252,175)" font-size="14" style="fill:rgb(176, 243, 151)">val</text>
+<text transform="translate(712,147)" font-size="14" style="fill:rgb(57, 107, 249)">map_item</text>
+<text transform="translate(265,488)" font-size="14" style="fill:rgb(155, 251, 165)">stagecoord</text>
+<text transform="translate(662,351)" font-size="14" style="fill:rgb(122, 9, 255)">data</text>
+<text transform="translate(285,233)" font-size="14" style="fill:rgb(255, 95, 48)">T</text>
+<text transform="translate(225,386)" font-size="14" style="fill:rgb(222, 213, 121)">color</text>
+<text transform="translate(624,418) rotate(-90)" font-size="14" style="fill:rgb(255, 16, 8)">route</text>
+<text transform="translate(771,470) rotate(-90)" font-size="14" style="fill:rgb(255, 150, 79)">tag</text>
+<text transform="translate(22,45)" font-size="14" style="fill:rgb(20, 202, 229)">montage</text>
+<text transform="translate(199,185)" font-size="14" style="fill:rgb(76, 80, 252)">use</text>
+<text transform="translate(15,450)" font-size="14" style="fill:rgb(220, 214, 122)">diff</text>
+<text transform="translate(550,129)" font-size="14" style="fill:rgb(255, 13, 6)">given</text>
+<text transform="translate(438,139)" font-size="14" style="fill:rgb(100, 251, 195)">verbose</text>
+<text transform="translate(256,123) rotate(-90)" font-size="14" style="fill:rgb(84, 246, 203)">ndarray</text>
+<text transform="translate(417,271)" font-size="14" style="fill:rgb(88, 62, 253)">vect</text>
+<text transform="translate(566,398) rotate(-90)" font-size="14" style="fill:rgb(219, 216, 123)">res_x res_y</text>
+<text transform="translate(717,315) rotate(-90)" font-size="14" style="fill:rgb(104, 38, 254)">cross correlation</text>
+<text transform="translate(225,353)" font-size="14" style="fill:rgb(228, 207, 116)">NavItem</text>
+<text transform="translate(750,95)" font-size="14" style="fill:rgb(80, 74, 252)">block</text>
+<text transform="translate(310,342)" font-size="14" style="fill:rgb(9, 169, 238)">overlap_x</text>
+<text transform="translate(433,363)" font-size="14" style="fill:rgb(228, 207, 116)">overlap_y</text>
+<text transform="translate(309,322)" font-size="14" style="fill:rgb(60, 104, 249)">overlap_k</text>
+<text transform="translate(643,418)" font-size="14" style="fill:rgb(255, 53, 27)">result</text>
+<text transform="translate(204,290)" font-size="14" style="fill:rgb(22, 155, 242)">first</text>
+<text transform="translate(286,450)" font-size="14" style="fill:rgb(255, 118, 61)">plt show</text>
+<text transform="translate(771,321) rotate(-90)" font-size="14" style="fill:rgb(8, 190, 233)">MapItem</text>
+<text transform="translate(39,186)" font-size="14" style="fill:rgb(220, 214, 122)">Path</text>
+<text transform="translate(31,371)" font-size="14" style="fill:rgb(236, 200, 111)">weight</text>
+<text transform="translate(670,359)" font-size="14" style="fill:rgb(86, 65, 253)">res_x</text>
+<text transform="translate(519,177)" font-size="14" style="fill:rgb(96, 50, 254)">res_y</text>
+<text transform="translate(220,416)" font-size="14" style="fill:rgb(255, 9, 5)">direction</text>
+<text transform="translate(124,233)" font-size="14" style="fill:rgb(134, 255, 176)">flip</text>
+<text transform="translate(367,404)" font-size="14" style="fill:rgb(32, 142, 244)">Define</text>
+<text transform="translate(268,89)" font-size="14" style="fill:rgb(235, 202, 112)">idx0</text>
+<text transform="translate(314,264)" font-size="14" style="fill:rgb(255, 89, 45)">gridspec</text>
+<text transform="translate(755,63)" font-size="14" style="fill:rgb(235, 202, 112)">x y</text>
+<text transform="translate(225,304)" font-size="13" style="fill:rgb(62, 101, 250)">imshow</text>
+<text transform="translate(708,163)" font-size="13" style="fill:rgb(134, 255, 176)">overlap</text>
+<text transform="translate(611,58)" font-size="13" style="fill:rgb(52, 228, 217)">axes</text>
+<text transform="translate(89,198)" font-size="13" style="fill:rgb(116, 254, 186)">sequence</text>
+<text transform="translate(725,438)" font-size="13" style="fill:rgb(204, 227, 133)">neighbour</text>
+<text transform="translate(428,232)" font-size="13" style="fill:rgb(102, 41, 254)">strip0</text>
+<text transform="translate(646,204)" font-size="13" style="fill:rgb(98, 251, 196)">strip1</text>
+<text transform="translate(561,46)" font-size="13" style="fill:rgb(52, 228, 217)">DEFAULT</text>
+<text transform="translate(266,327)" font-size="13" style="fill:rgb(198, 231, 137)">fn</text>
+<text transform="translate(646,191)" font-size="13" style="fill:rgb(255, 145, 76)">convert</text>
+<text transform="translate(647,494) rotate(-90)" font-size="13" style="fill:rgb(255, 129, 67)">diameter</text>
+<text transform="translate(605,124)" font-size="13" style="fill:rgb(2, 183, 235)">DE12</text>
+<text transform="translate(520,389) rotate(-90)" font-size="13" style="fill:rgb(32, 142, 244)">stitched image</text>
+<text transform="translate(132,252)" font-size="12" style="fill:rgb(255, 28, 14)">e</text>
+<text transform="translate(18,83)" font-size="12" style="fill:rgb(214, 219, 126)">must</text>
+<text transform="translate(378,199) rotate(-90)" font-size="12" style="fill:rgb(98, 251, 196)">ax2</text>
+<text transform="translate(314,306)" font-size="12" style="fill:rgb(246, 190, 104)">t1</text>
+<text transform="translate(655,46)" font-size="12" style="fill:rgb(251, 185, 101)">calculate</text>
+<text transform="translate(507,209) rotate(-90)" font-size="12" style="fill:rgb(9, 169, 238)">pixel_to_stagecoord</text>
+<text transform="translate(225,234)" font-size="12" style="fill:rgb(150, 252, 167)">xy_coord</text>
+<text transform="translate(415,173)" font-size="12" style="fill:rgb(58, 232, 214)">acquire</text>
+<text transform="translate(293,132)" font-size="12" style="fill:rgb(255, 155, 82)">t0 t1</text>
+<text transform="translate(228,399)" font-size="12" style="fill:rgb(206, 225, 132)">np linalg</text>
+<text transform="translate(149,374) rotate(-90)" font-size="11" style="fill:rgb(255, 121, 62)">numpy</text>
+<text transform="translate(478,93)" font-size="11" style="fill:rgb(26, 207, 227)">min</text>
+<text transform="translate(15,129)" font-size="11" style="fill:rgb(82, 71, 252)">slices</text>
+<text transform="translate(333,304)" font-size="11" style="fill:rgb(9, 169, 238)">set</text>
+<text transform="translate(212,271)" font-size="11" style="fill:rgb(244, 192, 105)">number</text>
+<text transform="translate(107,44)" font-size="11" style="fill:rgb(255, 31, 16)">dictionary</text>
+<text transform="translate(18,139)" font-size="11" style="fill:rgb(255, 89, 45)">center</text>
+<text transform="translate(654,300)" font-size="11" style="fill:rgb(66, 95, 250)">property</text>
+<text transform="translate(134,300)" font-size="11" style="fill:rgb(255, 121, 62)">file</text>
+<text transform="translate(713,479)" font-size="11" style="fill:rgb(16, 198, 230)">position</text>
+<text transform="translate(299,496)" font-size="11" style="fill:rgb(90, 248, 200)">enumerate</text>
+<text transform="translate(364,209) rotate(-90)" font-size="11" style="fill:rgb(132, 255, 178)">montage_patches</text>
+<text transform="translate(185,247)" font-size="11" style="fill:rgb(168, 247, 156)">n_images</text>
+<text transform="translate(253,257)" font-size="11" style="fill:rgb(125, 255, 182)">drc</text>
+<text transform="translate(479,10)" font-size="11" style="fill:rgb(68, 238, 210)">side0 side1</text>
+<text transform="translate(617,86)" font-size="11" style="fill:rgb(255, 56, 28)">color red'</text>
+<text transform="translate(389,45)" font-size="11" style="fill:rgb(255, 174, 94)">binning int</text>
+<text transform="translate(7,19)" font-size="11" style="fill:rgb(8, 172, 238)">tag tag</text>
+<text transform="translate(283,172)" font-size="10" style="fill:rgb(84, 246, 203)">f'</text>
+<text transform="translate(128,337)" font-size="10" style="fill:rgb(255, 115, 59)">seq0</text>
+<text transform="translate(675,335)" font-size="10" style="fill:rgb(2, 183, 235)">seq1</text>
+<text transform="translate(106,115) rotate(-90)" font-size="10" style="fill:rgb(251, 185, 101)">t0</text>
+<text transform="translate(31,8)" font-size="10" style="fill:rgb(86, 247, 202)">vmax</text>
+<text transform="translate(620,426)" font-size="10" style="fill:rgb(210, 222, 129)">image_shape</text>
+<text transform="translate(81,452)" font-size="10" style="fill:rgb(255, 13, 6)">filename</text>
+<text transform="translate(389,246) rotate(-90)" font-size="10" style="fill:rgb(128, 255, 180)">SerialEM</text>
+<text transform="translate(7,345)" font-size="10" style="fill:rgb(240, 196, 108)">using</text>
+<text transform="translate(111,12)" font-size="10" style="fill:rgb(255, 0, 0)">v</text>
+<text transform="translate(777,46) rotate(-90)" font-size="10" style="fill:rgb(52, 115, 248)">params</text>
+<text transform="translate(564,136)" font-size="10" style="fill:rgb(102, 252, 194)">imagecoords</text>
+<text transform="translate(384,287)" font-size="10" style="fill:rgb(255, 118, 61)">prop</text>
+<text transform="translate(549,94)" font-size="10" style="fill:rgb(255, 137, 71)">node</text>
+<text transform="translate(487,83) rotate(-90)" font-size="10" style="fill:rgb(235, 202, 112)">ret</text>
+<text transform="translate(86,123)" font-size="10" style="fill:rgb(100, 251, 195)">data_drc</text>
+<text transform="translate(423,319)" font-size="10" style="fill:rgb(10, 192, 232)">new_shape</text>
+<text transform="translate(211,156) rotate(-90)" font-size="10" style="fill:rgb(255, 16, 8)">verbose bool</text>
+<text transform="translate(279,476)" font-size="10" style="fill:rgb(255, 41, 20)">plt scatter</text>
+<text transform="translate(85,141)" font-size="10" style="fill:rgb(78, 243, 205)">tag str</text>
+<text transform="translate(647,278)" font-size="9" style="fill:rgb(164, 248, 159)">matplotlib</text>
+<text transform="translate(210,172)" font-size="9" style="fill:rgb(255, 77, 39)">Find</text>
+<text transform="translate(253,266)" font-size="9" style="fill:rgb(208, 224, 130)">abs</text>
+<text transform="translate(153,273)" font-size="9" style="fill:rgb(255, 41, 20)">ValueError</text>
+<text transform="translate(408,471)" font-size="9" style="fill:rgb(255, 118, 61)">max</text>
+<text transform="translate(158,433)" font-size="9" style="fill:rgb(255, 172, 92)">zigzag</text>
+<text transform="translate(758,103)" font-size="9" style="fill:rgb(72, 241, 208)">reshape</text>
+<text transform="translate(302,77)" font-size="9" style="fill:rgb(84, 246, 203)">fig</text>
+<text transform="translate(425,192)" font-size="9" style="fill:rgb(255, 31, 16)">Take</text>
+<text transform="translate(38,328)" font-size="9" style="fill:rgb(68, 238, 210)">new_shift</text>
+<text transform="translate(126,315)" font-size="9" style="fill:rgb(78, 77, 252)">offset</text>
+<text transform="translate(182,457) rotate(-90)" font-size="9" style="fill:rgb(255, 160, 85)">idx1</text>
+<text transform="translate(366,297) rotate(-90)" font-size="9" style="fill:rgb(255, 95, 48)">ax1</text>
+<text transform="translate(417,492)" font-size="9" style="fill:rgb(255, 47, 24)">n</text>
+<text transform="translate(771,133)" font-size="9" style="fill:rgb(93, 249, 199)">x0</text>
+<text transform="translate(715,461)" font-size="9" style="fill:rgb(168, 247, 156)">update</text>
+<text transform="translate(435,374)" font-size="9" style="fill:rgb(84, 68, 253)">image_rot90</text>
+<text transform="translate(346,184) rotate(-90)" font-size="9" style="fill:rgb(63, 235, 213)">nm</text>
+<text transform="translate(309,31)" font-size="9" style="fill:rgb(32, 142, 244)">f</text>
+<text transform="translate(10,333) rotate(-90)" font-size="9" style="fill:rgb(77, 243, 206)">im</text>
+<text transform="translate(191,367)" font-size="9" style="fill:rgb(12, 167, 239)">integer</text>
+<text transform="translate(528,399) rotate(-90)" font-size="9" style="fill:rgb(100, 251, 195)">stage_to_pixelcoord</text>
+<text transform="translate(768,52) rotate(-90)" font-size="9" style="fill:rgb(255, 3, 2)">shape_x</text>
+<text transform="translate(741,173)" font-size="9" style="fill:rgb(84, 68, 253)">MapID</text>
+<text transform="translate(708,8)" font-size="9" style="fill:rgb(255, 56, 28)">threshold float</text>
+<text transform="translate(765,384) rotate(-90)" font-size="9" style="fill:rgb(255, 167, 89)">np array'</text>
+<text transform="translate(713,405)" font-size="9" style="fill:rgb(78, 77, 252)">plt subplots</text>
+<text transform="translate(434,256)" font-size="9" style="fill:rgb(255, 179, 96)">plt title</text>
+<text transform="translate(182,449)" font-size="9" style="fill:rgb(255, 123, 64)">plot_x plot_y</text>
+<text transform="translate(392,8)" font-size="8" style="fill:rgb(255, 152, 80)">skimage</text>
+<text transform="translate(393,454)" font-size="8" style="fill:rgb(60, 104, 249)">lower</text>
+<text transform="translate(694,131)" font-size="8" style="fill:rgb(15, 196, 231)">map</text>
+<text transform="translate(113,63) rotate(-90)" font-size="8" style="fill:rgb(74, 242, 207)">im0</text>
+<text transform="translate(205,358)" font-size="8" style="fill:rgb(254, 181, 98)">ax0</text>
+<text transform="translate(519,463)" font-size="8" style="fill:rgb(25, 150, 243)">coord0</text>
+<text transform="translate(559,252)" font-size="8" style="fill:rgb(12, 167, 239)">Add</text>
+<text transform="translate(573,455)" font-size="8" style="fill:rgb(17, 160, 241)">y</text>
+<text transform="translate(298,235)" font-size="8" style="fill:rgb(255, 68, 34)">only_kind</text>
+<text transform="translate(663,313)" font-size="8" style="fill:rgb(240, 196, 108)">max_shift</text>
+<text transform="translate(656,323)" font-size="8" style="fill:rgb(48, 121, 247)">fft_score'</text>
+<text transform="translate(686,104)" font-size="8" style="fill:rgb(62, 101, 250)">optimized</text>
+<text transform="translate(100,229)" font-size="8" style="fill:rgb(100, 251, 195)">row</text>
+<text transform="translate(486,436)" font-size="8" style="fill:rgb(136, 255, 175)">vary</text>
+<text transform="translate(575,398) rotate(-90)" font-size="8" style="fill:rgb(194, 234, 140)">stitched_binning</text>
+<text transform="translate(662,72)" font-size="8" style="fill:rgb(61, 234, 213)">text</text>
+<text transform="translate(157,130)" font-size="8" style="fill:rgb(68, 238, 210)">img</text>
+<text transform="translate(247,215)" font-size="8" style="fill:rgb(1, 179, 236)">Color'</text>
+<text transform="translate(22,168)" font-size="8" style="fill:rgb(255, 176, 95)">stage_xy</text>
+</svg>
