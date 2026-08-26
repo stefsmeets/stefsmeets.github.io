@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Let there be word clouds: most common words per Bible book
+</h1>
+<p class="subtitle"><strong>2023-08-20</strong></p>
+<div class="prose">
+  <p>One of my goals for this year is to read the bible cover-to-cover. At the same time I'm learning about natural language processing for a project at work. So I got curious about the word usage per book. And particularly how the word usage evolves from book to book. In this blog post I share the word clouds and how I generated them.</p>
+<p>All the code to generate the word clouds can be found in <a rel="external" href="https://github.com/stefsmeets/bijbel-woordwolk">this repo</a>.
+It consists of 2 parts:</p>
+<ol>
+<li>Getting the word counts</li>
+<li>Generating the word clouds</li>
+</ol>
+<p>I'm reading the bible in Dutch (Bijbel in Gewone Taal), so the word clouds are also in Dutch ;-)</p>
+<h2 id="get-word-counts">Get word counts</h2>
+<p>To get the word counts, I use the <a rel="external" href="https://spacy.io">spacy</a> library with the <a rel="external" href="https://spacy.io/models/nl/">dutch</a> pipeline. SpaCy is a natural language processing processing library that can tokenize and classify a text. At first I tried my own tokenization using regexes, but this is way easier and much better.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">import</span><span> spacy</span></span>
+<span class="giallo-l"><span>nlp</span><span style="color: #F29E74;"> =</span><span> spacy</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">load</span><span>(</span><span style="color: #D5FF80;">&#39;nl_core_news_sm&#39;</span><span>)</span></span></code></pre>
+<p>Tokenizing the text is then pretty straightforward. Just join all the lines together, pass it through the nlp engine, and get the tokens. For the word cloud, I'm only interested in the nouns, propositions, adjectives and verbs.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">from</span><span> collections</span><span style="color: #FFA659;"> import</span><span> Counter</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>poss</span><span style="color: #F29E74;"> =</span><span> (</span><span style="color: #D5FF80;">&#39;NOUN&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;"> &#39;PROPN&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;"> &#39;ADJ&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;"> &#39;VERB&#39;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> get_counts</span><span>(</span><span style="color: #DFBFFF;">book</span><span>):</span></span>
+<span class="giallo-l"><span>    text</span><span style="color: #F29E74;"> =</span><span style="color: #D5FF80;"> &#39; &#39;</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">join</span><span>(df[df[</span><span style="color: #D5FF80;">&#39;book&#39;</span><span>]</span><span style="color: #F29E74;"> ==</span><span> book][</span><span style="color: #D5FF80;">&#39;text&#39;</span><span>])</span></span>
+<span class="giallo-l"><span>    doc</span><span style="color: #F29E74;"> =</span><span style="color: #FFCD66;"> nlp</span><span>(text)</span></span>
+<span class="giallo-l"><span>    tokens</span><span style="color: #F29E74;"> =</span><span> (token</span><span style="color: #CCCAC2B3;">.</span><span>text</span><span style="color: #FFA659;"> for</span><span> token</span><span style="color: #FFA659;"> in</span><span> doc</span><span style="color: #FFA659;"> if</span><span> token</span><span style="color: #CCCAC2B3;">.</span><span>pos_</span><span style="color: #F29E74;"> in</span><span> poss)</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    return</span><span style="color: #FFCD66;"> Counter</span><span>(tokens)</span></span></code></pre>
+<p>I use the handy <a rel="external" href="https://docs.python.org/3/library/collections.html#collections.Counter">collection.Counter</a> class to count the tokens. This gives me a dictionary that looks something like this:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span> c</span><span style="color: #F29E74;"> =</span><span style="color: #FFCD66;"> get_counts</span><span>(</span><span style="color: #D5FF80;">&#39;Genesis&#39;</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span> c</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">most_common</span><span>(</span><span style="color: #DFBFFF;">10</span><span>)</span></span>
+<span class="giallo-l"><span>[(</span><span style="color: #D5FF80;">&#39;zei&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 366</span><span>)</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span> (</span><span style="color: #D5FF80;">&#39;Jakob&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 246</span><span>)</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span> (</span><span style="color: #D5FF80;">&#39;God&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 223</span><span>)</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span> (</span><span style="color: #D5FF80;">&#39;Jozef&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 189</span><span>)</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span> (</span><span style="color: #D5FF80;">&#39;Heer&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 152</span><span>)</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span> (</span><span style="color: #D5FF80;">&#39;ging&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 139</span><span>)</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span> (</span><span style="color: #D5FF80;">&#39;Abraham&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 138</span><span>)</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span> (</span><span style="color: #D5FF80;">&#39;zoon&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 131</span><span>)</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span> (</span><span style="color: #D5FF80;">&#39;land&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 119</span><span>)</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span> (</span><span style="color: #D5FF80;">&#39;vader&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 119</span><span>)]</span></span></code></pre><h2 id="generate-word-cloud">Generate word cloud</h2>
+<p>There really is a library for everything, for word clouds I used <a rel="external" href="https://github.com/amueller/word_cloud">this one</a>. It's pretty straightforward to use.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">import</span><span> wordcloud</span><span style="color: #FFA659;"> as</span><span> wc</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> get_wordcloud</span><span>(</span><span style="color: #DFBFFF;">counts</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> colormap</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;rainbow&#39;</span><span>):</span></span>
+<span class="giallo-l"><span>    wordcloud</span><span style="color: #F29E74;"> =</span><span> wc</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">WordCloud</span><span>(</span></span>
+<span class="giallo-l"><span>        width</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">800</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span>        height</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">500</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span>        colormap</span><span style="color: #F29E74;">=</span><span>colormap</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span>        background_color</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">None</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span>        mode</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;RGBA&#39;</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span>    )</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">generate_from_frequencies</span><span>(counts)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">    return</span><span> wordcloud</span></span></code></pre>
+<p>What's left is to just loop over all the books and plot them:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">for</span><span> book</span><span style="color: #FFA659;"> in</span><span> books</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>    counts</span><span style="color: #F29E74;"> =</span><span style="color: #FFCD66;"> get_counts</span><span>(book)</span></span>
+<span class="giallo-l"><span>    wordcloud</span><span style="color: #F29E74;"> =</span><span style="color: #FFCD66;"> get_wordcloud</span><span>(counts)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    plt</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">imshow</span><span>(wordcloud)</span></span></code></pre><style>
+table th:first-of-type {
+    width: 29%;
+}
+table th:nth-of-type(2) {
+    width: 30%;
+}
+table th:nth-of-type(3) {
+    width: 29%;
+}
+</style>
+<h2 id="old-testament">Old Testament</h2>
+<p>Below are the word clouds for all books in the Old Testament.</p>
+<figure>
+  <a href="old_testament.svg">
+    <img src="old_testament.svg" alt="Old Testament">
+  </a>
+  <figcaption>Old Testament</figcaption>
+</figure>
+<table><thead><tr><th></th><th></th><th></th></tr></thead><tbody>
+</tbody></table>
+<p>|</p>
+<figure>
+  <a href="Genesis.svg">
+    <img src="Genesis.svg" alt="Genesis">
+  </a>
+  <figcaption>Genesis</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Exodus.svg">
+    <img src="Exodus.svg" alt="Exodus">
+  </a>
+  <figcaption>Exodus</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Leviticus.svg">
+    <img src="Leviticus.svg" alt="Leviticus">
+  </a>
+  <figcaption>Leviticus</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="Numeri.svg">
+    <img src="Numeri.svg" alt="Numeri">
+  </a>
+  <figcaption>Numeri</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Deuteronomium.svg">
+    <img src="Deuteronomium.svg" alt="Deuteronomium">
+  </a>
+  <figcaption>Deuteronomium</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Jozua.svg">
+    <img src="Jozua.svg" alt="Jozua">
+  </a>
+  <figcaption>Jozua</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="Richteren.svg">
+    <img src="Richteren.svg" alt="Richteren">
+  </a>
+  <figcaption>Richteren</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Ruth.svg">
+    <img src="Ruth.svg" alt="Ruth">
+  </a>
+  <figcaption>Ruth</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="1-Samuel.svg">
+    <img src="1-Samuel.svg" alt="1-Samuel">
+  </a>
+  <figcaption>1-Samuel</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="2-Samuel.svg">
+    <img src="2-Samuel.svg" alt="2-Samuel">
+  </a>
+  <figcaption>2-Samuel</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="1-Koningen.svg">
+    <img src="1-Koningen.svg" alt="1-Koningen">
+  </a>
+  <figcaption>1-Koningen</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="2-Koningen.svg">
+    <img src="2-Koningen.svg" alt="2-Koningen">
+  </a>
+  <figcaption>2-Koningen</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="1-Kronieken.svg">
+    <img src="1-Kronieken.svg" alt="1-Kronieken">
+  </a>
+  <figcaption>1-Kronieken</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="2-Kronieken.svg">
+    <img src="2-Kronieken.svg" alt="2-Kronieken">
+  </a>
+  <figcaption>2-Kronieken</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Ezra.svg">
+    <img src="Ezra.svg" alt="Ezra">
+  </a>
+  <figcaption>Ezra</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="Nehemia.svg">
+    <img src="Nehemia.svg" alt="Nehemia">
+  </a>
+  <figcaption>Nehemia</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Esther.svg">
+    <img src="Esther.svg" alt="Esther">
+  </a>
+  <figcaption>Esther</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Job.svg">
+    <img src="Job.svg" alt="Job">
+  </a>
+  <figcaption>Job</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="Psalmen.svg">
+    <img src="Psalmen.svg" alt="Psalmen">
+  </a>
+  <figcaption>Psalmen</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Spreuken.svg">
+    <img src="Spreuken.svg" alt="Spreuken">
+  </a>
+  <figcaption>Spreuken</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Prediker.svg">
+    <img src="Prediker.svg" alt="Prediker">
+  </a>
+  <figcaption>Prediker</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="Hooglied.svg">
+    <img src="Hooglied.svg" alt="Hooglied">
+  </a>
+  <figcaption>Hooglied</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Jesaja.svg">
+    <img src="Jesaja.svg" alt="Jesaja">
+  </a>
+  <figcaption>Jesaja</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Jeremia.svg">
+    <img src="Jeremia.svg" alt="Jeremia">
+  </a>
+  <figcaption>Jeremia</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="Klaagliederen.svg">
+    <img src="Klaagliederen.svg" alt="Klaagliederen">
+  </a>
+  <figcaption>Klaagliederen</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Ezechiël.svg">
+    <img src="Ezechiël.svg" alt="Ezechiël">
+  </a>
+  <figcaption>Ezechiël</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Daniël.svg">
+    <img src="Daniël.svg" alt="Daniël">
+  </a>
+  <figcaption>Daniël</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="Hosea.svg">
+    <img src="Hosea.svg" alt="Hosea">
+  </a>
+  <figcaption>Hosea</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Joël.svg">
+    <img src="Joël.svg" alt="Joël">
+  </a>
+  <figcaption>Joël</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Amos.svg">
+    <img src="Amos.svg" alt="Amos">
+  </a>
+  <figcaption>Amos</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="Obadja.svg">
+    <img src="Obadja.svg" alt="Obadja">
+  </a>
+  <figcaption>Obadja</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Jona.svg">
+    <img src="Jona.svg" alt="Jona">
+  </a>
+  <figcaption>Jona</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Micha.svg">
+    <img src="Micha.svg" alt="Micha">
+  </a>
+  <figcaption>Micha</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="Nahum.svg">
+    <img src="Nahum.svg" alt="Nahum">
+  </a>
+  <figcaption>Nahum</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Habakuk.svg">
+    <img src="Habakuk.svg" alt="Habakuk">
+  </a>
+  <figcaption>Habakuk</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Sefanja.svg">
+    <img src="Sefanja.svg" alt="Sefanja">
+  </a>
+  <figcaption>Sefanja</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="Haggai.svg">
+    <img src="Haggai.svg" alt="Haggai">
+  </a>
+  <figcaption>Haggai</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Zacharia.svg">
+    <img src="Zacharia.svg" alt="Zacharia">
+  </a>
+  <figcaption>Zacharia</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Maleachi.svg">
+    <img src="Maleachi.svg" alt="Maleachi">
+  </a>
+  <figcaption>Maleachi</figcaption>
+</figure>
+ |
+<h2 id="new-testament">New Testament</h2>
+<p>Below are the word clouds for all books in the New Testament.</p>
+<figure>
+  <a href="new_testament.svg">
+    <img src="new_testament.svg" alt="New Testament">
+  </a>
+  <figcaption>New Testament</figcaption>
+</figure>
+<table><thead><tr><th></th><th></th><th></th></tr></thead><tbody>
+</tbody></table>
+<p>|</p>
+<figure>
+  <a href="Matteüs.svg">
+    <img src="Matteüs.svg" alt="Matteüs">
+  </a>
+  <figcaption>Matteüs</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Marcus.svg">
+    <img src="Marcus.svg" alt="Marcus">
+  </a>
+  <figcaption>Marcus</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Lucas.svg">
+    <img src="Lucas.svg" alt="Lucas">
+  </a>
+  <figcaption>Lucas</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="Johannes.svg">
+    <img src="Johannes.svg" alt="Johannes">
+  </a>
+  <figcaption>Johannes</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Handelingen.svg">
+    <img src="Handelingen.svg" alt="Handelingen">
+  </a>
+  <figcaption>Handelingen</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Romeinen.svg">
+    <img src="Romeinen.svg" alt="Romeinen">
+  </a>
+  <figcaption>Romeinen</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="1-Korintiërs.svg">
+    <img src="1-Korintiërs.svg" alt="1-Korintiërs">
+  </a>
+  <figcaption>1-Korintiërs</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="2-Korintiërs.svg">
+    <img src="2-Korintiërs.svg" alt="2-Korintiërs">
+  </a>
+  <figcaption>2-Korintiërs</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Galaten.svg">
+    <img src="Galaten.svg" alt="Galaten">
+  </a>
+  <figcaption>Galaten</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="Efeziërs.svg">
+    <img src="Efeziërs.svg" alt="Efeziërs">
+  </a>
+  <figcaption>Efeziërs</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Filippenzen.svg">
+    <img src="Filippenzen.svg" alt="Filippenzen">
+  </a>
+  <figcaption>Filippenzen</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Kolossenzen.svg">
+    <img src="Kolossenzen.svg" alt="Kolossenzen">
+  </a>
+  <figcaption>Kolossenzen</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="1-Tessalonicenzen.svg">
+    <img src="1-Tessalonicenzen.svg" alt="1-Tessalonicenzen">
+  </a>
+  <figcaption>1-Tessalonicenzen</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="2-Tessalonicenzen.svg">
+    <img src="2-Tessalonicenzen.svg" alt="2-Tessalonicenzen">
+  </a>
+  <figcaption>2-Tessalonicenzen</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="1-Timoteüs.svg">
+    <img src="1-Timoteüs.svg" alt="1-Timoteüs">
+  </a>
+  <figcaption>1-Timoteüs</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="2-Timoteüs.svg">
+    <img src="2-Timoteüs.svg" alt="2-Timoteüs">
+  </a>
+  <figcaption>2-Timoteüs</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Titus.svg">
+    <img src="Titus.svg" alt="Titus">
+  </a>
+  <figcaption>Titus</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Filemon.svg">
+    <img src="Filemon.svg" alt="Filemon">
+  </a>
+  <figcaption>Filemon</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="Hebreeën.svg">
+    <img src="Hebreeën.svg" alt="Hebreeën">
+  </a>
+  <figcaption>Hebreeën</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Jakobus.svg">
+    <img src="Jakobus.svg" alt="Jakobus">
+  </a>
+  <figcaption>Jakobus</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="1-Petrus.svg">
+    <img src="1-Petrus.svg" alt="1-Petrus">
+  </a>
+  <figcaption>1-Petrus</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="2-Petrus.svg">
+    <img src="2-Petrus.svg" alt="2-Petrus">
+  </a>
+  <figcaption>2-Petrus</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="1-Johannes.svg">
+    <img src="1-Johannes.svg" alt="1-Johannes">
+  </a>
+  <figcaption>1-Johannes</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="2-Johannes.svg">
+    <img src="2-Johannes.svg" alt="2-Johannes">
+  </a>
+  <figcaption>2-Johannes</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="3-Johannes.svg">
+    <img src="3-Johannes.svg" alt="3-Johannes">
+  </a>
+  <figcaption>3-Johannes</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Judas.svg">
+    <img src="Judas.svg" alt="Judas">
+  </a>
+  <figcaption>Judas</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="Openbaring.svg">
+    <img src="Openbaring.svg" alt="Openbaring">
+  </a>
+  <figcaption>Openbaring</figcaption>
+</figure>
+ |
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

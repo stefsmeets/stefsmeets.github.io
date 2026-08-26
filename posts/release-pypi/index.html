@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  A workflow for making a release on PyPI
+</h1>
+<p class="subtitle"><strong>2023-05-05</strong></p>
+<div class="prose">
+  <p>Releasing a package on <a rel="external" href="https://pypi.org">PyPI</a> is not as difficult as it used to be. The tooling has evolved significantly since I uploaded my first package many years ago. Most of the steps can now be automated using github actions. In this blog I describe my typical workflow for releasing a package on PyPI.</p>
+<h3 id="authentication-on-pypi">Authentication on PyPI</h3>
+<p>After 2023-06-01, <a rel="external" href="https://blog.pypi.org/posts/2023-06-01-2fa-enforcement-for-upload/">all uploads from user accounts with 2FA enabled must use an API token in place of their password</a>.</p>
+<p>So, first things first, we must set up authentication:</p>
+<ol>
+<li>Go to https://pypi.org/manage/account/token/</li>
+<li>Generate a new token, scope it to <em>Entire account (all projects)</em></li>
+<li>Copy the token and create a new file: <code>$home/.pypirc</code></li>
+</ol>
+<p>It looks something like this:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="ini"><span class="giallo-l"><span style="color: #73D0FF;">[pypi]</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">  username</span><span style="color: #CCCAC2B3;"> =</span><span> __token__</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">  password</span><span style="color: #CCCAC2B3;"> =</span><span> pypi-Fjk8z...39ZDiQ</span></span></code></pre>
+<ol start="4">
+<li>Enjoy publishing to PyPI without every typing your password again</li>
+</ol>
+<h3 id="first-release">First release</h3>
+<p>Although I have automated releases of my packages, the first release has to be manual.</p>
+<ol>
+<li>Decide on a package name on <a rel="external" href="http://pypi.org">PyPI</a> that is still available</li>
+<li>Make a manual upload to <a rel="external" href="http://pypi.org">PyPI</a>. You can do this with <a rel="external" href="https://pypi.org/project/build/"><code>build</code></a> and <a rel="external" href="https://pypi.org/project/twine/"><code>twine</code></a>:</li>
+</ol>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">pip</span><span style="color: #D5FF80;"> install twine build</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">python</span><span style="color: #95E6CB;"> -m</span><span style="color: #D5FF80;"> build</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">twine</span><span style="color: #D5FF80;"> upload dist/</span><span style="color: #5CCFE6;font-style: italic;">*</span></span></code></pre>
+<ol start="3">
+<li>Celebrate first release on pypi 🥳</li>
+</ol>
+<p>(I recommend using <a rel="external" href="https://packaging.python.org/en/latest/guides/using-testpypi/">testpypi</a> if this is the first time.)</p>
+<h3 id="automating-the-next-releases">Automating the next releases</h3>
+<p>The following releases can be completely automated using github actions.</p>
+<ol>
+<li>Go to your <a rel="external" href="https://pypi.org/manage/account/token/">PyPI settings</a> and register an API token scoped to your package.</li>
+<li>Add the token to this repo's secrets named <code>PYPI_TOKEN</code>: https://github.com/USER/PROJECT/settings/secrets/actions.</li>
+</ol>
+<p>Afterwards, this github action will take care of the rest:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="yaml"><span class="giallo-l"><span style="color: #5CCFE6;">name</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> Publish on PyPI</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #DFBFFF;">on</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">  release</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    types</span><span style="color: #CCCAC2B3;">:</span><span> [</span><span style="color: #D5FF80;">published</span><span>]</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">jobs</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">  deploy</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    runs-on</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> ubuntu-latest</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    steps</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>    -</span><span style="color: #5CCFE6;"> uses</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> actions/checkout@v2</span></span>
+<span class="giallo-l"><span>    -</span><span style="color: #5CCFE6;"> uses</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> actions/setup-python@v2</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">      with</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">        python-version</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;"> 3.10</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    -</span><span style="color: #5CCFE6;"> name</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> Install dependencies</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">      run</span><span style="color: #CCCAC2B3;">:</span><span style="color: #FFA659;"> |</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">        python -m pip install --upgrade pip</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">        pip install setuptools wheel twine</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">        python setup.py sdist bdist_wheel</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    -</span><span style="color: #5CCFE6;"> name</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> Publish package</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">      uses</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> pypa/gh-action-pypi-publish@master</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">      with</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">        user</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> __token__</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">        password</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> ${{ secrets.PYPI_TOKEN }}</span></span></code></pre>
+<p>Place this action in <code>.github/workflows/publish.yaml</code> of your project.</p>
+<h3 id="new-releases">New releases</h3>
+<p>The workflow then becomes as follows:</p>
+<ol>
+<li>Bump the version (<code>major</code>/<code>minor</code>/<code>patch</code> as needed). I use <a rel="external" href="https://pypi.org/project/bumpversion/"><code>bumpversion</code></a> to help with this.</li>
+</ol>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">bumpversion</span><span style="color: #D5FF80;"> minor</span></span></code></pre>
+<ol start="2">
+<li>Make a new <a rel="external" href="https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases">release</a> on github. The upload to PyPI is triggered when a release is published. Make sure the tag matches the version.</li>
+</ol>
+<p>If you use the standard <a rel="external" href="https://docs.github.com/en/get-started/quickstart/github-flow">github workflow</a> (create branch-&gt;PR-&gt;merge-&gt;delete branch), it's really easy to make changelogs this way too.</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

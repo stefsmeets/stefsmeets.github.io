@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  How to fix &quot;error trying to exec f951: execvp: No such file or directory&quot;
+</h1>
+<p class="subtitle"><strong>2011-11-24</strong></p>
+<div class="prose">
+  <pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>error trying to exec &#39;f951&#39;: execvp: No such file or directory</span></span>
+<span class="giallo-l"><span>error trying to exec &#39;cc1&#39;: execvp: No such file or directory</span></span></code></pre>
+<p>I was trying to compile a program today on OS X Lion using gfortran, but to my disappointment I got these errors every time. I am not really familiar with this kind of stuff, so I wasn't sure where to look at first. Even when trying to compile a simple <code>hello_world</code> program.</p>
+<p>The internet wasn't very useful either. Google gave me barely anything :-(</p>
+<h2 id="the-solution">The solution</h2>
+<p>First I removed xcode, with the idea to reinstall it later:</p>
+<p><code>sudo /Developer/Library/uninstall-devtools -mode=all</code></p>
+<p>After that I dug into my <code>/usr/local/lib</code> and <code>/usr/bin</code> folders and removed any reference to <code>gcc</code>, <code>gcov</code>, <code>g++</code>, <code>cpp</code> and <code>gfortran</code>, which are all part of the gcc package.</p>
+<p>I also removed all references to <code>llvm-*</code> (where <code>*</code> can be <code>gcc</code>, <code>g++</code>, etc). This comes with xcode, not really sure what this is used for. And finally I removed the <code>libgcc/</code> folder and all <code>libgfortran</code>-related files in <code>/usr/local/lib</code>.</p>
+<p>I rebooted for good measure.</p>
+<p>Next I got Xcode 4 from the Appstore (for OS X 10.6 and lower, it's available on <a rel="external" href="https://web.archive.org/web/20140612021257/http://developer.apple.com/devcenter/mac/index.action">the Mac Dev Center</a> and installed it. Again I went into my <code>/usr/bin/</code> and removed the symlink xcode made to their (incomplete, it misses gfortran) <code>gcc</code>.</p>
+<p>I downloaded and installed <code>gcc-lion.tar.gz</code> from <a rel="external" href="https://web.archive.org/web/20140612021257/http://hpc.sourceforge.net/">HPC</a> and installed using:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">gunzip</span><span style="color: #D5FF80;"> gcc-lion.tar.gz</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">sudo</span><span style="color: #D5FF80;"> tar</span><span style="color: #95E6CB;"> -xvf</span><span style="color: #D5FF80;"> gcc-bin.tar</span><span style="color: #95E6CB;"> -C</span><span style="color: #D5FF80;"> /</span></span></code></pre>
+<p>After that, everything seemed to work! There is without doubt a faster way to fix it, but after trying to fix it for a few hours, I'm glad it now works! :-)</p>
+<h2 id="what-else">What else?</h2>
+<p>If gcc gives an error that looks something like this:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>ld: symbol(s) not found for architecture x86_64</span></span>
+<span class="giallo-l"><span>collect2: ld returned 1 exit status,</span></span></code></pre>
+<p>an explanation can be found <a rel="external" href="https://web.archive.org/web/20140612021257/http://stackoverflow.com/questions/8034568/undefined-symbols-for-architecture-x86-64-which-architecture-should-i-use">here</a>. Basically, the <code>lstdc++</code> parameter has to be given, so it uses the correct library. Alternativey, <code>g++</code> or <code>clang++</code> can be used directly.</p>
+<h2 id="useful-links">Useful links:</h2>
+<p><a rel="external" href="http://www.webmo.net/support/fortran_osx.html">http://www.webmo.net/support/fortran_osx.html</a>
+<a rel="external" href="http://hpc.sourceforge.net/">http://hpc.sourceforge.net/</a></p>
+<p>Original post on <a rel="external" href="https://web.archive.org/web/20140602142618/http://eftrunk.blogspot.com/">web.archive.org</a>.</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

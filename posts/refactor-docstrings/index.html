@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  TIL you can refactor your documentation using decorators
+</h1>
+<p class="subtitle"><strong>2022-02-28</strong></p>
+<div class="prose">
+  <p>I don't mind writing documentation. I try to write and update docstrings as I'm working on the code. This is not always easy, and sometimes documentation is spread over different docstrings. Or if docstrings for similar functions are not consistent. This, I do mind. Especially if they are part of the public API.</p>
+<p>Last week I found that you can copy docstrings using a decorator. This post is inspired by some code I found in <a rel="external" href="https://github.com/matplotlib/matplotlib/blob/main/lib/matplotlib/docstring.py">matplotlib</a>:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> copy</span><span>(</span><span style="color: #DFBFFF;">source</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">    &quot;&quot;&quot;Copy a docstring from another function.&quot;&quot;&quot;</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    def</span><span style="color: #FFCD66;"> do_copy</span><span>(</span><span style="color: #DFBFFF;">target</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        if</span><span> source</span><span style="color: #CCCAC2B3;">.</span><span>__doc__</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>            target</span><span style="color: #CCCAC2B3;">.</span><span>__doc__</span><span style="color: #F29E74;"> =</span><span> source</span><span style="color: #CCCAC2B3;">.</span><span>__doc__</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        return</span><span> target</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    return</span><span> do_copy</span></span></code></pre>
+<p>It's a decorator for a function, that copies the docstring from the source function to the decorated function.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> roar</span><span>():</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">    &quot;&quot;&quot;Roar like a lion.&quot;&quot;&quot;</span></span>
+<span class="giallo-l"><span style="color: #F28779;">    print</span><span>(</span><span style="color: #D5FF80;">&#39;rawr&#39;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #D9BE98;">@copy</span><span>(roar)</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> loud_roar</span><span>():</span></span>
+<span class="giallo-l"><span style="color: #F28779;">    print</span><span>(</span><span style="color: #D5FF80;">&#39;RAWR!&#39;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F28779;">help</span><span>(roar)</span></span>
+<span class="giallo-l"><span style="color: #F28779;">help</span><span>(loud_roar)</span></span></code></pre><pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>Help on function roar in module __main__:</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>roar()</span></span>
+<span class="giallo-l"><span>    Roar like a lion.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Help on function loud_roar in module __main__:</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>loud_roar()</span></span>
+<span class="giallo-l"><span>    Roar like a lion.</span></span></code></pre>
+<p>Cool! Not immediately useful for my own purposes. The good thing is that it can easily be extended using string formatting.</p>
+<p>The decorator below takes a function, and tries to copy the docstring to the target function. Any keyword parameters are passed to <code>string.formatting</code>. A copy of the source docstring is kept on <code>._docstring</code>.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">from</span><span> textwrap</span><span style="color: #FFA659;"> import</span><span> dedent</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> docstring</span><span>(</span><span style="color: #DFBFFF;">source</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">None</span><span style="color: #CCCAC2B3;">,</span><span style="color: #F29E74;"> **</span><span style="color: #DFBFFF;">params</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">    &quot;&quot;&quot;Copy a docstring from another function.&quot;&quot;&quot;</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    def</span><span style="color: #FFCD66;"> do_copy</span><span>(</span><span style="color: #DFBFFF;">target</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        if</span><span> source</span><span style="color: #F29E74;"> is</span><span style="color: #DFBFFF;"> None</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>            docstring</span><span style="color: #F29E74;"> =</span><span style="color: #FFCD66;"> dedent</span><span>(target</span><span style="color: #CCCAC2B3;">.</span><span>__doc__)</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        elif</span><span style="color: #F28779;"> hasattr</span><span>(source</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;"> &#39;_docstring&#39;</span><span>)</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>            docstring</span><span style="color: #F29E74;"> =</span><span> source</span><span style="color: #CCCAC2B3;">.</span><span>_docstring</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        elif</span><span> source</span><span style="color: #CCCAC2B3;">.</span><span>__doc__</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>            docstring</span><span style="color: #F29E74;"> =</span><span style="color: #FFCD66;"> dedent</span><span>(source</span><span style="color: #CCCAC2B3;">.</span><span>__doc__)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>        target</span><span style="color: #CCCAC2B3;">.</span><span>__doc__</span><span style="color: #F29E74;"> =</span><span> docstring</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">format</span><span>(</span><span style="color: #F29E74;">**</span><span>params)</span></span>
+<span class="giallo-l"><span>        target</span><span style="color: #CCCAC2B3;">.</span><span>_docstring</span><span style="color: #F29E74;"> =</span><span> docstring</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">        return</span><span> target</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">    return</span><span> do_copy</span></span></code></pre>
+<p>Let's see how it works:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #D9BE98;">@docstring</span><span>(cry</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;Roar&#39;</span><span style="color: #CCCAC2B3;">,</span><span> animal</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;cow&#39;</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> roar</span><span>():</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">    &quot;&quot;&quot;{cry} like a {animal}.&quot;&quot;&quot;</span></span>
+<span class="giallo-l"><span style="color: #F28779;">    print</span><span>(</span><span style="color: #D5FF80;">&#39;RAWR!&#39;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #D9BE98;">@docstring</span><span>(roar</span><span style="color: #CCCAC2B3;">,</span><span> cry</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;Moo&#39;</span><span style="color: #CCCAC2B3;">,</span><span> animal</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;cow&#39;</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> moo</span><span>():</span></span>
+<span class="giallo-l"><span style="color: #F28779;">    print</span><span>(</span><span style="color: #D5FF80;">&#39;MOO!&#39;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F28779;">help</span><span>(roar)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F28779;">help</span><span>(moo)</span></span></code></pre><pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>Help on function roar in module __main__:</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>roar()</span></span>
+<span class="giallo-l"><span>    Roar like a cow.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Help on function moo in module __main__:</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>moo()</span></span>
+<span class="giallo-l"><span>    Moo like a cow.</span></span></code></pre>
+<p>It also works with class methods:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">from</span><span> statistics</span><span style="color: #FFA659;"> import</span><span> median</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">class</span><span style="color: #73D0FF;"> MyList</span><span>(</span><span style="color: #5CCFE6;">list</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #D9BE98;">    @docstring</span><span>(op</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;minimum&#39;</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    def</span><span style="color: #F28779;"> min</span><span>(</span><span style="color: #DFBFFF;">self</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">        &quot;&quot;&quot;Return {op} value from the list.&quot;&quot;&quot;</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        return</span><span style="color: #F28779;"> min</span><span>(</span><span style="color: #5CCFE6;font-style: italic;">self</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #D9BE98;">    @docstring</span><span>(</span><span style="color: #F28779;">min</span><span style="color: #CCCAC2B3;">,</span><span> op</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;maximum&#39;</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    def</span><span style="color: #F28779;"> max</span><span>(</span><span style="color: #DFBFFF;">self</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        return</span><span style="color: #F28779;"> max</span><span>(</span><span style="color: #5CCFE6;font-style: italic;">self</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #D9BE98;">    @docstring</span><span>(</span><span style="color: #F28779;">min</span><span style="color: #CCCAC2B3;">,</span><span> op</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;median&#39;</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    def</span><span style="color: #FFCD66;"> mean</span><span>(</span><span style="color: #DFBFFF;">self</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        return</span><span style="color: #FFCD66;"> median</span><span>(</span><span style="color: #5CCFE6;font-style: italic;">self</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F28779;">help</span><span>(MyList</span><span style="color: #CCCAC2B3;">.</span><span>min)</span></span>
+<span class="giallo-l"><span style="color: #F28779;">help</span><span>(MyList</span><span style="color: #CCCAC2B3;">.</span><span>max)</span></span>
+<span class="giallo-l"><span style="color: #F28779;">help</span><span>(MyList</span><span style="color: #CCCAC2B3;">.</span><span>mean)</span></span></code></pre><pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>Help on function min in module __main__:</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>min(self)</span></span>
+<span class="giallo-l"><span>    Return minimum value from the list.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Help on function max in module __main__:</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>max(self)</span></span>
+<span class="giallo-l"><span>    Return maximum value from the list.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Help on function mean in module __main__:</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>mean(self)</span></span>
+<span class="giallo-l"><span>    Return median value from the list.</span></span></code></pre>
+<p>Essentially anything with a docstring (<code>__doc__</code> attribute) works, such as classes:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #D9BE98;">@docstring</span><span>(classname</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;A&#39;</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">class</span><span style="color: #73D0FF;"> A</span><span>:</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">    &quot;&quot;&quot;This is {classname}.&quot;&quot;&quot;</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    pass</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #D9BE98;">@docstring</span><span>(A</span><span style="color: #CCCAC2B3;">,</span><span> classname</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&quot;B&quot;</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">class</span><span style="color: #73D0FF;"> B</span><span>(</span><span style="color: #5CCFE6;">A</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    pass</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F28779;">print</span><span>(A</span><span style="color: #CCCAC2B3;">.</span><span>__doc__)</span></span>
+<span class="giallo-l"><span style="color: #F28779;">print</span><span>(B</span><span style="color: #CCCAC2B3;">.</span><span>__doc__)</span></span></code></pre><pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>This is A.</span></span>
+<span class="giallo-l"><span>This is B.</span></span></code></pre>
+<p>Nice! you can imagine that if you have large docstrings, that helps keeping the documentation consistent and concise.</p>
+<p>As a bonus, this will also be picked up by <a href="https://stefsmeets.nl/posts/refactor-docstrings/sphinx-emdocs.readthedocs.io/">Sphinx</a>. If you are generating documentation for e.g. <a rel="external" href="https://readthedocs.io">readthedocs</a>, this will make it just a little bit nicer to read!</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

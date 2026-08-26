@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Speed up Mountain Lion
+</h1>
+<p class="subtitle"><strong>2012-07-29</strong></p>
+<div class="prose">
+  <p>Some useful commands too speed up Mountain Lion I came across:</p>
+<p>Disable smooth scrolling:</p>
+<p><code>defaults write -g NSScrollAnimationEnabled -bool NO</code></p>
+<p>Disable rubber banding (Sadly doesn't work everywhere, applications will need to restart after):</p>
+<p><code>defaults write -g NSScrollViewRubberbanding -int 0</code></p>
+<p>Reset rubber banding:</p>
+<p><code>defaults delete -g NSScrollViewRubberbanding</code></p>
+<p>Speed up the Dock animation:</p>
+<p><code>defaults write com.apple.dock autohide-time-modifier -float 0.40;killall Dock</code></p>
+<p>Reset Dock animation:</p>
+<p><code>defaults delete com.apple.dock autohide-time-modifier;killall Dock</code></p>
+<p>2D dock, because the indicators on the new 3D dock are absolutely impossible to see:</p>
+<p><code>defaults write com.apple.dock no-glass -bool true</code></p>
+<p>That said, last year I posted some <a rel="external" href="https://web.archive.org/web/20130416052427/http://eftrunk.blogspot.ch/2011/10/speed-up-os-x-lion.html">Lion commands</a> that still work too :-)</p>
+<p>Speed up Mission Control, by reducing the length of animations and reduce the delay before switching spaces:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>defaults write com.apple.dock expose-animation-duration -float 0.15</span></span>
+<span class="giallo-l"><span>defaults write com.apple.dock workspaces-edge-delay -float 0.15</span></span>
+<span class="giallo-l"><span>killall Dock</span></span></code></pre>
+<p>You can modify the 0.15 to whatever you want, but this is my preferred settings.</p>
+<p>Remove mouse acceleration (needs a relog):</p>
+<p><code>defaults write .GlobalPreferences com.apple.mouse.scaling -1</code></p>
+<p>Original post on <a rel="external" href="https://web.archive.org/web/20130416052427/http://eftrunk.blogspot.com/2012/07/speed-up-mountain-lion.html">web.archive.org</a></p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

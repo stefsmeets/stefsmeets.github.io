@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Did you ever wonder what domain name to use for your home network?
+</h1>
+<p class="subtitle"><strong>2023-02-12</strong></p>
+<div class="prose">
+  <p>Neither did I. That is, until I wanted to have easy-to-remember urls that I can access from any device I own without having to type in a long ip-address. For example, instead of writing <code>http://192.168.0.123:1234</code>, I want to be able to type <code>https://jellyfin.myhome</code> to navigate to my <a rel="external" href="https://jellyfin.org/">jellyfin</a> instance.</p>
+<p>I run a local DNS server <a rel="external" href="https://adguard.com">adguard</a>, which means I can use use DNS rewrites to capture outgoing DNS requests. Adguard then points whoever sends the requests to a server or service in my network. Very convenient.</p>
+<h2 id="firefox-struggles">Firefox struggles</h2>
+<p>Except... this didn't work. It turns out my first roadblock was Firefox. All my queries would give me the following screen:</p>
+<figure>
+  <a href="nope-sorry.webp">
+    <img src="nope-sorry.webp" alt="Hmm. We’re having trouble finding that site.">
+  </a>
+  <figcaption>Hmm. We’re having trouble finding that site.</figcaption>
+</figure>
+<p>It turns out that firefox has an allowlist of accepted domains. These are all the registered global <a rel="external" href="https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains">TLDs</a>. Additional entries are defined in <a href="about:config">about:config</a> under <code>browser.fixup.domainsuffixwhitelist.*</code>. These are the additional <em>special</em> TLDs that firefox allows as defined by <a rel="external" href="https://www.iana.org/assignments/special-use-domain-names/special-use-domain-names.xhtml">IANA</a>:</p>
+<ul>
+<li><code>.develop</code></li>
+<li><code>.example</code></li>
+<li><code>.intranet</code></li>
+<li><code>.local</code></li>
+<li><code>.localhost</code></li>
+<li><code>.test</code></li>
+</ul>
+<p>While I could add a TLD of my own choice (i.e. <code>browser.fixup.domainsuffixwhitelist.myhome</code>)<sup class="footnote-reference"><a href="#1">1</a></sup>, I would have to do this on every device I own. The added risk is that I do not <em>own</em> the <code>myhome</code> TLD, so I have no control over if someone else registers this domain. This is not really an issue for a <del>hobby home network with a couple of devices</del> <a rel="external" href="https://reddit.com/r/homelab">homelab</a>, but still something to keep in mind.</p>
+<p>Instead, I settled on <code>.local</code>. This worked well... for a while.</p>
+<h2 id="multi-cast-dns">Multi-cast DNS?</h2>
+<p>I shortly realized that while I could access my services via firefox (🥳) and SSH in Windows, I could no longer SSH from linux anymore. Somehow the DNS would resolve correctly:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">$</span><span style="color: #D5FF80;"> nslookup jellyfin.local</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">Server:</span><span style="color: #DFBFFF;">		192.168.0.123</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">Address:</span><span style="color: #D5FF80;">	192.168.0.123#53</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #73D0FF;">Non-authoritative</span><span style="color: #D5FF80;"> answer:</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">Name:</span><span style="color: #D5FF80;">	jellyfin.local</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">Address:</span><span style="color: #DFBFFF;"> 192.168.0.123</span></span></code></pre>
+<p>But <code>ping</code> would fail:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">$</span><span style="color: #D5FF80;"> ping jellyfin.local</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">ping:</span><span style="color: #D5FF80;"> jellyfin.local: Name or service not known</span></span></code></pre>
+<p>What I didn't know is that <a rel="external" href="https://en.wikipedia.org/wiki/.local"><code>.local</code></a> is essentially reserved for multi-cast DNS (mDNS) as defined by <a rel="external" href="https://www.rfc-editor.org/rfc/rfc6762.html">RFC6762</a>. I had never heard about this, but apparently <a rel="external" href="https://en.wikipedia.org/wiki/Multicast_DNS">mDNS</a> means servers can define their own names and advertise them on the network. It is zero-configuration, as opposed to a conventional (unicast) DNS server.</p>
+<p>My linux distro of choice (Debian) tries to resolve mDNS first, where Windows does not. On Linux this behaviour is defined in <code>/etc/nsswitch.conf</code>. Setting hosts to <code>files dns</code> works around the issue.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">$</span><span style="color: #D5FF80;"> cat /etc/nsswitch.conf</span><span style="color: #F29E74;"> |</span><span style="color: #73D0FF;"> grep</span><span style="color: #D5FF80;"> hosts</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">hosts:</span><span style="color: #D5FF80;">          files mdns4_minimal</span><span> [NOTFOUND=return] dns</span></span></code></pre>
+<p>This again leads me back to the problem of having to define this behaviour on all of my 3 linux machines.</p>
+<h2 id="tldr-use-home-arpa">tldr: use <code>.home.arpa</code></h2>
+<p>All of this left me wondering, what is the right local domain to use?</p>
+<p>Apparently there is a relatively new standard for this defined by <a rel="external" href="https://datatracker.ietf.org/doc/html/rfc8375">RFC8375</a>:</p>
+<blockquote>
+<p>This document specifies the behavior that is expected from the Domain
+Name System with regard to DNS queries for names ending with
+<code>.home.arpa.</code> and designates this domain as a special-use domain
+name. <code>home.arpa.</code> is designated for non-unique use in residential
+home networks.  The Home Networking Control Protocol (HNCP) is
+updated to use the <code>home.arpa.</code> domain instead of <code>.home</code>.</p>
+</blockquote>
+<p>The idea is that using a TLD you do not control means that it might eventually get registered, leaking information onto the global web. <code>.home.arpa</code> is a subdomain of <code>.arpa</code> for exactly the purpose of home networks. <code>.arpa</code> itself is a special TLD used used <em>for the management of technical network infrastructure of the internet</em>.<sup class="footnote-reference"><a href="#2">2</a></sup> This guarantees that this domain is safe to use.</p>
+<p>Alternatively, you can register your own domain (i.e. <code>https://stefsmeets.nl</code> in my case), which holds the same guarantees.</p>
+<p>I ended up using <code>*.home.arpa</code> for my local services. Everything, including <code>http://jellyfin.home.arpa</code>, seems to work as advertised. Which means zero-configuration on my part for any new devices I add to my network!</p>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>I tried and it totally works!</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>https://en.wikipedia.org/wiki/.arpa</p>
+</div>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Install fennec on Nokia N9
+</h1>
+<p class="subtitle"><strong>2012-01-31</strong></p>
+<div class="prose">
+  <p>Compiled deb packages have kindly been provided here: <a rel="external" href="https://web.archive.org/web/20130416052427/http://romaxa.bolshe.net/fennec/">http://romaxa.bolshe.net/fennec/</a></p>
+<p>Either download on your phone directly or dump it on there via USB. Next make sure to disconnect the USB cable and open up the terminal.</p>
+<p>First we need root:</p>
+<p><code>devel-su</code></p>
+<p>Password: rootme</p>
+<p><code>vi /etc/apt/sources.list.d/harmattan-dev.list</code></p>
+<p>hit <kbd>i</kbd> for text entering mode and add the following repo:</p>
+<p><code>deb http://harmattan-dev.nokia.com/ harmattan/sdk free non-free</code></p>
+<p>hit <kbd>esc</kbd> to exit text-entering mode. The file is automatically saved. Doing so will add this source to the package manager apt. This particular repo gives us access to a library we need for installing Fennec, libpango, a library for laying out and rendering of text:</p>
+<p><code>apt-get install libpango1.0-0</code></p>
+<p>Now, it's time to install Fennec:</p>
+<p><code>cd /home/user/MyDocs</code></p>
+<p>or if you downloaded it on the phone:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #F28779;">cd</span><span style="color: #D5FF80;"> /home/user/MyDocs/Download</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">dpkg</span><span style="color: #95E6CB;"> -i</span><span style="color: #D5FF80;"> fennec_12.0~a1_armel.deb</span></span></code></pre>
+<p>(or whatever version you downloaded, just hit <kbd>f</kbd> and <kbd>tab</kbd> :) )</p>
+<p>And it should run with no errors and the Fennec icon will appear in your home screen!</p>
+<p>Original post on <a rel="external" href="https://web.archive.org/web/20140602142618/http://eftrunk.blogspot.com/">web.archive.org</a>.</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

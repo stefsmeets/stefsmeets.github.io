@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Why every device in my house was called 172.18.0.1
+</h1>
+<p class="subtitle"><strong>2026-09-20</strong></p>
+<div class="prose">
+  <p>I run <a rel="external" href="https://adguard.com/adguard-home/overview.html">AdGuard Home</a> in Docker to filter DNS queries on my home network. It blocks ads and trackers for every device in my house. The AdGuard dashboard shows a nice query log, so you can see <em>which</em> device is asking for which domain and set per-client rules for the smart TV that really doesn't need to talk to seventeenthousand tracking servers (looking at you, <a rel="external" href="https://www.youtube.com/watch?v=6IFVTcM28KA">LG</a>).</p>
+<p>This worked for a while, until it didn't. In my query log, every single client was listed as <code>172.18.0.1</code>.</p>
+<p>It shows up as one client, no matter how many devices are making requests. Although it did not make the DNS filtering any worse, it did make any sort of client analysis or statistics useless. Over a 2-day debugging session (using the GLM 5.3 model on the side) I finally looked into this.</p>
+<h2 id="docker-rewrites-your-ips">Docker rewrites your IPs</h2>
+<p>My AdGuard container ran on a user-defined bridge network, which is shared with my reverse proxy. When a device on my network sends a DNS query to my server, Docker's NAT rewrites the packet before handing it to the container. The source address becomes the Docker bridge gateway (<code>172.18.0.1</code>). This is well-known docker networking behaviour. This means that AdGuard only ever sees this IP, and it cannot resolve the source.</p>
+<p>This is a well-known issue, <a rel="external" href="https://github.com/AdguardTeam/AdGuardHome/issues/2584">just use <code>network_mode: host</code></a>. I'm sure this work well, except that I run <a rel="external" href="https://docs.docker.com/engine/security/rootless/">rootless Docker</a>. With rootless, even host networking happens inside <a rel="external" href="https://docs.docker.com/engine/security/rootless/troubleshoot/#until-docker-engine-v295">RootlessKit's own network namespace</a>. The container never actually shares the host's real network stack, so this wasn't going to work.</p>
+<h2 id="rootlesskit-v3">RootlessKit V3</h2>
+<p>Then I found something <a rel="external" href="https://rootlesscontaine.rs/getting-started/docker/#preserving-source-ip-addresses-of-incoming-connections">interesting</a>. Docker 29.5 bundles RootlessKit v3, which adds support for propagating the original source IP of incoming connections and I was on 29.7.2.</p>
+<p>This did not work either:</p>
+<ol>
+<li>The propagation is <em>TCP only</em>, whereas DNS is UDP.</li>
+<li>Even for TCP, it doesn't work with the default <code>userland-proxy</code> enabled.</li>
+</ol>
+<h2 id="pasta">Pasta</h2>
+<p>The actual documented fix (on the same page) for source IPs in rootless Docker is switching the daemon to the <code>pasta</code> network driver with the <code>implicit</code> port driver. Pasta (from the <a rel="external" href="https://passt.top/passt/about/">passt project</a>) was specifically designed to solve source IP preservation in rootless environments by forwarding traffic in a way that preserves real source addresses for both TCP and UDP.</p>
+<p>Configuring it was pretty simple:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="ini"><span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;"># ~/.config/systemd/user/docker.service.d/override.conf</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">[Service]</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">Environment</span><span style="color: #CCCAC2B3;">=</span><span style="color: #D5FF80;">&quot;DOCKERD_ROOTLESS_ROOTLESSKIT_NET=pasta&quot;</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">Environment</span><span style="color: #CCCAC2B3;">=</span><span style="color: #D5FF80;">&quot;DOCKERD_ROOTLESS_ROOTLESSKIT_PORT_DRIVER=implicit&quot;</span></span></code></pre>
+<p>Installing <code>passt</code> and restarting docker:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">sudo</span><span style="color: #D5FF80;"> apt install passt</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">systemctl</span><span style="color: #95E6CB;"> --user</span><span style="color: #D5FF80;"> daemon-reload</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">systemctl</span><span style="color: #95E6CB;"> --user</span><span style="color: #D5FF80;"> restart docker</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">docker</span><span style="color: #D5FF80;"> compose down</span><span style="color: #CCCAC2B3;"> &amp;&amp;</span><span style="color: #73D0FF;"> docker</span><span style="color: #D5FF80;"> compose up</span><span style="color: #95E6CB;"> -d</span></span></code></pre>
+<p>Unfortunately, DNS stopped working entirely afterwards. The dashboard wasn't reachable either.</p>
+<h2 id="privileged-ports">Privileged ports</h2>
+<p>To debug what was going on, GLM 5.3 kept suggesting <code>ss</code> commands. I had never heard of this, but apparently it's "another utility to investigate sockets".</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">sudo</span><span style="color: #D5FF80;"> ss</span><span style="color: #95E6CB;"> -tlnp</span><span style="color: #F29E74;"> |</span><span style="color: #73D0FF;"> grep</span><span style="color: #95E6CB;"> -E</span><span style="color: #D5FF80;"> &#39;:53|:3000&#39;</span></span></code></pre>
+<p>This showed that port 3000 was bound by <code>pasta.avx2</code> now, instead of rootlesskit. But it showed nothing for port 53? Nothing. Port 53 is a privileged port (&lt; 1024). Therefore, I run this on start-up so that AdGuard (as a Docker container) gets forwarded DNS requests:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">sudo</span><span style="color: #D5FF80;"> setcap cap_net_bind_service=ep</span><span> $(</span><span style="color: #F28779;">which</span><span style="color: #D5FF80;"> rootlesskit</span><span>)</span></span></code></pre>
+<p>This means that rootlesskit could bind port 53 as my unprivileged user. However, because Pasta replaces RootlessKit as the network stack handler, these capabilities don't apply to it. Since file capabilities don't propagate to child processes, Pasta tried to bind port 53 without the necessary permissions, whereas port 3000 doesn't require any special configuration.</p>
+<p>Although I could change the command to give <code>pasta</code> access to privireleged ports, at this point I had hit two experimental edge cases, and I don't want to overconfigure my server.</p>
+<h2 id="the-practical-solution-run-it-on-the-host">The practical solution: Run it on the host</h2>
+<p>At the same time I realized that AdGuard home ships a single binary to deploy on my server. This is <a rel="external" href="https://adguard-dns.io/kb/adguard-home/getting-started/">the recommended installation path</a>. Running a UDP DNS server on a privileged port inside rootless Docker means fighting the kernel and port forwarding.</p>
+<p>So I decided to ditch Docker and run AdGuard Home with systemd. It's a single static binary, and it installs itself as a service:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">curl</span><span style="color: #95E6CB;"> -LO</span><span style="color: #D5FF80;"> https://github.com/AdguardTeam/AdGuardHome/releases/latest/download/AdGuardHome_linux_amd64.tar.gz</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">tar</span><span style="color: #95E6CB;"> -xzf</span><span style="color: #D5FF80;"> AdGuardHome_linux_amd64.tar.gz</span></span></code></pre>
+<p>I could re-use my existing config and query data by passing the work dir and config file:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">sudo</span><span style="color: #D5FF80;"> ./AdGuardHome</span><span style="color: #95E6CB;"> -s</span><span style="color: #D5FF80;"> install</span><span style="color: #95E6CB;"> -c</span><span style="color: #D5FF80;"> ~/docker/adguard/conf/adguardhome.yaml</span><span style="color: #95E6CB;"> -w</span><span style="color: #D5FF80;"> ~/docker/adguard/work</span></span></code></pre>
+<p>This worked pretty much out of the box. Running <code>ss</code> confirmed that this works:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">$</span><span style="color: #D5FF80;"> sudo ss</span><span style="color: #95E6CB;"> -ulpn</span><span style="color: #F29E74;"> |</span><span style="color: #73D0FF;"> grep</span><span style="color: #D5FF80;"> &#39;:53 &#39;</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">UNCONN</span><span style="color: #DFBFFF;"> 0 0</span><span style="color: #5CCFE6;font-style: italic;"> *</span><span style="color: #D5FF80;">:53</span><span style="color: #5CCFE6;font-style: italic;"> *</span><span style="color: #D5FF80;">:</span><span style="color: #5CCFE6;font-style: italic;">*</span><span style="color: #D5FF80;"> users:</span><span>((</span><span style="color: #73D0FF;">&quot;AdGuardHome&quot;,pid</span><span style="color: #D5FF80;">=432113,fd=8</span><span>))</span></span></code></pre>
+<p>AdGuard itself, on port 53, no extra configuration, no sysctls, no port forwarders. And the query log started filling with real client IPs 😅</p>
+<h2 id="a-bad-gateway">A bad gateway</h2>
+<p>Caddy still runs in Docker and proxies the dashboard, so I updated the Caddyfile:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>http://adguard.home.arpa {</span></span>
+<span class="giallo-l"><span>    reverse_proxy host.docker.internal:3000</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>Firefox answered with a <code>502 Bad Gateway</code>. It turned out that <code>host.docker.internal</code> is injected automatically in <em>rootful</em> Docker. In rootless mode, it often exists but points to the loopback of the user namespace rather than the host network, making it unreachable from the container. I could fix this by just using my server's LAN IP:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>http://adguard.home.arpa {</span></span>
+<span class="giallo-l"><span>    reverse_proxy 192.168.0.123:3000</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>I reloaded Caddy, hit refresh, and everything worked as expected.</p>
+<h2 id="final-setup">Final setup</h2>
+<p>When I set up this server years ago, my goal was to learn Docker. So I did everything in Docker. This works well for complex systems such as home assistant. However, my focus on Docker got in the way here. AdGuard's setup and deployment with systemd is so simple. Static binaries are great.</p>
+<p>My final setup:</p>
+<ul>
+<li>AdGuard Home runs natively on the host via systemd, sees every client's real IP, per-client filtering works</li>
+<li>Caddy (still in Docker) proxies the dashboard</li>
+<li>DNS runs directly to the host on port 53.</li>
+</ul>
+<p><strong>TL;DR:</strong> To preserve source IPs in rootless Docker, use the pasta network driver. However, for simple binaries like AdGuard Home, running natively via systemd is often much simpler and avoids configuration and privilege management.</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

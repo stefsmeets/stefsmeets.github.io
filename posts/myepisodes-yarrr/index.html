@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Little myepisodes.com userscript
+</h1>
+<p class="subtitle"><strong>2012-05-01</strong></p>
+<div class="prose">
+  <p>As a little project for today to learn some javascript, I decided to modify one of my favourite websites <a href="http://www.myepisodes.com">myepisodes.com</a> and make it a little bit more useful, by adding torrent links directly to the show list &gt;:)</p>
+<p>Down below is the userscript that will modify the contents of each cell and update the link from tvrage to a torrent search engine.</p>
+<h3 id="installation-for-opera">Installation for Opera:</h3>
+<p>Go to <kbd>Preferences</kbd> &gt; <kbd>content</kbd> &gt; <kbd>javascript options</kbd> &gt; <kbd>User javascript folder</kbd>.</p>
+<p>Set a folder to put your user javascripts if you haven't, otherwise add this script to that folder.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="javascript"><span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;">// ==UserScript==</span></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;">// @include http://myepisodes.com/*</span></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;">// ==/UserScript==</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">function</span><span style="color: #FFCD66;"> myfunc</span><span>()</span></span>
+<span class="giallo-l"><span> {</span></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;">  // get table by class name as array</span></span>
+<span class="giallo-l"><span> arr</span><span style="color: #F29E74;"> =</span><span> document</span><span style="color: #F29E74;">.</span><span style="color: #FFCD66;">getElementsByClassName</span><span>(</span><span style="color: #D5FF80;">&#39;showname&#39;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;">  // loop over array</span></span>
+<span class="giallo-l"><span style="color: #FFA659;"> for</span><span> (</span><span style="color: #FFA659;">var</span><span> i</span><span style="color: #F29E74;"> =</span><span style="color: #DFBFFF;"> 0</span><span style="color: #CCCAC2B3;">;</span><span> i</span><span style="color: #F29E74;"> &lt;</span><span> arr</span><span style="color: #F29E74;">.</span><span>length</span><span style="color: #CCCAC2B3;">;</span><span> i</span><span style="color: #F29E74;">++</span><span>) {</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;">    // get show name</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">   var</span><span> name</span><span style="color: #F29E74;"> =</span><span> arr</span><span style="color: #F29E74;">.</span><span style="color: #FFCD66;">item</span><span>(i)</span><span style="color: #F29E74;">.</span><span>innerText</span><span style="color: #CCCAC2B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;">    // add torrentz.net search</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">   var</span><span> str</span><span style="color: #F29E74;"> =</span><span style="color: #D5FF80;"> &quot;http://torrentz.eu/search?f=&quot;</span><span style="color: #F29E74;"> +</span><span> name</span><span style="color: #F29E74;">.</span><span style="color: #FFCD66;">replace</span><span>(</span><span style="color: #95E6CB;">/ /</span><span style="color: #FFA659;">g</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&quot;+&quot;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;">    // generate link</span></span>
+<span class="giallo-l"><span>   link</span><span style="color: #F29E74;"> =</span><span style="color: #D5FF80;"> &quot;&lt;a href=&quot;</span><span style="color: #F29E74;">+</span><span>str</span><span style="color: #F29E74;">+</span><span style="color: #D5FF80;">&quot;&gt;&quot;</span><span style="color: #F29E74;">+</span><span>name</span><span style="color: #F29E74;">+</span><span style="color: #D5FF80;">&quot;&lt;/a&gt;&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;">    // generate 720p link</span></span>
+<span class="giallo-l"><span>   link_720p</span><span style="color: #F29E74;"> =</span><span style="color: #D5FF80;"> &quot;&lt;a href=&quot;</span><span style="color: #F29E74;">+</span><span>str</span><span style="color: #F29E74;">+</span><span style="color: #D5FF80;">&quot; +720p&quot;</span><span style="color: #F29E74;">+</span><span style="color: #D5FF80;">&quot;&gt;&quot;</span><span style="color: #F29E74;">+</span><span style="color: #D5FF80;">&quot;(720p)&quot;</span><span style="color: #F29E74;">+</span><span style="color: #D5FF80;">&quot;&lt;/a&gt;&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;">    // update cell</span></span>
+<span class="giallo-l"><span>   arr</span><span style="color: #F29E74;">.</span><span style="color: #FFCD66;">item</span><span>(i)</span><span style="color: #F29E74;">.</span><span>innerHTML</span><span style="color: #F29E74;"> =</span><span> link</span><span style="color: #F29E74;"> +</span><span style="color: #D5FF80;"> &quot; &quot;</span><span style="color: #F29E74;"> +</span><span> link_720p</span><span style="color: #CCCAC2B3;">;</span></span>
+<span class="giallo-l"><span>  }</span></span>
+<span class="giallo-l"><span> }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;"> // run after page has loaded</span></span>
+<span class="giallo-l"><span>window</span><span style="color: #F29E74;">.</span><span>onload</span><span style="color: #F29E74;"> =</span><span> myfunc</span><span style="color: #CCCAC2B3;">;</span></span></code></pre>
+<p>Original post on <a rel="external" href="https://web.archive.org/web/20140602142618/http://eftrunk.blogspot.com/">web.archive.org</a>.</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

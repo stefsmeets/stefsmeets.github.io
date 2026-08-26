@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  TIL how to update docker compose images the right way
+</h1>
+<p class="subtitle"><strong>2023-01-14</strong></p>
+<div class="prose">
+  <p>Every time I want to update my docker images, I'm a bit confused about the best way to do it. I run all my images using docker compose. Sometimes I want to update a single image to try a new feature, and sometimes I update all of them at once.</p>
+<p>The reason for this post is that the last time when I tried to update all my images, it did not go as planned. I updated all images by removing the running images, and then restarting them.</p>
+<p>When you remove an image and then restart your container, docker will always pull the latest image version. While this usually works, it gave me issues this time because I run <a rel="external" href="https://adguard.com/en/adguard-home/overview.html">adguard</a> as my DNS server. Removing adguard meant that the image got taken down before the new image was available. No DNS means no internet<sup class="footnote-reference"><a href="#1">1</a></sup>. No internet means no new docker images to pull. Not ideal. 😅</p>
+<p>I find it works better to first pull the new image(s) and then restarting the containers:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">docker</span><span style="color: #D5FF80;"> compose pull</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">docker</span><span style="color: #D5FF80;"> compose down</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">docker</span><span style="color: #D5FF80;"> compose up</span><span style="color: #95E6CB;"> -d</span></span></code></pre>
+<p>To pull the image for a specific service:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">docker</span><span style="color: #D5FF80;"> compose pull adguard</span></span></code></pre>
+<p>or by its image name directly:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">docker</span><span style="color: #D5FF80;"> pull adguard/adguardhome</span></span></code></pre>
+<p>Optionally, remove old unused images:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">docker</span><span style="color: #D5FF80;"> image prune</span></span></code></pre>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>Well, mostly. At least firefox caches DNS requests, so my frequently visited sites are still accessible somehow.</p>
+</div>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

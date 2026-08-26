@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Regression testing Plotly plots with Pytest
+</h1>
+<p class="subtitle"><strong>2024-05-29</strong></p>
+<div class="prose">
+  <p>I have long been using <a rel="external" href="https://matplotlib.org">matplotlib</a> to generate plots for my data. Matplotlib always serves me well for producing publication-style, static plots. For regression testing the plots produced by matplotlib, they provide this <a rel="external" href="https://matplotlib.org/3.9.0/devel/testing.html">very useful image comparison decorator</a> (see link for how it works). In short:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">from</span><span> matplotlib</span><span style="color: #CCCAC2B3;">.</span><span>testing</span><span style="color: #CCCAC2B3;">.</span><span>decorators</span><span style="color: #FFA659;"> import</span><span> image_comparison</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #D9BE98;">@image_comparison</span><span>(baseline_images</span><span style="color: #F29E74;">=</span><span>[</span><span style="color: #D5FF80;">&#39;your_plot&#39;</span><span>])</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> test_matplotlib_plot</span><span>():</span></span>
+<span class="giallo-l"><span style="color: #FFCD66;">    your_plotting_code_here</span><span>()</span></span></code></pre>
+<p>The decorator automatically picks up new figure objects, and compares these with the expected plots through direct image comparison. If the test fails, the difference between the plots is displayed, making it convenient to visualize the difference to help with debugging.</p>
+<h2 id="regression-testing-in-plotly">Regression testing in Plotly</h2>
+<p>For interactive plots that are better suited for online dashboards, we recently started using <a rel="external" href="https://plotly.com/python/">plotly</a> a lot more. There I wanted something similar, but to my surprise, there is no documentation or infrastructure available for regression testing plots. This meant all of our plotly plots were untested. This gave us little confidence in the robustness of the plotting code, and meant that any bugs could go unnoticed for a while. To solve this, I ended up developing a function that mimicks the matplotlib way. It uses the same directories and image comparison algorithm.</p>
+<style>
+table th:first-of-type {
+    width: 29%;
+}
+table th:nth-of-type(2) {
+    width: 30%;
+}
+table th:nth-of-type(3) {
+    width: 29%;
+}
+</style>
+<table><thead><tr><th></th><th></th><th></th></tr></thead><tbody>
+</tbody></table>
+<p>|</p>
+<figure>
+  <a href="actual.webp">
+    <img src="actual.webp" alt="actual">
+  </a>
+  <figcaption>actual</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="expected.webp">
+    <img src="expected.webp" alt="expected">
+  </a>
+  <figcaption>expected</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="diff.webp">
+    <img src="diff.webp" alt="difference">
+  </a>
+  <figcaption>difference</figcaption>
+</figure>
+ |
+<p>The visual comparison helps to identify where the problem lies.</p>
+<h3 id="code">Code</h3>
+<p>Below is the code that we use in <a rel="external" href="https://github.com/gemdat-repos/gemdat">one of my projects</a>. See it in action <a rel="external" href="https://github.com/GEMDAT-repos/GEMDAT/blob/main/tests/integration/plot_plotly_test.py">here</a>.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;"># helpers.py</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">from</span><span> pathlib</span><span style="color: #FFA659;"> import</span><span> Path</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">from</span><span> matplotlib</span><span style="color: #CCCAC2B3;">.</span><span>testing</span><span style="color: #CCCAC2B3;">.</span><span>compare</span><span style="color: #FFA659;"> import</span><span> compare_images</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">import</span><span> inspect</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">from</span><span> typing</span><span style="color: #FFA659;"> import</span><span> Any</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> assert_figures_similar</span><span>(</span><span style="color: #DFBFFF;">fig</span><span style="color: #CCCAC2B3;">,</span><span style="color: #F29E74;"> *</span><span>, </span><span style="color: #DFBFFF;">name</span><span style="color: #CCCAC2B3;">:</span><span style="color: #5CCFE6;"> str</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> ext</span><span style="color: #CCCAC2B3;">:</span><span style="color: #5CCFE6;"> str</span><span style="color: #F29E74;"> =</span><span style="color: #D5FF80;"> &#39;png&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> rms</span><span style="color: #CCCAC2B3;">:</span><span style="color: #5CCFE6;"> float</span><span style="color: #F29E74;"> =</span><span style="color: #DFBFFF;"> 0.0</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">    &quot;&quot;&quot;Compare plotly figures and raise if different.&quot;&quot;&quot;</span></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;">    # Ensure same font is used on different machines (local/CI)</span></span>
+<span class="giallo-l"><span>    fig</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">update_layout</span><span>(</span></span>
+<span class="giallo-l"><span>        font_family</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;Arial&#39;</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span>        title_font_family</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;Arial&#39;</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span>    )</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;">    # Get path of caller</span></span>
+<span class="giallo-l"><span>    frame</span><span style="color: #F29E74;"> =</span><span> inspect</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">stack</span><span>()[</span><span style="color: #DFBFFF;">1</span><span>]</span></span>
+<span class="giallo-l"><span>    module</span><span style="color: #F29E74;"> =</span><span> inspect</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">getmodule</span><span>(frame[</span><span style="color: #DFBFFF;">0</span><span>])</span></span>
+<span class="giallo-l"><span>    modulepath</span><span style="color: #F29E74;"> =</span><span style="color: #FFCD66;"> Path</span><span>(module</span><span style="color: #CCCAC2B3;">.</span><span>__file__)</span><span style="color: #6E7C8F;font-style: italic;">  # type: ignore</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    results_dir</span><span style="color: #F29E74;"> =</span><span style="color: #FFCD66;"> Path</span><span>()</span><span style="color: #F29E74;"> /</span><span style="color: #D5FF80;"> &#39;result_images&#39;</span><span style="color: #F29E74;"> /</span><span> modulepath</span><span style="color: #CCCAC2B3;">.</span><span>stem</span></span>
+<span class="giallo-l"><span>    results_dir</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">mkdir</span><span>(exist_ok</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">True</span><span style="color: #CCCAC2B3;">,</span><span> parents</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">True</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    filename</span><span style="color: #F29E74;"> =</span><span style="color: #FFA659;"> f</span><span style="color: #D5FF80;">&#39;</span><span style="color: #95E6CB;">{</span><span>name</span><span style="color: #95E6CB;">}</span><span style="color: #D5FF80;">.</span><span style="color: #95E6CB;">{</span><span>ext</span><span style="color: #95E6CB;">}</span><span style="color: #D5FF80;">&#39;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    actual</span><span style="color: #F29E74;"> =</span><span> results_dir</span><span style="color: #F29E74;"> /</span><span> filename</span></span>
+<span class="giallo-l"><span>    fig</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">write_image</span><span>(actual)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    expected_dir</span><span style="color: #F29E74;"> =</span><span> modulepath</span><span style="color: #CCCAC2B3;">.</span><span>parent</span><span style="color: #F29E74;"> /</span><span style="color: #D5FF80;"> &#39;baseline_images&#39;</span><span style="color: #F29E74;"> /</span><span> modulepath</span><span style="color: #CCCAC2B3;">.</span><span>stem</span></span>
+<span class="giallo-l"><span>    expected</span><span style="color: #F29E74;"> =</span><span> expected_dir</span><span style="color: #F29E74;"> /</span><span> filename</span></span>
+<span class="giallo-l"><span>    expected_link</span><span style="color: #F29E74;"> =</span><span> results_dir</span><span style="color: #F29E74;"> /</span><span style="color: #FFA659;"> f</span><span style="color: #D5FF80;">&#39;</span><span style="color: #95E6CB;">{</span><span>name</span><span style="color: #95E6CB;">}</span><span style="color: #D5FF80;">-expected.</span><span style="color: #95E6CB;">{</span><span>ext</span><span style="color: #95E6CB;">}</span><span style="color: #D5FF80;">&#39;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">    if</span><span> expected_link</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">exists</span><span>()</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>        expected_link</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">unlink</span><span>()</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    expected_link</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">symlink_to</span><span>(expected)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    err</span><span style="color: #CCCAC2B3;">:</span><span> dict[</span><span style="color: #5CCFE6;">str</span><span style="color: #CCCAC2B3;">,</span><span> Any]</span><span style="color: #F29E74;"> =</span><span style="color: #FFCD66;"> compare_images</span><span>(</span></span>
+<span class="giallo-l"><span>        expected</span><span style="color: #F29E74;">=</span><span style="color: #5CCFE6;">str</span><span>(expected_link)</span><span style="color: #CCCAC2B3;">,</span><span> actual</span><span style="color: #F29E74;">=</span><span style="color: #5CCFE6;">str</span><span>(actual)</span><span style="color: #CCCAC2B3;">,</span><span> tol</span><span style="color: #F29E74;">=</span><span>rms</span><span style="color: #CCCAC2B3;">,</span><span> in_decorator</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">True</span></span>
+<span class="giallo-l"><span>    )</span><span style="color: #6E7C8F;font-style: italic;">  # type: ignore</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">    if</span><span> err</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        for</span><span> key</span><span style="color: #FFA659;"> in</span><span> (</span><span style="color: #D5FF80;">&#39;actual&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;"> &#39;expected&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;"> &#39;diff&#39;</span><span>)</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>            err[key]</span><span style="color: #F29E74;"> =</span><span style="color: #FFCD66;"> Path</span><span>(err[key])</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">relative_to</span><span>(</span><span style="color: #D5FF80;">&#39;.&#39;</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        raise</span><span style="color: #5CCFE6;"> AssertionError</span><span>(</span></span>
+<span class="giallo-l"><span>            (</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">                &#39;images not close (RMS </span><span style="color: #95E6CB;">{rms</span><span style="color: #FFA659;">:.3f</span><span style="color: #95E6CB;">}</span><span style="color: #D5FF80;">):&#39;</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">                &#39;</span><span style="color: #95E6CB;">\n\t{actual}\n\t{expected}\n\t{diff}</span><span style="color: #D5FF80;">&#39;</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">format</span><span>(</span><span style="color: #F29E74;">**</span><span>err)</span></span>
+<span class="giallo-l"><span>            )</span></span>
+<span class="giallo-l"><span>        )</span></span></code></pre>
+<p>There is no decorator, but you can use it like this:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">from</span><span> helpers</span><span style="color: #FFA659;"> import</span><span> assert_figures_similar</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> test_plot</span><span>():</span></span>
+<span class="giallo-l"><span>   fig</span><span style="color: #F29E74;"> =</span><span style="color: #FFCD66;"> your_plotting_code_here</span><span>()</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFCD66;">   assert_figures_similar</span><span>(fig</span><span style="color: #CCCAC2B3;">,</span><span> name</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;name_of_plot&#39;</span><span style="color: #CCCAC2B3;">,</span><span> rms</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">0.5</span><span>)</span></span></code></pre><h2 id="my-takeaways">My takeaways</h2>
+<ol>
+<li>You can <a rel="external" href="https://plotly.com/python/static-image-export/">save plotly images</a> using <code>fig.write_image('name_of_file.png')</code> if you have the kaleido library installed.</li>
+<li>The code uses the <a rel="external" href="https://docs.python.org/3/library/inspect.html">inspect module</a> to get the filename of the caller.</li>
+<li>Make sure to force plotly to use the same fonts. Arial is a safe choice, because of its ubiquity. It is available on most operating systems, and also on the Github CI. Initially all my tests failed because the font was completely different between my development environment and the CI.</li>
+<li>There is a small deviation in rendering between my environment and the CI. These are invisible to the eye in the difference image, but enough to give up to 0.5 rms difference.</li>
+<li>I rely on the <a rel="external" href="https://github.com/matplotlib/matplotlib/blob/be56634d682bed257cb941369d8d3600635ddadf/lib/matplotlib/testing/compare.py#L386-L487"><code>compare_images</code></a> function to do all the heavy lifting. My code only puts the images in the right place, <code>compare_images</code> does a file based compare and produces the difference.</li>
+<li>The <a rel="external" href="https://github.com/matplotlib/matplotlib/blob/be56634d682bed257cb941369d8d3600635ddadf/lib/matplotlib/testing/decorators.py#L91-L97">code for the matplotlib decorator</a> is very clever. Essentially the contextmanager picks up any newly generated figures generated while it was active. There is a <em>lot</em> of code to make the decorator work seamlessly.</li>
+</ol>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Notes on moving Home Assistant from Raspberry Pi to Docker
+</h1>
+<p class="subtitle"><strong>2022-09-18</strong></p>
+<div class="prose">
+  <p>I started out running <a rel="external" href="https://www.home-assistant.io/">Home Assistant</a> about 3 years ago, playing around with a few light bulbs. Installing it on an SD card was (<a rel="external" href="https://www.home-assistant.io/installation/raspberrypi/">and still is</a>) the recommended way to go. However, SD cards can't handle small I/O very well, and tend to crash after a while. This has happened to me twice. Usually not a big deal if you keep your back-ups, but increasingly worrysome as the number of devices and thus my dependence on Home Assistant grows. This is always in the back of my mind.</p>
+<p>Recently I installed a home server to serve as a NAS, media server, DNS, etc using <a rel="external" href="https://www.docker.com/">Docker</a> containers. And I figured I would also move my Home Assistant installation to it. This blog post contains some notes on the migration.</p>
+<h2 id="restoring-from-back-up">Restoring from back-up</h2>
+<p>I did a full backup of Home Assistant on my old installation and copied it over.</p>
+<p>Unfortunately, the Docker install of Home Assistant does not support restoring from a back-up.</p>
+<p>So in the end, I extracted the backup. I extracted <code>homeassistant.tar.gz</code>. Inside is a directory <code>data</code>, which I renamed to <code>config</code> and moved to <code>$DOCKERDIR/homeassistant/</code> (see below). Anything else in the archive is not used. It seems that I simply could have copied over the <code>config</code> directory directly from my old install.</p>
+<h2 id="docker-compose">Docker compose</h2>
+<p>I use <code>docker compose</code> to load my Docker containers. This is the docker compose snippet I added to my <code>docker-compose.yml</code>:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="yaml"><span class="giallo-l"><span style="color: #5CCFE6;">version</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &quot;2.4&quot;</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">services</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">  homeassistant</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    container_name</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> homeassistant</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    image</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &quot;ghcr.io/home-assistant/home-assistant:stable&quot;</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    volumes</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>      -</span><span style="color: #D5FF80;"> $DOCKERDIR/homeassistant/config:/config</span></span>
+<span class="giallo-l"><span>      -</span><span style="color: #D5FF80;"> /etc/localtime:/etc/localtime:ro</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    devices</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>      -</span><span style="color: #D5FF80;"> /dev/ttyACM0:/dev/ttyACM0</span></span>
+<span class="giallo-l"><span>      -</span><span style="color: #D5FF80;"> /dev/ttyUSB0:/dev/ttyUSB0</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    restart</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> always</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    privileged</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;"> true</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    ports</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>      -</span><span style="color: #D5FF80;"> 8123:8123</span></span></code></pre>
+<p>The snippet is slightly modified from the <a rel="external" href="https://www.home-assistant.io/installation/alternative/#docker-compose">Home Assistant documentation</a>. I did not want to use <code>network_mode: host</code>, so I had to forward the <code>8123</code> port.</p>
+<p><code>$DOCKERDIR</code> is an environment variable defined in a <code>.env</code> file in the same directory. It points to a path where my Docker config files are stored.</p>
+<h2 id="uninstall-system-integrations">Uninstall system integrations</h2>
+<p>There are some integrations that are included for interfacing with the Home Assistant Operating System. With a Docker install these are no longer needed. Starting the container would greet me with a couple of errors of the likes: <code>The following integrations could not be set up...</code> for <code>hassio</code> and <code>raspberrypi</code>.</p>
+<p>The Raspberry Pi integration could be removed from the integrations page.</p>
+<p>Then I removed the <code>hassio</code> integration by hand (it cannot be removed via the GUI), by opening <code>config/.storage/core.config_entries</code>.
+Look for the entry that looks below this and remove it</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="yaml"><span class="giallo-l"><span>      {</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">        &quot;entry_id&quot;</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &quot;8809d872e74ca46913179fb6448b3621&quot;</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">        &quot;version&quot;</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;"> 1</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">        &quot;domain&quot;</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &quot;hassio&quot;</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">        &quot;title&quot;</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &quot;Supervisor&quot;</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">        &quot;data&quot;</span><span style="color: #CCCAC2B3;">:</span><span> {}</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">        &quot;options&quot;</span><span style="color: #CCCAC2B3;">:</span><span> {}</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">        &quot;pref_disable_new_entities&quot;</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;"> false</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">        &quot;pref_disable_polling&quot;</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;"> false</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">        &quot;source&quot;</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &quot;system&quot;</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">        &quot;unique_id&quot;</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &quot;hassio&quot;</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">        &quot;disabled_by&quot;</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;"> null</span></span>
+<span class="giallo-l"><span>      },</span></span></code></pre><h2 id="usb-permissions-in-docker-rootless">USB permissions in Docker rootless</h2>
+<p>I run Docker in <a rel="external" href="https://docs.docker.com/engine/security/rootless/">rootless mode</a>. This gave some issues with accessing my Zigbee stick and other usb devices in Home Assistant. As a work-around, I had to update the permissions.</p>
+<p>Get the IDs of the USB devices using: <code>ls -l /dev/serial/by-id</code></p>
+<p>Set the permissions:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">sudo</span><span style="color: #D5FF80;"> chmod</span><span style="color: #DFBFFF;"> 666</span><span style="color: #D5FF80;"> /dev/ttyACM0</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">sudo</span><span style="color: #D5FF80;"> chmod</span><span style="color: #DFBFFF;"> 666</span><span style="color: #D5FF80;"> /dev/ttyUSB0</span></span></code></pre>
+<p>This has to be done on every reboot. This link provides a method to set the <a rel="external" href="https://www.xmodulo.com/change-usb-device-permission-linux.html">permissions automatically</a>.</p>
+<h2 id="ha-sidebar-shortcuts">HA sidebar shortcuts</h2>
+<p>You can add shortcuts to he Home Assistant side bar to link to other services on the server, for example Jellyfin.</p>
+<p>To do so, add this snippet to your <code>configuration.yaml</code>:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="yaml"><span class="giallo-l"><span style="color: #5CCFE6;">panel_iframe</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">  portainer</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">    title = &quot;Jellyfin&quot;</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    url</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &quot;https://192.168.1.123:8096&quot;</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    icon</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> mdi:jellyfish</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    require_admin</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;"> false</span></span></code></pre><h2 id="migrating-influxdb">Migrating InfluxDB</h2>
+<p>I run InfluxDB on Home Assistant for long term data storage. The database also had to be moved. Make sure that you use InfluxDB version 1.8. To migrate the database I did the following.</p>
+<p>On Home Assistant on the Raspberry Pi, I opend an SSH shell and entered the influxdb container:</p>
+<p><code>docker exec -it addon_a0d7b954_influxdb /bin/bash</code></p>
+<p>Then I backed up the database:</p>
+<p><code>influxd backup -portable -database homeassistant /data/homeassistant.db</code></p>
+<p>From the home assistant backup, I extracted <code>a0d7b954_influxdb.tar.gz</code> and moved <code>homeassistant.db</code> to my new server.</p>
+<p>I entered my influxdb container:</p>
+<p><code>docker exec -it influxdb /bin/bash</code></p>
+<p>And imported restored the database:</p>
+<p><code>influxd restore -portable /data/homeassistant.db</code></p>
+<p>Afterwards I had to update the host/port to point to the new database location.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="yaml"><span class="giallo-l"><span style="color: #5CCFE6;">influxdb</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">  host</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;"> ...</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">  port</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;"> ...</span></span></code></pre><h2 id="conclusion">Conclusion</h2>
+<p>I cannot say it was a painless exercise, but fairly happy with the result and learned a lot in the process. My new installation runs noticably faster, and I sleep better at night not having to worry about SD crashes 😅</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>
