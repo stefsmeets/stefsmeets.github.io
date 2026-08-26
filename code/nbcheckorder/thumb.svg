@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500">
+<style>@font-face{font-family:'Droid Sans Mono';font-weight:normal;font-style:normal;src:url("data:application/font-woff;charset=utf-8;base64,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")format("woff");}</style>
+<style>text{font-family:'Droid Sans Mono';font-weight:normal;font-style:normal;}</style>
+<text transform="translate(205,187)" font-size="221" style="fill:rgb(16, 198, 230)">cell</text>
+<text transform="translate(1,425)" font-size="166" style="fill:rgb(68, 238, 210)">filename</text>
+<text transform="translate(6,279)" font-size="88" style="fill:rgb(70, 89, 251)">execution_count</text>
+<text transform="translate(6,480)" font-size="72" style="fill:rgb(88, 248, 201)">typing</text>
+<text transform="translate(8,52)" font-size="66" style="fill:rgb(7, 187, 234)">cell_number</text>
+<text transform="translate(426,468)" font-size="53" style="fill:rgb(88, 248, 201)">code_cells</text>
+<text transform="translate(535,317)" font-size="48" style="fill:rgb(39, 218, 222)">last_cell</text>
+<text transform="translate(18,135)" font-size="48" style="fill:rgb(76, 80, 252)">parser</text>
+<text transform="translate(575,224)" font-size="48" style="fill:rgb(238, 198, 109)">retval</text>
+<text transform="translate(27,96)" font-size="40" style="fill:rgb(104, 252, 193)">argparse</text>
+<text transform="translate(9,195)" font-size="40" style="fill:rgb(62, 101, 250)">Optional</text>
+<text transform="translate(259,315)" font-size="40" style="fill:rgb(142, 254, 172)">Sequence</text>
+<text transform="translate(53,228)" font-size="40" style="fill:rgb(142, 254, 172)">nbformat</text>
+<text transform="translate(274,490)" font-size="23" style="fill:rgb(219, 216, 123)">are_cells_sequential</text>
+<text transform="translate(328,460)" font-size="23" style="fill:rgb(255, 104, 53)">node</text>
+<text transform="translate(425,60)" font-size="23" style="fill:rgb(204, 227, 133)">n_cells</text>
+<text transform="translate(453,314)" font-size="23" style="fill:rgb(66, 95, 250)">print</text>
+<text transform="translate(761,141) rotate(-90)" font-size="23" style="fill:rgb(224, 211, 119)">f'</text>
+<text transform="translate(459,208)" font-size="23" style="fill:rgb(4, 185, 234)">Notebook</text>
+<text transform="translate(564,59)" font-size="23" style="fill:rgb(93, 249, 199)">number</text>
+<text transform="translate(638,493)" font-size="23" style="fill:rgb(232, 203, 114)">int</text>
+<text transform="translate(56,413)" font-size="23" style="fill:rgb(54, 112, 248)">main</text>
+<text transform="translate(462,147)" font-size="23" style="fill:rgb(20, 157, 241)">argv</text>
+<text transform="translate(686,125)" font-size="23" style="fill:rgb(56, 231, 215)">args</text>
+<text transform="translate(323,473) rotate(-90)" font-size="17" style="fill:rgb(104, 38, 254)">Dict</text>
+<text transform="translate(405,151)" font-size="17" style="fill:rgb(34, 214, 224)">List</text>
+<text transform="translate(463,224)" font-size="17" style="fill:rgb(249, 187, 102)">Tuple</text>
+<text transform="translate(185,336)" font-size="17" style="fill:rgb(6, 174, 237)">read</text>
+<text transform="translate(696,494)" font-size="17" style="fill:rgb(255, 28, 14)">as_version</text>
+<text transform="translate(339,398)" font-size="17" style="fill:rgb(198, 231, 137)">cells'</text>
+<text transform="translate(788,132) rotate(-90)" font-size="17" style="fill:rgb(185, 239, 146)">cell_type'</text>
+<text transform="translate(299,134)" font-size="17" style="fill:rgb(120, 255, 184)">code'</text>
+<text transform="translate(275,358)" font-size="17" style="fill:rgb(109, 253, 191)">len</text>
+<text transform="translate(93,296)" font-size="17" style="fill:rgb(52, 115, 248)">enumerate</text>
+<text transform="translate(33,153)" font-size="17" style="fill:rgb(32, 142, 244)">execution_count'</text>
+<text transform="translate(607,17)" font-size="17" style="fill:rgb(255, 142, 74)">contains</text>
+<text transform="translate(325,210)" font-size="17" style="fill:rgb(158, 250, 162)">unexecuted</text>
+<text transform="translate(91,385)" font-size="17" style="fill:rgb(72, 241, 208)">order</text>
+<text transform="translate(5,68)" font-size="17" style="fill:rgb(58, 232, 214)">ececution</text>
+<text transform="translate(114,367) rotate(-90)" font-size="17" style="fill:rgb(142, 254, 172)">count</text>
+<text transform="translate(394,112)" font-size="17" style="fill:rgb(34, 214, 224)">str</text>
+<text transform="translate(462,13)" font-size="17" style="fill:rgb(114, 22, 255)">ArgumentParser</text>
+<text transform="translate(328,328)" font-size="17" style="fill:rgb(255, 174, 94)">add_argument</text>
+<text transform="translate(519,331)" font-size="17" style="fill:rgb(255, 47, 24)">filenames'</text>
+<text transform="translate(439,31)" font-size="17" style="fill:rgb(196, 232, 138)">nargs</text>
+<text transform="translate(298,256)" font-size="17" style="fill:rgb(55, 230, 216)">help</text>
+<text transform="translate(504,367)" font-size="17" style="fill:rgb(166, 248, 157)">check</text>
+<text transform="translate(548,129)" font-size="17" style="fill:rgb(142, 254, 172)">parse_args</text>
+<text transform="translate(682,32)" font-size="17" style="fill:rgb(104, 38, 254)">__name__</text>
+<text transform="translate(682,86)" font-size="17" style="fill:rgb(57, 107, 249)">__main__'</text>
+<text transform="translate(696,160)" font-size="17" style="fill:rgb(255, 19, 9)">SystemExit</text>
+</svg>

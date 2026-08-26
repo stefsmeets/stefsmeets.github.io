@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Custom toggle to hide the Reddit sidebar
+</h1>
+<p class="subtitle"><strong>2025-05-25</strong></p>
+<div class="prose">
+  <p>Because the sidebar is fixed size, it sometimes overlaps with the content on smaller screens. Using <a rel="external" href="https://redditenhancementsuite.com/">RES</a> you can create a toggle for the sidebar.</p>
+<p>First, create a toggle under: <kbd>RES settings console &gt; Core &gt; Custom toggles &gt; Toggle</kbd> named: <code>Sidebar toggle</code>.</p>
+<p>Add the following as a CSS snippet: <kbd>RES settings console &gt; Appearance &gt; Stylesheet Loader &gt; Snippets</kbd>:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="css"><span class="giallo-l"><span style="color: #FFCD66;">.side</span><span> {</span><span style="color: #5CCFE6;"> display</span><span style="color: #CCCAC2B3;">:</span><span style="color: #F29E74;font-style: italic;"> none</span><span style="color: #CCCAC2B3;">;</span><span> }</span></span></code></pre>
+<p>Assign your toggle to the snippet.</p>
+<p>A new toggle will appear under the RES menu (gear icon) in the top bar.</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

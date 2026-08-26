@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Streamlit + PySide = standalone data app
+</h1>
+<p class="subtitle"><strong>2022-10-07</strong></p>
+<div class="prose">
+  <p>For one of my projects I wanted to be able to open a streamlit app in its own window. <a rel="external" href="https://streamlit.io/">Streamlit</a> is an excellent way to turn scripts into web apps that I like to use to <a rel="external" href="https://blog.esciencecenter.nl/forget-about-jupyter-notebooks-showcase-your-research-using-dashboards-5d13451ba374">showcase research data</a>. By default, it starts a web server and attempts to open this url in a webbrowser.</p>
+<p>I was curious if it would be possible to redirect this to some sort of Python webview, so that I could turn my dashboard into a standalone app.</p>
+<h2 id="qt-webview">Qt webview</h2>
+<p>It turns out that Qt (using <a rel="external" href="https://wiki.qt.io/Qt_for_Python">PySide2</a>) has this capability via the <code>QtWebEngineWidgets</code>. The most straightforward way to install is via conda:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">conda</span><span style="color: #D5FF80;"> install</span><span style="color: #95E6CB;"> -c</span><span style="color: #D5FF80;"> conda-forge pyside2</span></span></code></pre>
+<p>With <code>pyside</code> installed, it is straightforward enough to make a little window pop up showing any url:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">from</span><span> PySide2</span><span style="color: #FFA659;"> import</span><span> QtCore</span><span style="color: #CCCAC2B3;">,</span><span> QtWebEngineWidgets</span><span style="color: #CCCAC2B3;">,</span><span> QtWidgets</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #95E6CB;">URL</span><span style="color: #F29E74;"> =</span><span style="color: #D5FF80;"> &#39;https://python.org&#39;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>app</span><span style="color: #F29E74;"> =</span><span> QtWidgets</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">QApplication</span><span>()</span></span>
+<span class="giallo-l"><span>view</span><span style="color: #F29E74;"> =</span><span> QtWebEngineWidgets</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">QWebEngineView</span><span>()</span></span>
+<span class="giallo-l"><span>view</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">load</span><span>(QtCore</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">QUrl</span><span>(</span><span style="color: #95E6CB;">URL</span><span>))</span></span>
+<span class="giallo-l"><span>view</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">show</span><span>()</span></span>
+<span class="giallo-l"><span>app</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">exec_</span><span>()</span></span></code></pre>
+<p>This is what it looks like:</p>
+<figure>
+  <a href="python-org.webp">
+    <img src="python-org.webp" alt="Python.org">
+  </a>
+  <figcaption>Python.org</figcaption>
+</figure>
+<h2 id="wrapping-streamlit">Wrapping streamlit</h2>
+<p>To start a streamlit server (and closing it!) is a bit more involved. Normally you would run <code>streamlit run my_script.py</code>, and then pop the url into your webbrowser. But somehow we must wrap this behaviour. This is what I ended up with:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">import</span><span> atexit</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">import</span><span> subprocess</span><span style="color: #FFA659;"> as</span><span> sp</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">import</span><span> os</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">from</span><span> PySide2</span><span style="color: #FFA659;"> import</span><span> QtCore</span><span style="color: #CCCAC2B3;">,</span><span> QtWebEngineWidgets</span><span style="color: #CCCAC2B3;">,</span><span> QtWidgets</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> kill_server</span><span>(</span><span style="color: #DFBFFF;">p</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    if</span><span> os</span><span style="color: #CCCAC2B3;">.</span><span>name</span><span style="color: #F29E74;"> ==</span><span style="color: #D5FF80;"> &#39;nt&#39;</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;">        # p.kill is not adequate</span></span>
+<span class="giallo-l"><span>        sp</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">call</span><span>([</span><span style="color: #D5FF80;">&#39;taskkill&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;"> &#39;/F&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;"> &#39;/T&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;"> &#39;/PID&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #5CCFE6;"> str</span><span>(p</span><span style="color: #CCCAC2B3;">.</span><span>pid)])</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    elif</span><span> os</span><span style="color: #CCCAC2B3;">.</span><span>name</span><span style="color: #F29E74;"> ==</span><span style="color: #D5FF80;"> &#39;posix&#39;</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>        p</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">kill</span><span>()</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    else</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        pass</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">if</span><span> __name__</span><span style="color: #F29E74;"> ==</span><span style="color: #D5FF80;"> &#39;__main__&#39;</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>    cmd</span><span style="color: #F29E74;"> =</span><span style="color: #FFA659;"> f</span><span style="color: #D5FF80;">&#39;streamlit hello --server.headless=True&#39;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    p</span><span style="color: #F29E74;"> =</span><span> sp</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">Popen</span><span>(cmd</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">split</span><span>()</span><span style="color: #CCCAC2B3;">,</span><span> stdout</span><span style="color: #F29E74;">=</span><span>sp</span><span style="color: #CCCAC2B3;">.</span><span style="color: #95E6CB;">DEVNULL</span><span>)</span></span>
+<span class="giallo-l"><span>    atexit</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">register</span><span>(kill_server</span><span style="color: #CCCAC2B3;">,</span><span> p)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    hostname</span><span style="color: #F29E74;"> =</span><span style="color: #D5FF80;"> &#39;localhost&#39;</span></span>
+<span class="giallo-l"><span>    port</span><span style="color: #F29E74;"> =</span><span style="color: #DFBFFF;"> 8501</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    app</span><span style="color: #F29E74;"> =</span><span> QtWidgets</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">QApplication</span><span>()</span></span>
+<span class="giallo-l"><span>    view</span><span style="color: #F29E74;"> =</span><span> QtWebEngineWidgets</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">QWebEngineView</span><span>()</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    view</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">load</span><span>(QtCore</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">QUrl</span><span>(</span><span style="color: #FFA659;">f</span><span style="color: #D5FF80;">&#39;https://</span><span style="color: #95E6CB;">{</span><span>hostname</span><span style="color: #95E6CB;">}</span><span style="color: #D5FF80;">:</span><span style="color: #95E6CB;">{</span><span>port</span><span style="color: #95E6CB;">}</span><span style="color: #D5FF80;">&#39;</span><span>))</span></span>
+<span class="giallo-l"><span>    view</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">show</span><span>()</span></span>
+<span class="giallo-l"><span>    app</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">exec_</span><span>()</span></span></code></pre>
+<ol>
+<li>In this example I use <code>streamlit hello</code>. You can exchange this with the path to your script.</li>
+<li>For the streamlit command, we need <code>--server.headless=True</code>. This will prevent streamlit from trying to open the URL in your default browser.</li>
+<li>I run the streamlit command in subprocess. This is to isolate the event loop. I tried going with threads, but using a subprocess is so much easier.</li>
+<li>Therefore, we must kill the streamlit server when we close the webview. To do so we can use the <a rel="external" href="https://docs.python.org/3/library/atexit.html"><code>atexit</code></a> handler. On Linux we can use <code>p.kill()</code>, but on Windows we must send the <code>taskkill</code> command. From experience, <code>p.kill()</code> is not adequate on Windows.</li>
+</ol>
+<p>This is the end result:</p>
+<figure>
+  <a href="streamlit-app.webp">
+    <img src="streamlit-app.webp" alt="Streamlit webview">
+  </a>
+  <figcaption>Streamlit webview</figcaption>
+</figure>
+<p>No browser required :-)</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

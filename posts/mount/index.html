@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  How to mount a drive on Linux
+</h1>
+<p class="subtitle"><strong>2026-03-07</strong></p>
+<div class="prose">
+  <p>This is a small blog post with how to set up a drive on Debian.</p>
+<p>Find the drive / device location:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>lsblk</span></span></code></pre>
+<p>Make drive point (it can be whatever, on my system I use <code>/mnt</code>):</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>cd /mnt</span></span>
+<span class="giallo-l"><span>sudo mkdir data2</span></span></code></pre>
+<p>Mount the drive:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>sudo mount /dev/sdb1 /mnt/data2</span></span></code></pre>
+<p>That's it, the drive is now available under <code>/mnt/data2</code>.</p>
+<h2 id="automounting">Automounting</h2>
+<p>To automount the drive after reboot, add it to the fstab table:</p>
+<p>First, get the GUID:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>$ sudo blkid</span></span>
+<span class="giallo-l"><span>/dev/sdb1: LABEL=&quot;Data&quot; UUID=&quot;xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&quot; BLOCK_SIZE=&quot;4096&quot; TYPE=&quot;ext4&quot; PARTUUID=&quot;xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&quot;</span></span></code></pre>
+<p>Note the UUID variable. Add the line to <code>/etc/fstab</code>.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>$ nano /etc/fstab</span></span></code></pre>
+<p>Add:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>/dev/disk/by-uuid/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx /mnt/data2 auto nosuid,nodev,n&gt;</span></span></code></pre>
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

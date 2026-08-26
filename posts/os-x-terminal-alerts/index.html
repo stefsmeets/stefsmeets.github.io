@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  OS X terminal alerts
+</h1>
+<p class="subtitle"><strong>2012-06-22</strong></p>
+<div class="prose">
+  <p>Sometimes when I'm running a long command I want to be alerted when it's done, so I don't have to check the other window all the time to see if it's finished.</p>
+<p>To do so, simply append <code>printf '\a'</code> to your command, like so:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">sleep</span><span style="color: #DFBFFF;"> 5</span><span style="color: #CCCAC2B3;">;</span><span style="color: #F28779;"> printf</span><span style="color: #D5FF80;"> &#39;\a&#39;</span></span></code></pre>
+<p>This will add a 'bell' character to the message, which will bounce the dock icon and add a little badge if it is out of focus, very useful!</p>
+<p>Original post on <a rel="external" href="https://web.archive.org/web/20130416052427/http://eftrunk.blogspot.com/2012/06/os-x-terminal-alerts.html">web.archive.org</a></p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

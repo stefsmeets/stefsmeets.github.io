@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Forget about Jupyter Notebooks — showcase your research using Dashboards
+</h1>
+<p class="subtitle"><strong>2022-05-06</strong></p>
+<div class="prose">
+  <p>As a Python lover, I use <a rel="external" href="https://jupyter.org/">Jupyter Notebooks</a> for everything. Notebooks mix markdown, code, and inline plots, which makes them a fantastic tool for exploratory data analysis. I use them to develop and share code, prototype new ideas, explore libraries, play around with data, and create plots and visualizations. Notebooks can be rendered as static html and pdfs, so they are also excellent to write reports, documentation and tutorials… when the intent is to share the code alongside the data.</p>
+<p>As a researcher, however, I find that the code sometimes gets in the way of the data I want to show. So when the intent is to share the data with a non-technical audience, what options do we have? Are there better alternatives?</p>
+<h2 id="the-problem-with-notebooks">The problem with notebooks</h2>
+<p>Before we continue, let’s take a step back and look at a few of the problems with Jupyter Notebooks.</p>
+<p>There is no denying that Jupyter notebooks have become very popular over the last years to present research results. This means that the issues with Jupyter Notebooks are <a rel="external" href="https://towardsdatascience.com/5-reasons-why-jupyter-notebooks-suck-4dc201e27086">well</a> <a rel="external" href="https://www.youtube.com/watch?v=7jiPeIFXb6U">known</a>. My biggest gripes are:</p>
+<ol>
+<li>The non-linear execution model. Notebooks often contain hidden state that is difficult to reason about. This can make them difficult to use for beginners.</li>
+<li>Notebooks are difficult to share with a non-technical audience. They would need to know how to set up Python, install libraries, manage environments, and modify the code.</li>
+</ol>
+<p>Notebooks can be hosted somewhere like <a rel="external" href="https://mybinder.org/">binder</a> (solving 2.), making the code immediately reproducible. Reproducible, only <em>if</em> one understands the code and how to run the notebook (including its quirks, see 1.). Here, the inline code can get in the way of itself. I have seen many notebooks spelling out what each variable does and how to run the code at the top. You would need some understanding of how the code works to use the notebooks.</p>
+<h2 id="dashboards">Dashboards</h2>
+<p>That is where dashboards come into play.</p>
+<p>Dashboards are a relatively new concept coming from the data science world making use of the modern web. In essence, dashboards are simple web-apps used to quickly glance at some data. Like a mini graphical interface for your data.</p>
+<p>If you are using Python, these are the ones you should be looking at:</p>
+<ul>
+<li><a rel="external" href="https://plotly.com/dash/">Dash</a> (2017, 883k downloads/month)</li>
+<li><a rel="external" href="https://panel.holoviz.org/">Panel</a> (2018, 387k downloads/month)</li>
+<li><a rel="external" href="https://streamlit.io/">Streamlit</a> (2019, 930k downloads/month)</li>
+<li><a rel="external" href="https://voila.readthedocs.io/en/stable/">voila</a> (2019, 56k downloads/month)</li>
+</ul>
+<p>All are excellent choices. For a full comparison, check out <a rel="external" href="https://medium.datadriveninvestor.com/streamlit-vs-dash-vs-voil%C3%A0-vs-panel-battle-of-the-python-dashboarding-giants-177c40b9ea57">this blog post</a>.</p>
+<h2 id="streamlit">Streamlit</h2>
+<p>Out of these four, <a rel="external" href="https://streamlit.io/">Streamlit</a> stood out to me the most for its ease of use. For one of my projects, I have been playing with it to develop a simple data processing GUI. These are my initial impressions.</p>
+<ol>
+<li>After having used it for a week, I found it extremely straightforward to get started with.</li>
+<li>The linear execution model makes it easy to reason about the code (more on this <a rel="external" href="https://blog.esciencecenter.nl/forget-about-jupyter-notebooks-showcase-your-research-using-dashboards-5d13451ba374#How-does-this-work">later</a>)</li>
+<li>There is no need to know any web development, as one of the goals of the library is to look good out-of-the box (spoiler alert: it does).</li>
+<li>The api is well-designed, easy-to-manage, and very Pythonic. You could get to grips with the entire API in a day. Some would say the API is limited, but in my opinion it has a very clear scope which fits my brain. It also helps that the <a rel="external" href="https://docs.streamlit.io/">documentation</a> is well-structured, with clear explanations and <a rel="external" href="https://streamlit.io/gallery">examples</a>.</li>
+<li>The streamlit developers claim its the fastest way to build data apps in Python. This sounds like a salespitch, but it might be true. You can turn any Python script into an interactive dashboard in minutes.</li>
+</ol>
+<h2 id="from-a-normal-plot">From a normal plot…</h2>
+<p>Let’s have a look at an example. As a researcher, I had plenty of Python scripts or notebooks lying around which just did this:</p>
+<ol>
+<li>Load or generate some data</li>
+<li>Apply some operations to the data</li>
+<li>Make some plots</li>
+</ol>
+<p>I would endlessly tune the the parameters and re-run the script to get the right plot. No problem for me. But, when it came to sharing the scripts with my not-so-software-savvy colleagues, this meant taking on a support role. Think about setting up Python, managing environments, fixing bugs, feature requests, etc…</p>
+<p>Sounds familiar?</p>
+<p>The snippet below generates some data (a normal distribution), fits it, and creates a <a rel="external" href="https://matplotlib.org/">matplotlib</a> plot out of it. It takes three parameters, <code>mu_in</code>, <code>std_in</code>, and <code>size</code>.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">import</span><span> numpy</span><span style="color: #FFA659;"> as</span><span> np</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">from</span><span> scipy</span><span style="color: #CCCAC2B3;">.</span><span>stats</span><span style="color: #FFA659;"> import</span><span> norm</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">import</span><span> matplotlib</span><span style="color: #CCCAC2B3;">.</span><span>pyplot</span><span style="color: #FFA659;"> as</span><span> plt</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>mu_in</span><span style="color: #F29E74;"> =</span><span style="color: #DFBFFF;"> 5</span></span>
+<span class="giallo-l"><span>std_in</span><span style="color: #F29E74;"> =</span><span style="color: #DFBFFF;"> 5.0</span></span>
+<span class="giallo-l"><span>size</span><span style="color: #F29E74;"> =</span><span style="color: #DFBFFF;"> 100</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> norm_dist</span><span>(</span><span style="color: #DFBFFF;">mu</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> std</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> size</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">100</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">    &quot;&quot;&quot;Generate normal distribution.&quot;&quot;&quot;</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    return</span><span> norm</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">rvs</span><span>(mu</span><span style="color: #CCCAC2B3;">,</span><span> std</span><span style="color: #CCCAC2B3;">,</span><span> size</span><span style="color: #F29E74;">=</span><span>size)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>data</span><span style="color: #F29E74;"> =</span><span style="color: #FFCD66;"> norm_dist</span><span>(mu_in</span><span style="color: #CCCAC2B3;">,</span><span> std_in</span><span style="color: #CCCAC2B3;">,</span><span> size</span><span style="color: #F29E74;">=</span><span>size)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;"># Fit the normal distribution</span></span>
+<span class="giallo-l"><span>mu</span><span style="color: #CCCAC2B3;">,</span><span> std</span><span style="color: #F29E74;"> =</span><span> norm</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">fit</span><span>(data)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;"># Make some plots</span></span>
+<span class="giallo-l"><span>x</span><span style="color: #F29E74;"> =</span><span> np</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">linspace</span><span>(</span><span style="color: #F29E74;">-</span><span style="color: #DFBFFF;">40</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 40</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 100</span><span>)</span></span>
+<span class="giallo-l"><span>y</span><span style="color: #F29E74;"> =</span><span> norm</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">pdf</span><span>(x</span><span style="color: #CCCAC2B3;">,</span><span> mu</span><span style="color: #CCCAC2B3;">,</span><span> std)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>title</span><span style="color: #F29E74;"> =</span><span style="color: #D5FF80;"> &quot;f&quot;</span><span>Fit results</span><span style="color: #CCCAC2B3;">:</span><span> {mu=</span><span style="color: #CCCAC2B3;">:.</span><span>2f}</span><span style="color: #CCCAC2B3;">,</span><span>  {std=</span><span style="color: #CCCAC2B3;">:.</span><span>2f}</span><span style="color: #D5FF80;">&quot;&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>fig</span><span style="color: #CCCAC2B3;">,</span><span> ax</span><span style="color: #F29E74;"> =</span><span> plt</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">subplots</span><span>()</span></span>
+<span class="giallo-l"><span>ax</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">hist</span><span>(data</span><span style="color: #CCCAC2B3;">,</span><span> bins</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">50</span><span style="color: #CCCAC2B3;">,</span><span> density</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">True</span><span>)</span></span>
+<span class="giallo-l"><span>ax</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">plot</span><span>(x</span><span style="color: #CCCAC2B3;">,</span><span> y</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;"> &#39;k&#39;</span><span style="color: #CCCAC2B3;">,</span><span> linewidth</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">2</span><span>)</span></span>
+<span class="giallo-l"><span>ax</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">set_title</span><span>(title)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>plt</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">show</span><span>()</span></span></code></pre>
+<p>My cool python script 😎</p>
+<figure>
+  <a href="plot.webp">
+    <img src="plot.webp" alt="A normal plot">
+  </a>
+  <figcaption>A normal plot</figcaption>
+</figure>
+<h2 id="to-a-fancy-dashboard">…to a fancy dashboard</h2>
+<p>Let’s turn this into an interactive dashboard in four simple steps:</p>
+<ol>
+<li><code>import streamlist as st</code> 😅</li>
+<li>Add a title using <code>[st.title](https://docs.streamlit.io/library/api-reference/text)</code></li>
+<li>Turn the input parameters into interactive sliders using <code>[st.slider](https://docs.streamlit.io/library/api-reference/widgets)</code></li>
+<li>Tell streamlit about our plot using <code>[st.pyplot](https://docs.streamlit.io/library/api-reference/charts)</code></li>
+</ol>
+<p>Note that we do not have to change any of the data generation, fitting, or plotting code!</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">import</span><span> numpy</span><span style="color: #FFA659;"> as</span><span> np</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">from</span><span> scipy</span><span style="color: #CCCAC2B3;">.</span><span>stats</span><span style="color: #FFA659;"> import</span><span> norm</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">import</span><span> matplotlib</span><span style="color: #CCCAC2B3;">.</span><span>pyplot</span><span style="color: #FFA659;"> as</span><span> plt</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">import</span><span> streamlit</span><span style="color: #FFA659;"> as</span><span> st</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>st</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">title</span><span>(</span><span style="color: #D5FF80;">&#39;Normal distribution&#39;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>mu_in</span><span style="color: #F29E74;"> =</span><span> st</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">slider</span><span>(</span><span style="color: #D5FF80;">&#39;Mean&#39;</span><span style="color: #CCCAC2B3;">,</span><span> value</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">5</span><span style="color: #CCCAC2B3;">,</span><span> min_value</span><span style="color: #F29E74;">=-</span><span style="color: #DFBFFF;">10</span><span style="color: #CCCAC2B3;">,</span><span> max_value</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">10</span><span>)</span></span>
+<span class="giallo-l"><span>std_in</span><span style="color: #F29E74;"> =</span><span> st</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">slider</span><span>(</span><span style="color: #D5FF80;">&#39;Standard deviation&#39;</span><span style="color: #CCCAC2B3;">,</span><span> value</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">5.0</span><span style="color: #CCCAC2B3;">,</span><span> min_value</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">0.0</span><span style="color: #CCCAC2B3;">,</span><span> max_value</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">10.0</span><span>)</span></span>
+<span class="giallo-l"><span>size</span><span style="color: #F29E74;"> =</span><span> st</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">slider</span><span>(</span><span style="color: #D5FF80;">&#39;Number of samples&#39;</span><span style="color: #CCCAC2B3;">,</span><span> value</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">100</span><span style="color: #CCCAC2B3;">,</span><span> max_value</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">500</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> norm_dist</span><span>(</span><span style="color: #DFBFFF;">mu</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> std</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> size</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">100</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">    &quot;&quot;&quot;Generate normal distribution.&quot;&quot;&quot;</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    return</span><span> norm</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">rvs</span><span>(mu</span><span style="color: #CCCAC2B3;">,</span><span> std</span><span style="color: #CCCAC2B3;">,</span><span> size</span><span style="color: #F29E74;">=</span><span>size)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>data</span><span style="color: #F29E74;"> =</span><span style="color: #FFCD66;"> norm_dist</span><span>(mu_in</span><span style="color: #CCCAC2B3;">,</span><span> std_in</span><span style="color: #CCCAC2B3;">,</span><span> size</span><span style="color: #F29E74;">=</span><span>size)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;"># Fit the normal distribution</span></span>
+<span class="giallo-l"><span>mu</span><span style="color: #CCCAC2B3;">,</span><span> std</span><span style="color: #F29E74;"> =</span><span> norm</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">fit</span><span>(data)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;"># Make some plots</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">...</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>st</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">pyplot</span><span>(fig)</span></span></code></pre>
+<p>Now as a dashboard 🐱‍💻</p>
+<p>Then run the dashboard using:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">streamlit</span><span style="color: #D5FF80;"> run my_dashboard.py</span></span></code></pre>
+<p>This will start a server, and the dashboard can be accessed through the browser (much like a Jupyter Notebook).</p>
+<figure>
+  <a href="dashboard.webp">
+    <img src="dashboard.webp" alt="A fancy dashboard">
+  </a>
+  <figcaption>A fancy dashboard</figcaption>
+</figure>
+<h2 id="how-does-this-work">How does this work?</h2>
+<p>The way Streamlit works is quite interesting. Everytime a slider is moved, a box is checked, or a button is pressed, Streamlit triggers a re-run of the script. The input values are updated. The javascript back-end keeps track of the values.</p>
+<p>This means that the code itself executes linearly. In my view, this simplicity is what sets it apart. There is no need for any callbacks or complex flow controls. Your python scripts runs from top-to-bottom. This makes it easy to reason about the code. And with minimal modifications to the python code, any script can be turned into a dashboard.</p>
+<p>Are there any downsides? Yes. Because streamlit re-runs the entire script on every update, it can feel a bit slow. Especially when updating a large number of plots. It can also get stuck on long-running functions. For performance optimizations, streamlit has some options to <a rel="external" href="https://docs.streamlit.io/library/api-reference/performance">cache the result</a>.</p>
+<h2 id="plotting-libraries">Plotting libraries</h2>
+<p>The example above uses <a rel="external" href="https://matplotlib.org/">matplotlib</a> for the plots. Matplotlib has been the go-to plotting library for Python for many for a long time. It has been around for nearly two decades, and it is tighly integrated in the scientific python stack.</p>
+<p>If you are familiar with matplotlib, you will know that it is great for making making publication quality plots. You will also know that making interactive plots can be a hassle.</p>
+<p>Streamlit supports these libraries:</p>
+<ul>
+<li><a rel="external" href="https://matplotlib.org/">matplotlib</a></li>
+<li><a rel="external" href="https://altair-viz.github.io/">altair</a></li>
+<li><a rel="external" href="https://bokeh.org/">bokeh</a></li>
+<li><a rel="external" href="https://plotly.com/python/">plotly</a></li>
+<li><a rel="external" href="https://seaborn.pydata.org/">seaborn</a></li>
+<li><a rel="external" href="https://deckgl.readthedocs.io/en/latest/layer.html">PyDeck</a></li>
+<li><a rel="external" href="https://github.com/xflr6/graphviz">GraphViz</a></li>
+</ul>
+<p>Modern plotting libraries like <a rel="external" href="https://plotly.com/python/">plotly</a>, <a rel="external" href="https://bokeh.org/">bokeh</a>, and <a rel="external" href="https://altair-viz.github.io/">altair</a> render directly to javascript. This means they are built for the web, and interactivity is built-in. This makes them better suited for web-apps. If you are going to make a dashboard, I recommend checking out one of these alternatives.</p>
+<h2 id="sharing-your-dashboard">Sharing your dashboard</h2>
+<p>Alright, so now that we have made a fancy looking dashboard, so that anyone can play with the data. How do we make it available?</p>
+<p>Streamlit uses a host/server model, which means you can run it on your own server.</p>
+<p>Easier is to use the <a rel="external" href="https://streamlit.io/cloud">streamlit cloud</a> to host your dashboard (it’s free for students and open-source projects). I found this also quite straightforward to set up. All I had to do was to create a <a rel="external" href="https://github.com/stefsmeets/dashboard_blog">repository on github</a> with the code and a requirements file.</p>
+<p>Then I logged into <a rel="external" href="https://share.streamlit.io/">streamlit cloud</a> using the Github SSO, and started a new app pointing at my repo and code.</p>
+<p><a rel="external" href="https://share.streamlit.io/stefsmeets/dashboard_blog/main">Click here</a> for the result! 🥳</p>
+<h2 id="final-remarks">Final remarks</h2>
+<p>In this blog post, I introduced streamlit and showed how it can be used to turn a python script into a dashboard, and host it online. An excellent way to showcase your research to a non-technical audience, if you ask me. The linear execution model makes it straightforward to adapt existing scripts. The code does not get in the way, and the result look awesome.</p>
+<p>So next time you want to present some data in a notebook, consider using a dashboard instead.</p>
+<p>All the code in this blog post is available from <a rel="external" href="https://github.com/stefsmeets/dashboard_blog">Github</a>.</p>
+<p>PS. Don't actually forget about notebooks, they are awesome!</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

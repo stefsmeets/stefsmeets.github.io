@@ -1,0 +1,204 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500">
+<style>@font-face{font-family:'Droid Sans Mono';font-weight:normal;font-style:normal;src:url("data:application/font-woff;charset=utf-8;base64,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")format("woff");}</style>
+<style>text{font-family:'Droid Sans Mono';font-weight:normal;font-style:normal;}</style>
+<text transform="translate(653,458) rotate(-90)" font-size="254" style="fill:rgb(130, 255, 179)">key</text>
+<text transform="translate(1,164)" font-size="214" style="fill:rgb(66, 95, 250)">line</text>
+<text transform="translate(210,335)" font-size="210" style="fill:rgb(139, 254, 174)">f</text>
+<text transform="translate(1,462)" font-size="151" style="fill:rgb(153, 252, 166)">print</text>
+<text transform="translate(35,370)" font-size="149" style="fill:rgb(88, 248, 201)">fn</text>
+<text transform="translate(765,479) rotate(-90)" font-size="131" style="fill:rgb(255, 59, 30)">inp</text>
+<text transform="translate(278,316)" font-size="98" style="fill:rgb(47, 224, 219)">args</text>
+<text transform="translate(1,207)" font-size="57" style="fill:rgb(20, 157, 241)">os path</text>
+<text transform="translate(117,284)" font-size="56" style="fill:rgb(102, 41, 254)">file</text>
+<text transform="translate(742,66)" font-size="55" style="fill:rgb(255, 71, 36)">d</text>
+<text transform="translate(241,372)" font-size="48" style="fill:rgb(244, 192, 105)">str</text>
+<text transform="translate(498,467)" font-size="48" style="fill:rgb(235, 202, 112)">coseq</text>
+<text transform="translate(341,216)" font-size="48" style="fill:rgb(226, 209, 118)">cif</text>
+<text transform="translate(147,497)" font-size="45" style="fill:rgb(38, 134, 245)">threshold</text>
+<text transform="translate(683,174)" font-size="43" style="fill:rgb(22, 155, 242)">open</text>
+<text transform="translate(216,32)" font-size="41" style="fill:rgb(114, 22, 255)">option</text>
+<text transform="translate(77,80)" font-size="39" style="fill:rgb(98, 251, 196)">seq</text>
+<text transform="translate(666,287)" font-size="39" style="fill:rgb(0, 181, 235)">n</text>
+<text transform="translate(326,255)" font-size="39" style="fill:rgb(200, 230, 136)">strudat</text>
+<text transform="translate(33,378) rotate(-90)" font-size="39" style="fill:rgb(2, 183, 235)">stdout</text>
+<text transform="translate(609,33)" font-size="37" style="fill:rgb(255, 134, 70)">target</text>
+<text transform="translate(399,496)" font-size="37" style="fill:rgb(255, 59, 30)">isinstance</text>
+<text transform="translate(560,153)" font-size="37" style="fill:rgb(255, 107, 55)">split</text>
+<text transform="translate(552,316)" font-size="37" style="fill:rgb(72, 86, 251)">name</text>
+<text transform="translate(408,35)" font-size="37" style="fill:rgb(18, 200, 230)">run</text>
+<text transform="translate(639,486)" font-size="24" style="fill:rgb(255, 59, 30)">path exists</text>
+<text transform="translate(731,250)" font-size="23" style="fill:rgb(255, 176, 95)">list</text>
+<text transform="translate(712,427)" font-size="23" style="fill:rgb(222, 213, 121)">len</text>
+<text transform="translate(42,229)" font-size="23" style="fill:rgb(255, 129, 67)">fout</text>
+<text transform="translate(477,394)" font-size="23" style="fill:rgb(255, 118, 61)">width</text>
+<text transform="translate(163,233) rotate(-90)" font-size="23" style="fill:rgb(176, 243, 151)">p</text>
+<text transform="translate(655,213)" font-size="23" style="fill:rgb(9, 169, 238)">sys exit</text>
+<text transform="translate(697,74)" font-size="22" style="fill:rgb(70, 239, 209)">rdb</text>
+<text transform="translate(443,213)" font-size="22" style="fill:rgb(166, 248, 157)">dls76</text>
+<text transform="translate(375,230)" font-size="22" style="fill:rgb(203, 228, 134)">o</text>
+<text transform="translate(78,40)" font-size="22" style="fill:rgb(187, 238, 145)">processes</text>
+<text transform="translate(260,165) rotate(-90)" font-size="22" style="fill:rgb(46, 123, 247)">clean</text>
+<text transform="translate(39,476)" font-size="22" style="fill:rgb(235, 202, 112)">sys argv</text>
+<text transform="translate(359,357)" font-size="22" style="fill:rgb(255, 152, 80)">fort fort</text>
+<text transform="translate(25,128) rotate(-90)" font-size="21" style="fill:rgb(47, 224, 219)">append</text>
+<text transform="translate(138,447)" font-size="21" style="fill:rgb(74, 83, 251)">join</text>
+<text transform="translate(38,248)" font-size="21" style="fill:rgb(44, 126, 247)">item</text>
+<text transform="translate(782,82)" font-size="21" style="fill:rgb(255, 50, 25)">v</text>
+<text transform="translate(432,138)" font-size="21" style="fill:rgb(63, 235, 213)">rval</text>
+<text transform="translate(714,131)" font-size="21" style="fill:rgb(255, 65, 33)">nfilea</text>
+<text transform="translate(389,127) rotate(-90)" font-size="21" style="fill:rgb(249, 187, 102)">focus_args</text>
+<text transform="translate(166,423)" font-size="21" style="fill:rgb(17, 160, 241)">PIPE</text>
+<text transform="translate(606,406)" font-size="21" style="fill:rgb(240, 196, 108)">line startswith</text>
+<text transform="translate(518,163)" font-size="20" style="fill:rgb(45, 222, 220)">sys</text>
+<text transform="translate(501,89)" font-size="20" style="fill:rgb(155, 251, 165)">values</text>
+<text transform="translate(562,337)" font-size="20" style="fill:rgb(176, 243, 151)">end</text>
+<text transform="translate(728,112)" font-size="20" style="fill:rgb(139, 254, 174)">fw</text>
+<text transform="translate(242,125) rotate(-90)" font-size="20" style="fill:rgb(255, 77, 39)">dcounts</text>
+<text transform="translate(613,242) rotate(-90)" font-size="20" style="fill:rgb(118, 16, 255)">reverse</text>
+<text transform="translate(689,344) rotate(-90)" font-size="20" style="fill:rgb(144, 254, 171)">w</text>
+<text transform="translate(76,131)" font-size="20" style="fill:rgb(156, 251, 164)">pykriber</text>
+<text transform="translate(717,366)" font-size="20" style="fill:rgb(134, 255, 176)">Usage</text>
+<text transform="translate(278,332)" font-size="20" style="fill:rgb(255, 80, 41)">subprocess</text>
+<text transform="translate(409,372)" font-size="20" style="fill:rgb(60, 104, 249)">filenames</text>
+<text transform="translate(672,323)" font-size="20" style="fill:rgb(158, 250, 162)">n_procs</text>
+<text transform="translate(98,449) rotate(-90)" font-size="20" style="fill:rgb(63, 235, 213)">path abspath</text>
+<text transform="translate(440,183)" font-size="18" style="fill:rgb(2, 183, 235)">program</text>
+<text transform="translate(664,322) rotate(-90)" font-size="18" style="fill:rgb(61, 234, 213)">move</text>
+<text transform="translate(104,107)" font-size="18" style="fill:rgb(52, 228, 217)">tuple</text>
+<text transform="translate(80,16)" font-size="18" style="fill:rgb(34, 214, 224)">coseqdb</text>
+<text transform="translate(721,189)" font-size="18" style="fill:rgb(255, 65, 33)">inv_map</text>
+<text transform="translate(628,376)" font-size="18" style="fill:rgb(255, 160, 85)">strip</text>
+<text transform="translate(387,458) rotate(-90)" font-size="18" style="fill:rgb(255, 25, 13)">format</text>
+<text transform="translate(712,95)" font-size="18" style="fill:rgb(255, 44, 22)">dlsall</text>
+<text transform="translate(30,496)" font-size="18" style="fill:rgb(255, 71, 36)">strudat2cif</text>
+<text transform="translate(670,187)" font-size="18" style="fill:rgb(182, 241, 147)">sp</text>
+<text transform="translate(112,378) rotate(-90)" font-size="18" style="fill:rgb(26, 207, 227)">b</text>
+<text transform="translate(323,131) rotate(-90)" font-size="18" style="fill:rgb(76, 80, 252)">parser</text>
+<text transform="translate(653,424)" font-size="18" style="fill:rgb(255, 152, 80)">help</text>
+<text transform="translate(429,407)" font-size="18" style="fill:rgb(24, 205, 228)">os remove</text>
+<text transform="translate(659,495)" font-size="12" style="fill:rgb(106, 34, 254)">parser add_argument</text>
+<text transform="translate(399,10)" font-size="11" style="fill:rgb(255, 172, 92)">__version__</text>
+<text transform="translate(337,375)" font-size="11" style="fill:rgb(102, 41, 254)">rename</text>
+<text transform="translate(249,391)" font-size="11" style="fill:rgb(98, 251, 196)">db</text>
+<text transform="translate(64,185)" font-size="11" style="fill:rgb(108, 31, 255)">int</text>
+<text transform="translate(305,160) rotate(-90)" font-size="11" style="fill:rgb(124, 6, 255)">uniq_map</text>
+<text transform="translate(240,423)" font-size="11" style="fill:rgb(124, 6, 255)">val</text>
+<text transform="translate(675,239)" font-size="11" style="fill:rgb(60, 104, 249)">section</text>
+<text transform="translate(460,470)" font-size="11" style="fill:rgb(255, 86, 44)">start</text>
+<text transform="translate(658,119)" font-size="11" style="fill:rgb(68, 92, 251)">label</text>
+<text transform="translate(413,443)" font-size="11" style="fill:rgb(244, 192, 105)">last_key</text>
+<text transform="translate(214,120) rotate(-90)" font-size="11" style="fill:rgb(224, 211, 119)">KeyError</text>
+<text transform="translate(166,343)" font-size="11" style="fill:rgb(255, 172, 92)">ftc</text>
+<text transform="translate(112,173)" font-size="11" style="fill:rgb(134, 255, 176)">fo2hist</text>
+<text transform="translate(673,54)" font-size="11" style="fill:rgb(60, 104, 249)">total</text>
+<text transform="translate(38,262)" font-size="11" style="fill:rgb(190, 236, 142)">count</text>
+<text transform="translate(242,343)" font-size="11" style="fill:rgb(100, 44, 254)">float</text>
+<text transform="translate(281,40)" font-size="11" style="fill:rgb(255, 176, 95)">fo2strudat</text>
+<text transform="translate(23,246) rotate(-90)" font-size="11" style="fill:rgb(139, 254, 174)">title</text>
+<text transform="translate(564,10)" font-size="11" style="fill:rgb(255, 142, 74)">given</text>
+<text transform="translate(137,269)" font-size="11" style="fill:rgb(38, 134, 245)">foc</text>
+<text transform="translate(306,453)" font-size="11" style="fill:rgb(55, 230, 216)">fin</text>
+<text transform="translate(751,229)" font-size="11" style="fill:rgb(255, 126, 65)">close</text>
+<text transform="translate(116,216)" font-size="8" style="fill:rgb(255, 50, 25)">extract_all_keys_from_strudat</text>
+<text transform="translate(167,405)" font-size="8" style="fill:rgb(255, 172, 92)">verbose</text>
+<text transform="translate(699,227)" font-size="8" style="fill:rgb(206, 225, 132)">cdlsall</text>
+<text transform="translate(99,205) rotate(-90)" font-size="8" style="fill:rgb(128, 255, 180)">argparse</text>
+<text transform="translate(710,463)" font-size="8" style="fill:rgb(64, 98, 250)">printer</text>
+<text transform="translate(666,455)" font-size="8" style="fill:rgb(255, 150, 79)">procs</text>
+<text transform="translate(240,175)" font-size="8" style="fill:rgb(57, 107, 249)">number</text>
+<text transform="translate(437,77)" font-size="8" style="fill:rgb(62, 101, 250)">input</text>
+<text transform="translate(345,186)" font-size="8" style="fill:rgb(255, 109, 56)">metavar</text>
+<text transform="translate(353,366)" font-size="8" style="fill:rgb(196, 232, 138)">dest</text>
+<text transform="translate(508,169) rotate(-90)" font-size="8" style="fill:rgb(255, 0, 0)">spgr_dat</text>
+<text transform="translate(139,408)" font-size="8" style="fill:rgb(255, 13, 6)">find</text>
+<text transform="translate(299,172)" font-size="8" style="fill:rgb(255, 50, 25)">KRIBER</text>
+<text transform="translate(166,225)" font-size="8" style="fill:rgb(255, 152, 80)">fname target</text>
+<text transform="translate(111,141)" font-size="8" style="fill:rgb(255, 68, 34)">dcounts dmap</text>
+<text transform="translate(347,175)" font-size="8" style="fill:rgb(16, 198, 230)">__name__ __main__'</text>
+<text transform="translate(561,166)" font-size="7" style="fill:rgb(240, 196, 108)">drc</text>
+<text transform="translate(689,367) rotate(-90)" font-size="7" style="fill:rgb(255, 155, 82)">prev</text>
+<text transform="translate(597,119)" font-size="7" style="fill:rgb(64, 236, 212)">uniquify_list</text>
+<text transform="translate(194,469)" font-size="7" style="fill:rgb(116, 19, 255)">uniquify_invert_dict</text>
+<text transform="translate(229,142) rotate(-90)" font-size="7" style="fill:rgb(48, 225, 218)">sort</text>
+<text transform="translate(304,420)" font-size="7" style="fill:rgb(32, 142, 244)">intro</text>
+<text transform="translate(620,169)" font-size="7" style="fill:rgb(76, 80, 252)">num</text>
+<text transform="translate(561,66)" font-size="7" style="fill:rgb(74, 242, 207)">cut</text>
+<text transform="translate(632,47)" font-size="7" style="fill:rgb(96, 50, 254)">get_coseq</text>
+<text transform="translate(632,37)" font-size="7" style="fill:rgb(255, 77, 39)">coseq_cmp</text>
+<text transform="translate(649,98)" font-size="7" style="fill:rgb(255, 123, 64)">SUM</text>
+<text transform="translate(507,97)" font-size="7" style="fill:rgb(255, 9, 5)">structure</text>
+<text transform="translate(466,323)" font-size="7" style="fill:rgb(185, 239, 146)">refine_cell</text>
+<text transform="translate(569,356)" font-size="7" style="fill:rgb(255, 59, 30)">Wrote</text>
+<text transform="translate(8,43)" font-size="7" style="fill:rgb(235, 202, 112)">ProgressBar</text>
+<text transform="translate(428,413)" font-size="7" style="fill:rgb(24, 205, 228)">default</text>
+<text transform="translate(112,301)" font-size="7" style="fill:rgb(94, 250, 198)">range</text>
+<text transform="translate(121,227)" font-size="7" style="fill:rgb(249, 187, 102)">height</text>
+<text transform="translate(377,151)" font-size="7" style="fill:rgb(42, 221, 221)">n_cores</text>
+<text transform="translate(171,237)" font-size="7" style="fill:rgb(36, 137, 245)">n_runs</text>
+<text transform="translate(372,288)" font-size="7" style="fill:rgb(42, 221, 221)">fnout</text>
+<text transform="translate(647,466)" font-size="7" style="fill:rgb(176, 243, 151)">cmd</text>
+<text transform="translate(699,245)" font-size="7" style="fill:rgb(255, 38, 19)">dry_run</text>
+<text transform="translate(294,470)" font-size="7" style="fill:rgb(106, 34, 254)">resize</text>
+<text transform="translate(343,338)" font-size="7" style="fill:rgb(255, 77, 39)">pb</text>
+<text transform="translate(462,219)" font-size="7" style="fill:rgb(204, 227, 133)">description</text>
+<text transform="translate(383,160)" font-size="7" style="fill:rgb(249, 187, 102)">epilog</text>
+<text transform="translate(118,157)" font-size="7" style="fill:rgb(255, 107, 55)">fort</text>
+<text transform="translate(389,42)" font-size="7" style="fill:rgb(255, 137, 71)">dirname __file__</text>
+<text transform="translate(626,7)" font-size="7" style="fill:rgb(255, 44, 22)">drc resources</text>
+<text transform="translate(653,250)" font-size="7" style="fill:rgb(162, 249, 160)">time sleep</text>
+<text transform="translate(115,52)" font-size="7" style="fill:rgb(255, 160, 85)">sp Popen</text>
+<text transform="translate(177,377)" font-size="7" style="fill:rgb(68, 92, 251)">action store</text>
+<text transform="translate(237,407)" font-size="7" style="fill:rgb(84, 246, 203)">store type</text>
+<text transform="translate(6,170)" font-size="7" style="fill:rgb(198, 231, 137)">shutil copyfile</text>
+<text transform="translate(720,144)" font-size="7" style="fill:rgb(226, 209, 118)">symdat distdat</text>
+<text transform="translate(436,118)" font-size="7" style="fill:rgb(39, 218, 222)">kriber_exe prepare</text>
+<text transform="translate(340,185) rotate(-90)" font-size="6" style="fill:rgb(110, 28, 255)">itemgetter</text>
+<text transform="translate(475,331)" font-size="6" style="fill:rgb(29, 209, 226)">parse_coseq</text>
+<text transform="translate(360,310)" font-size="6" style="fill:rgb(255, 169, 91)">neighbours</text>
+<text transform="translate(434,428)" font-size="6" style="fill:rgb(255, 165, 88)">length</text>
+<text transform="translate(785,318)" font-size="6" style="fill:rgb(48, 121, 247)">lst</text>
+<text transform="translate(637,54)" font-size="6" style="fill:rgb(88, 248, 201)">col</text>
+<text transform="translate(681,372)" font-size="6" style="fill:rgb(86, 65, 253)">pop</text>
+<text transform="translate(77,24)" font-size="6" style="fill:rgb(255, 167, 89)">coseq_reduce</text>
+<text transform="translate(639,390)" font-size="6" style="fill:rgb(41, 129, 246)">ValueError</text>
+<text transform="translate(410,408)" font-size="6" style="fill:rgb(12, 167, 239)">s</text>
+<text transform="translate(60,308) rotate(-90)" font-size="6" style="fill:rgb(255, 162, 86)">l</text>
+<text transform="translate(476,357)" font-size="6" style="fill:rgb(74, 242, 207)">di</text>
+<text transform="translate(360,52)" font-size="6" style="fill:rgb(68, 238, 210)">dmap</text>
+<text transform="translate(560,20)" font-size="6" style="fill:rgb(255, 89, 45)">unique_only</text>
+<text transform="translate(461,451)" font-size="6" style="fill:rgb(112, 254, 188)">Framework</text>
+<text transform="translate(37,140) rotate(-90)" font-size="6" style="fill:rgb(102, 252, 194)">get_R_from_dls76_out</text>
+<text transform="translate(365,444) rotate(-90)" font-size="6" style="fill:rgb(188, 237, 143)">nfilea2cif</text>
+<text transform="translate(472,197) rotate(-90)" font-size="6" style="fill:rgb(155, 251, 165)">T</text>
+<text transform="translate(217,302)" font-size="6" style="fill:rgb(140, 254, 173)">NATOM</text>
+<text transform="translate(8,21)" font-size="6" style="fill:rgb(171, 246, 155)">enable_cdls</text>
+<text transform="translate(522,293)" font-size="6" style="fill:rgb(136, 255, 175)">dlsinp</text>
+<text transform="translate(368,204)" font-size="6" style="fill:rgb(106, 34, 254)">DLS</text>
+<text transform="translate(674,463)" font-size="6" style="fill:rgb(255, 172, 92)">pydls</text>
+<text transform="translate(211,313)" font-size="6" style="fill:rgb(47, 224, 219)">strudat2dls</text>
+<text transform="translate(755,319)" font-size="6" style="fill:rgb(255, 121, 62)">addo</text>
+<text transform="translate(245,396)" font-size="6" style="fill:rgb(10, 192, 232)">marker</text>
+<text transform="translate(541,12)" font-size="6" style="fill:rgb(29, 209, 226)">_dls</text>
+<text transform="translate(493,6)" font-size="6" style="fill:rgb(40, 132, 246)">fo2hist_entry</text>
+<text transform="translate(238,377)" font-size="6" style="fill:rgb(246, 190, 104)">fo2strudat_entry</text>
+<text transform="translate(223,249)" font-size="6" style="fill:rgb(192, 235, 141)">cpu_count</text>
+<text transform="translate(766,376)" font-size="6" style="fill:rgb(94, 250, 198)">__init__</text>
+<text transform="translate(534,326)" font-size="6" style="fill:rgb(10, 192, 232)">loop</text>
+<text transform="translate(304,201)" font-size="6" style="fill:rgb(118, 255, 185)">clear</text>
+<text transform="translate(413,378)" font-size="6" style="fill:rgb(64, 98, 250)">resize_terminal</text>
+<text transform="translate(156,457)" font-size="6" style="fill:rgb(86, 247, 202)">x1b</text>
+<text transform="translate(297,45)" font-size="6" style="fill:rgb(166, 248, 157)">data</text>
+<text transform="translate(124,378) rotate(-90)" font-size="6" style="fill:rgb(66, 237, 211)">check_file</text>
+<text transform="translate(765,8)" font-size="6" style="fill:rgb(7, 187, 234)">OSError</text>
+<text transform="translate(182,24) rotate(-90)" font-size="6" style="fill:rgb(255, 140, 73)">e</text>
+<text transform="translate(90,281)" font-size="6" style="fill:rgb(82, 245, 203)">replace</text>
+<text transform="translate(482,44)" font-size="6" style="fill:rgb(88, 248, 201)">Expected</text>
+<text transform="translate(83,49)" font-size="6" style="fill:rgb(254, 181, 98)">positive</text>
+<text transform="translate(777,352)" font-size="6" style="fill:rgb(100, 251, 195)">y</text>
+<text transform="translate(439,385)" font-size="6" style="fill:rgb(48, 121, 247)">confirm</text>
+<text transform="translate(657,174)" font-size="6" style="fill:rgb(132, 255, 178)">out'</text>
+<text transform="translate(789,277) rotate(-90)" font-size="6" style="fill:rgb(120, 13, 255)">focus'</text>
+<text transform="translate(628,381)" font-size="6" style="fill:rgb(255, 123, 64)">started'</text>
+<text transform="translate(121,337) rotate(-90)" font-size="6" style="fill:rgb(148, 253, 168)">main</text>
+<text transform="translate(774,448)" font-size="6" style="fill:rgb(1, 179, 236)">focus</text>
+</svg>

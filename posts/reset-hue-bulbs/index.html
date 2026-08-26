@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Resetting an unavailable Philips HUE bulb in Home Assistant
+</h1>
+<p class="subtitle"><strong>2022-04-10</strong></p>
+<div class="prose">
+  <p>After the most recent Home assistant update, some of my philips Hue lights became unresponsive. OK, no big deal, I have had this before, I will just reset them. Turns out this is not as easy as just flipping the switch a couple of times to put the bulb into pairing mode.</p>
+<p>The manual is not very helpful either, and search the web sent me to install the HUE or Alexa apps (both were useless for this).</p>
+<p>In the end I came accross a post somewhere about using the HUE remote. Luckily I have a couple around.</p>
+<p>To reset a Philips HUE bulb, hold the on and off buttons on the remote for 10 seconds. The light will flash three times and the bulb will reset itself.</p>
+<figure>
+  <a href="remote.webp">
+    <img src="remote.webp" alt="I'm sure I went through this before... in part this blog post serves as a reminder for myself.">
+  </a>
+  <figcaption>I'm sure I went through this before... in part this blog post serves as a reminder for myself.</figcaption>
+</figure>
+<p>This was not the end of it.</p>
+<p>I managed to get one bulb to pair, using the <em>find devices</em> in the ZHA menu. But another only seemed to not complete the pairing process (stuck at 'starting interview'). It did not fully initialize, but it did register a device in Home Assistant. This blocked me from doing anything else.</p>
+<p>In the end, I found that I first had to completely remove the device. In Developer tools, I used the <code>zha.remove</code> service and put the IEEE address of the bulb (you can find this in the device menu).</p>
+<p>You can do it in the GUI, but the <em>yaml</em> looks like this:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="yaml"><span class="giallo-l"><span style="color: #5CCFE6;">service</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> zha.remove</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">data</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    ieee</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> 00:12:34:56:78:90:5a:b6</span></span></code></pre>
+<p>After this, the bulb paired on the second attempt. 2 hours well spent!</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

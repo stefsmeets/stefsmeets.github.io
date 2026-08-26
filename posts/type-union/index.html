@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Type union operator in Python 3.7+
+</h1>
+<p class="subtitle"><strong>2022-01-21</strong></p>
+<div class="prose">
+  <p>I'm a big fan of Python type hints. I try to use them whenever I can. Not only for static type checking with <a rel="external" href="https://mypy.readthedocs.io/en/stable/">mypy</a>. They also help document functions (sphinx has nice support for them) and force me to think about how I structure my functions.</p>
+<p>One thing that bothers me, is that type hints can get quite verbose. Especially if you have multiple possible input types or optional values. For example, take this function that takes an <code>int</code> or a <code>float</code> as input:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;"># type_union.py</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">from</span><span> typing</span><span style="color: #FFA659;"> import</span><span> Union</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> square</span><span>(</span><span style="color: #DFBFFF;">a</span><span style="color: #CCCAC2B3;"> :</span><span> Union[</span><span style="color: #5CCFE6;">int</span><span style="color: #CCCAC2B3;">,</span><span style="color: #5CCFE6;"> float</span><span>]):</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    return</span><span> a</span><span style="color: #F29E74;">**</span><span style="color: #DFBFFF;">2</span></span></code></pre>
+<p>Python 3.10 introduces a new <a rel="external" href="https://www.python.org/dev/peps/pep-0604/">type union syntax</a> to make this a bit nicer to read. The piping operator (<code>|</code>) can be used to join multiple types:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;"># type_union_310.py</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> square</span><span>(</span><span style="color: #DFBFFF;">a</span><span style="color: #CCCAC2B3;"> :</span><span style="color: #5CCFE6;"> int</span><span style="color: #F29E74;"> |</span><span style="color: #5CCFE6;"> float</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    return</span><span> a</span><span style="color: #F29E74;">**</span><span style="color: #DFBFFF;">2</span></span></code></pre>
+<p>If you try to run this code in older versions of Python, it will raise this error:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span> type_union_future</span><span style="color: #CCCAC2B3;">.</span><span>py</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;">5</span><span style="color: #CCCAC2B3;">:</span><span> error</span><span style="color: #CCCAC2B3;">:</span><span> X</span><span style="color: #F29E74;"> |</span><span> Y syntax</span><span style="color: #FFA659;"> for</span><span> unions requires Python</span><span style="color: #DFBFFF;"> 3.10</span></span></code></pre>
+<p>It is a little known fact that the new type union syntax is also available in older versions of Python (3.7+) using a <a rel="external" href="https://docs.python.org/3/library/__future__.html">futures import</a>! <code>__future__</code> is a Python module part of the standard library that makes newer features available to older versions of Python.</p>
+<p>If you add <code>from __future__ import annotations</code> to the top of your code:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;"># type_union_future.py</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">from</span><span> __future__</span><span style="color: #FFA659;"> import</span><span> annotations</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> square</span><span>(</span><span style="color: #DFBFFF;">a</span><span style="color: #CCCAC2B3;"> :</span><span style="color: #5CCFE6;"> int</span><span style="color: #F29E74;"> |</span><span style="color: #5CCFE6;"> float</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    return</span><span> a</span><span style="color: #F29E74;">**</span><span style="color: #DFBFFF;">2</span></span></code></pre>
+<p>You can also use the new type union syntax in Python 3.7+! 🥳</p>
+<h2 id="extra">Extra</h2>
+<p>I was already aware that <a rel="external" href="https://www.python.org/dev/peps/pep-0563/">PEP-563</a> will introduce postponed evaluation of annotations. This will help deal with forward references. For example:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;"># forward_reference.py</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">from</span><span> __future__</span><span style="color: #FFA659;"> import</span><span> annotations</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">class</span><span style="color: #73D0FF;"> MyClass</span><span>:</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    def</span><span style="color: #FFCD66;"> __constructor__</span><span>(</span><span style="color: #DFBFFF;">self</span><span>)</span><span style="color: #CCCAC2B3;"> -&gt;</span><span> MyClass:</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        pass</span></span></code></pre>
+<p>Without the futures import, this will be valid in <code>mypy</code>, but throws <code>NameError: name 'MyClass' is not defined</code> when trying to execute it. This has been available via the same <code>from __future__ import annotations</code> since Python 3.7.</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

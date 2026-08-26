@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Notes on code quality
+</h1>
+<p class="subtitle"><strong>2024-08-20</strong></p>
+<div class="prose">
+  <p>As a software engineer we often talk about code quality as if it is something all encompassing that we can easily improve.
+For me, however, these discussions are often fraught with ambiguity and disagreements on what is actually high-quality code.</p>
+<p>First, it's often not clear what we mean when we talk about code quality and we may not even agree on the same thing.</p>
+<p>Second, as engineers we are easy to judge whether code is good or bad quality. And we all like to brag about the quality of our code.
+The fact is however that code quality is often difficult to measure objectively.</p>
+<p>Not surprising then that many companies try to jump into this gap and sell you tools to measure and improve code quality.
+In my experience they mostly work at the superficial level, whereas true issues with code quality are often at a much deeper level.</p>
+<p>Although linting tools, code formatters, type checks, and unit tests help, there implementation in the code is also subject to quality.</p>
+<p>But what is good quality code and how can you measure it?</p>
+<h2 id="external">External</h2>
+<p>These measures are important for the users of the software.
+Note that these say nothing about how the programming language, data structure, which compiler etc.</p>
+<ul>
+<li>Correctness</li>
+<li>Usability</li>
+<li>Efficiency</li>
+<li>Reliability</li>
+<li>Integrety</li>
+<li>Adaptability</li>
+<li>Accuracy</li>
+<li>Robustness</li>
+</ul>
+<h2 id="internal">Internal</h2>
+<p>These are measures that are important for the developers of the code.
+As programmers we often tend to focus on those, because they make the code more fun to work with.</p>
+<ul>
+<li>Maintainability</li>
+<li>Flexibility</li>
+<li>Portability</li>
+<li>Reusability</li>
+<li>Readability</li>
+<li>Testability</li>
+<li>Understandability</li>
+</ul>
+<p>You may notice that some of these measures are often at odds.
+For example, focusing on correctness and reliability may affect performance and efficiency.</p>
+<p>The point is that what to focus on is a choice.
+Some quality measures are aimed at making life easier for the programmer, while some are aimed at making the code easier to use.</p>
+<p>Having worked on many different code bases in recent years with varying degrees of 'code quality',
+I think for me it boils down to three things that define high quality software for me:</p>
+<ol>
+<li><strong>Easy to change</strong> - Code that is easy to change is often well structured, documented, and well encapsulated.
+This means we can focus on adding new features, and avoid getting stuck in difficult refactoring tasks.</li>
+<li><strong>Follows best practices</strong> - I'm a big fan of code that follow best practices or community standards.
+These code bases feel familiar, facilitating collaboration, and gives newcomers a head start when we need to contribute.</li>
+<li><strong>Does not surprise me</strong> - Code should work as expected.
+If I have to go down a rabbit hole to chase where that one variable is defined 12 levels deep, it's probably not a good sign (although we have all been there 😅).</li>
+</ol>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

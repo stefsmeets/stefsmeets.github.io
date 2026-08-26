@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Test your Streamlit dashboard using Playwright
+</h1>
+<p class="subtitle"><strong>2023-05-17</strong></p>
+<div class="prose">
+  <p>Over the last year, Streamlit has quickly become one of my favourite tools to <a rel="external" href="https://www.stefsmeets.nl/posts/forget-jupyter-notebooks/">showcase research data</a>. I have been using it to create interactive dashboards and simple user interfaces for my data analysis tools.</p>
+<p>As a software engineer, I want to make sure that whenever I make changes to my code, the dashboard that my users interact with still functions. Whether I did a refactoring, made some changes to the Python API of some functions, or a dependency got out-of-date. There are many reasons why a Streamlit dashboard may crash or refuse to work.</p>
+<p>Testing a Streamlit dashboard manually can be quite time-consuming after every code change. Sometimes I simply forget. So I was looking for a way to automate this process.</p>
+<h2 id="playwright">Playwright</h2>
+<p>For my requirements, I was looking for some tool that I can call from Python, is fairly lightweight, and easy to get started with.</p>
+<p>I had previously heard about <a rel="external" href="https://www.selenium.dev/">Selenium</a> as the goto tool for browser automation and testing of web apps, but in my search I quickly came across <a rel="external" href="https://playwright.dev">Playwright</a>. There are many reasons to prefer one over the other, but it seems that Playwright is a more modern tool with a growing community.</p>
+<p>The thing that won me over is that it has a <a rel="external" href="https://playwright.dev/python/docs/test-runners">plugin for pytest</a> and  is easy to install. It even has a <a rel="external" href="https://playwright.dev/python/docs/codegen-intro">code generator</a>!</p>
+<h2 id="getting-started">Getting started</h2>
+<p>Installing pytest into my virtual environment was straight-forward via the plugin:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">pip</span><span style="color: #D5FF80;"> install pytest-playwright</span></span></code></pre>
+<p>This will also install the playwright library, but you should install browsers seperately. I'm not interested in testing browser support, so I stick with the chromium default:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>playwright install chromium</span></span></code></pre><h2 id="writing-your-first-streamlit-test">Writing your first Streamlit test</h2>
+<p>First, start your Streamlit app. For this example, I use the Streamlit demo page. You can replace this with your own Streamlit app. I open it in headless mode to prevent Streamlit from opening a browser.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">streamlit</span><span style="color: #D5FF80;"> hello</span><span style="color: #95E6CB;"> --server.headless</span><span style="color: #DFBFFF;"> true</span></span></code></pre>
+<p>In a different tab, start the <a rel="external" href="https://playwright.dev/python/docs/codegen-intro">playwright code generator</a>:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">playwright</span><span style="color: #D5FF80;"> codegen http://localhost:8501</span></span></code></pre><figure>
+  <a href="canvas.webp">
+    <img src="canvas.webp" alt="Highlight an element and playwright will tell you how to locate it from code.">
+  </a>
+  <figcaption>Highlight an element and playwright will tell you how to locate it from code.</figcaption>
+</figure>
+<p>The code generator can be used to generate entire user workflows and automate testing procedures. You will get a little inspector window which will write out the code for you in Python, Java, Node.js, or C#.</p>
+<p>I have found the code generate to be very useful to get <em>locators</em>. These can be used as targets to click on or to verify whether elements are present.</p>
+<figure>
+  <a href="inspector.webp">
+    <img src="inspector.webp" alt="The playwright inspector automatically generates code for you.">
+  </a>
+  <figcaption>The playwright inspector automatically generates code for you.</figcaption>
+</figure>
+<p>Add the generated code to a file, i.e. <code>test_hello.py</code> and run pytest:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>pytest test_hello.py</span></span></code></pre>
+<p>A cool feature, is that you can run it in <em>headed</em> mode, which will open up a Chromium window so you can follow along with the steps.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>pytest test_hello.py --headed</span></span></code></pre><h2 id="waiting-for-long-running-processes">Waiting for long running processes</h2>
+<p>If you're doing any sort of computation in your dashboard or need to wait for the page to load, you may have to tell playwright to pause at certain times.</p>
+<p>One trick I found is to look for the <em>Running...</em> widget at the top of the page. While the widget is there, we cannot continue with the tests. You can add this line whever you need to wait for the next element to load:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span>page</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">get_by_text</span><span>(</span><span style="color: #D5FF80;">&#39;Running...&#39;</span><span>)</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">wait_for</span><span>(state</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;detached&#39;</span><span>)</span></span></code></pre><h2 id="a-complete-script-for-testing">A complete script for testing</h2>
+<p>Below is an example of what a complete script may look like. This code should run 'as-is' if you have installed <code>streamlit</code>, <code>pytest</code>, and <code>pytest-playwright</code>. Save it as as <code>test_hello.py</code> and run <code>pytest test_hello.py</code>. Checkout the full documentation for the playwright python api <a rel="external" href="https://playwright.dev/python/docs/writing-tests">here</a>.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">import</span><span> time</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">from</span><span> contextlib</span><span style="color: #FFA659;"> import</span><span> contextmanager</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">import</span><span> pytest</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">import</span><span> subprocess</span><span style="color: #FFA659;"> as</span><span> sp</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">from</span><span> playwright</span><span style="color: #CCCAC2B3;">.</span><span>sync_api</span><span style="color: #FFA659;"> import</span><span> Page</span><span style="color: #CCCAC2B3;">,</span><span> expect</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #95E6CB;">PORT</span><span style="color: #F29E74;"> =</span><span style="color: #D5FF80;"> &#39;8502&#39;</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">BASE_URL</span><span style="color: #F29E74;"> =</span><span style="color: #FFA659;"> f</span><span style="color: #D5FF80;">&#39;localhost:</span><span style="color: #95E6CB;">{PORT}</span><span style="color: #D5FF80;">&#39;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #D9BE98;">@pytest</span><span style="color: #CCCAC2B3;">.</span><span style="color: #D9BE98;">fixture</span><span>(scope</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;module&#39;</span><span style="color: #CCCAC2B3;">,</span><span> autouse</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">True</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> run_streamlit</span><span>():</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">    &quot;&quot;&quot;Run the app.&quot;&quot;&quot;</span></span>
+<span class="giallo-l"><span>    p</span><span style="color: #F29E74;"> =</span><span> sp</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">Popen</span><span>([</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">        *</span><span>(</span><span style="color: #D5FF80;">&#39;streamlit&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;"> &#39;hello&#39;</span><span>)</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">        *</span><span>(</span><span style="color: #D5FF80;">&#39;--server.port&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #95E6CB;"> PORT</span><span>)</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">        *</span><span>(</span><span style="color: #D5FF80;">&#39;--server.headless&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;"> &#39;true&#39;</span><span>)</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span>    ])</span></span>
+<span class="giallo-l"><span>    time</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">sleep</span><span>(</span><span style="color: #DFBFFF;">10</span><span>)</span><span style="color: #6E7C8F;font-style: italic;">  # give Streamlit some time to start</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    yield</span></span>
+<span class="giallo-l"><span>    p</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">kill</span><span>()</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> test_page_load</span><span>(</span><span style="color: #DFBFFF;">page</span><span style="color: #CCCAC2B3;">:</span><span> Page):</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">    &quot;&quot;&quot;Test performance of landing page.&quot;&quot;&quot;</span></span>
+<span class="giallo-l"><span>    page</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">goto</span><span>(</span><span style="color: #95E6CB;">BASE_URL</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    page</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">get_by_text</span><span>(</span><span style="color: #D5FF80;">&#39;Running...&#39;</span><span>)</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">wait_for</span><span>(state</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;detached&#39;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFCD66;">    expect</span><span>(page)</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">to_have_title</span><span>(</span><span style="color: #D5FF80;">&quot;Hello&quot;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    selector</span><span style="color: #F29E74;"> =</span><span> page</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">get_by_text</span><span>(</span><span style="color: #D5FF80;">&quot;Welcome to Streamlit! 👋&quot;</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #FFCD66;">    expect</span><span>(selector)</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">to_be_visible</span><span>()</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> test_plotting_demo</span><span>(</span><span style="color: #DFBFFF;">page</span><span style="color: #CCCAC2B3;">:</span><span> Page):</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">    &quot;&quot;&quot;Test performance of plotting demo.&quot;&quot;&quot;</span></span>
+<span class="giallo-l"><span>    page</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">goto</span><span>(</span><span style="color: #FFA659;">f</span><span style="color: #D5FF80;">&#39;</span><span style="color: #95E6CB;">{BASE_URL}</span><span style="color: #D5FF80;">/Plotting_Demo&#39;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    page</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">get_by_text</span><span>(</span><span style="color: #D5FF80;">&#39;Running...&#39;</span><span>)</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">wait_for</span><span>(state</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;detached&#39;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFCD66;">    expect</span><span>(page)</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">to_have_title</span><span>(</span><span style="color: #D5FF80;">&#39;Plotting Demo&#39;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    page</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">get_by_text</span><span>(</span><span style="color: #D5FF80;">&#39;Running...&#39;</span><span>)</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">wait_for</span><span>(state</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;detached&#39;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    selector</span><span style="color: #F29E74;"> =</span><span> page</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">locator</span><span>(</span><span style="color: #D5FF80;">&quot;canvas&quot;</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #FFCD66;">    expect</span><span>(selector)</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">to_be_visible</span><span>()</span></span></code></pre>
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

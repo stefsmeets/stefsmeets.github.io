@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Updating to LineageOS 19.1 on a Samsung Galaxy S10, S10+ or S10e
+</h1>
+<p class="subtitle"><strong>2022-05-15</strong></p>
+<div class="prose">
+  <p>Last week I got the prompt to update my phone (S10e) to LineageOS 19.1. Usually LineageOS can be update from within the OS, but version upgrades <a rel="external" href="https://wiki.lineageos.org/devices/beyond0lte/upgrade">require a bit more work</a>. It was obvious what I had to do, but the process was not entirely clear to me. So I logged my steps here. The steps are equivalent for the different S10 versions.</p>
+<p>I use Ubuntu when I flash my phone, because I typically run into some driver issue of some sort on Windows.</p>
+<p>Most of the information here I gathered from these links:</p>
+<ul>
+<li><a rel="external" href="https://forum.xda-developers.com/t/rom-official-lineageos-19-for-galaxy-s10e-s10-s10-s10-5g-exynos.4442685/">XDA - LineageOS 19 for Galaxy S10e/S10/S10+/S10 5G Exynos</a></li>
+<li><a rel="external" href="https://wiki.lineageos.org/devices/beyond0lte/upgrade">LineageOS wiki</a></li>
+<li><a rel="external" href="https://www.reddit.com/r/LineageOS/comments/ui74oe/samsung_s10e_update_to_lineageos_191_from_181_any/">Reddit #1</a></li>
+<li><a rel="external" href="https://www.reddit.com/r/LineageOS/comments/unylwj/s10e_beyond0lte_how_to_update_recovery_to_be_able/">Reddit #2</a></li>
+</ul>
+<h2 id="updating-the-firmware">Updating the firmware</h2>
+<p>For this step you will need <a rel="external" href="https://wiki.lineageos.org/devices/beyond0lte/install#preparing-for-installation">heimdall</a>.</p>
+<ol>
+<li>Download and unzip the firmware compatible with Android 12 for your model (<a rel="external" href="https://lineage.linux4.de/fw_update/beyond0lte.html">S10e</a>, <a rel="external" href="https://lineage.linux4.de/fw_update/beyond1lte.html">S10</a>, <a rel="external" href="https://lineage.linux4.de/fw_update/beyond2lte.html">S10+</a>).</li>
+<li>Put your phone in download mode:
+<ul>
+<li>Turn off the device</li>
+<li>Hold Volume Down + the Bixby button and plugin the usb cable connecting it to your pc</li>
+<li>In the menu, press 'Continue'</li>
+</ul>
+</li>
+<li>Once in <em>download mode</em>, flash the firmware:</li>
+</ol>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">heimdall</span><span style="color: #D5FF80;"> flash</span><span style="color: #95E6CB;"> --CM</span><span style="color: #D5FF80;"> cm.bin</span><span style="color: #95E6CB;"> --DQMDBG</span><span style="color: #D5FF80;"> dqmdbg.img</span><span style="color: #95E6CB;"> --KEYSTORAGE</span><span style="color: #D5FF80;"> keystorage.bin</span><span style="color: #95E6CB;"> --RADIO</span><span style="color: #D5FF80;"> modem.bin</span><span style="color: #95E6CB;"> --CP_DEBUG</span><span style="color: #D5FF80;"> modem_debug.bin</span><span style="color: #95E6CB;"> --PARAM</span><span style="color: #D5FF80;"> param.bin</span><span style="color: #95E6CB;"> --BOOTLOADER</span><span style="color: #D5FF80;"> sboot.bin</span><span style="color: #95E6CB;"> --UH</span><span style="color: #D5FF80;"> uh.bin</span><span style="color: #95E6CB;"> --UP_PARAM</span><span style="color: #D5FF80;"> up_param.bin</span></span></code></pre>
+<p>(The phone will reboot normally afterwards)</p>
+<h2 id="updating-to-lineageos-19-1">Updating to LineageOS 19.1</h2>
+<p>This step needs <a rel="external" href="https://en.wikipedia.org/wiki/Android_Debug_Bridge"><em>adb</em></a>. I installed it using apt:
+<code>sudo apt install adb</code></p>
+<ol start="4">
+<li>Download the latest build of LineageOS version 19.1 (<a rel="external" href="https://download.lineageos.org/beyond0lte">S10e</a>, <a rel="external" href="https://download.lineageos.org/beyond1lte">S10</a>, <a rel="external" href="https://download.lineageos.org/beyond2lte">S10+</a>)</li>
+<li>Download gapps for Lineage 19.1 (Android 12; <a rel="external" href="https://wiki.lineageos.org/gapps">MindTheGapps</a>)</li>
+<li>Put the phone in debugging mode
+<ul>
+<li>enable <em>USB debugging</em> entry under <em>Debugging</em> in the developer tools</li>
+</ul>
+</li>
+<li>I ran into an error running <code>adb</code>: <em>no permissions (user in plugdev group; are your udev rules wrong?</em>
+<ul>
+<li>To solve, I put the phone to <em>File transfer mode</em> as recommended <a rel="external" href="https://stackoverflow.com/a/53887369">here</a>. This prompted the <em>Allow USB debugging?</em> prompt to add my computer's RSA fingerprint to the phone.</li>
+</ul>
+</li>
+<li>Put the phone in sideload mode:
+<ul>
+<li><code>adb reboot sideload</code></li>
+</ul>
+</li>
+<li>Flash <em>LineageOS 19.1</em>
+<ul>
+<li><code>adb sideload lineage-19.1-20220512-nightly-beyond0lte-signed.zip</code> (replace with your version)</li>
+</ul>
+</li>
+<li>Flash <em>MindTheGapps</em></li>
+</ol>
+<ul>
+<li><code>adb sideload MindTheGapps-12.1.0-arm64-20220416_174313.zip</code></li>
+</ul>
+<ol start="11">
+<li>Reboot phone</li>
+<li>🥳</li>
+</ol>
+<p>Cool! So what's new? The most obvious to me is the updated UI with enormous clock on my home screen, giant volume and brightness sliders, and the enormous buttons in the pull-down menu.</p>
+<p>And Android Auto is working again! 🏎️</p>
+<p>Other than that, <a rel="external" href="https://www.androidauthority.com/android-12-features-1195735/">I haven't noticed much difference</a>.</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

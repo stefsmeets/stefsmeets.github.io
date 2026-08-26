@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  An interview with myself on my favourite meshing library 
+</h1>
+<p class="subtitle"><strong>2022-03-05</strong></p>
+<div class="prose">
+  <p><strong>Q</strong>: <em>Hi self, for this blog series we are looking to highlight our developer's favourite libraries.</em></p>
+<p><strong>S</strong>: As a software engineer I always get excited by tools that exactly fit the job that we need it for. For one project, I was looking for a triangle <a rel="external" href="https://en.wikipedia.org/wiki/Mesh_generation">mesh generator</a>.</p>
+<p><strong>Q</strong>: <em>Wait.. wait... Meshes?</em></p>
+<p><strong>S</strong>: Meshes simplify image data and describe complex geometries. A mesh is essentially a collection of vertices and triangles. They are used for computer graphics and physical simulations such as finite element analyses and fluid dynamics.</p>
+<p><strong>Q</strong>: <em>Like in computer games?</em></p>
+<p><strong>S</strong>: Exactly!</p>
+<p><strong>Q</strong>: <em>I have heard CGAL is the go-to library for Meshing.</em></p>
+<p><strong>S</strong>: CGAL is an excellent choice. It's written in C++, and provides easy access to efficient and reliable geometric algorithms. For my project, I was looking for a simple library that runs on all platforms, and can be easily interfaced with Python. Unfortunately, CGAL is a bit heavy-weight, difficult to install on Windows, and the python bindings are limited.</p>
+<p><strong>Q</strong>: So what did you end up using?</p>
+<p>After having tried a few more meshing libraries, I came accross <a rel="external" href="https://www.cs.cmu.edu/~quake/triangle.html">Triangle</a>. Triangle is an open-source two-dimensional quality mesh generator that supports multiple domains. It's written in C++ and supports all three major operating systems. Although it can be used on its own, there is an awesome python library that wraps it.</p>
+<p><strong>Q</strong>: <em>Cool, so how do you install it?</em></p>
+<p><strong>S</strong>: It's available on <code>pypi</code>. If you are already using <a rel="external" href="https://www.python.org/">Python</a>, just do:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>pip install triangle</span></span></code></pre>
+<p><strong>Q</strong>: <em>That's great! That will make it easy to integrate it into my existing project. How do you use it?</em></p>
+<p><strong>S</strong>: Let me give you an example. Here is the code to generate a simple square and triangulate it:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">import</span><span> matplotlib</span><span style="color: #CCCAC2B3;">.</span><span>pyplot</span><span style="color: #FFA659;"> as</span><span> plt</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">import</span><span> numpy</span><span style="color: #FFA659;"> as</span><span> np</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">import</span><span> triangle</span><span style="color: #FFA659;"> as</span><span> tr</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>vertices</span><span style="color: #F29E74;"> =</span><span> np</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">array</span><span>([[</span><span style="color: #DFBFFF;">0</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 0</span><span>]</span><span style="color: #CCCAC2B3;">,</span><span> [</span><span style="color: #DFBFFF;">1</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 0</span><span>]</span><span style="color: #CCCAC2B3;">,</span><span> [</span><span style="color: #DFBFFF;">1</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 1</span><span>]</span><span style="color: #CCCAC2B3;">,</span><span> [</span><span style="color: #DFBFFF;">0</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 1</span><span>]])</span></span>
+<span class="giallo-l"><span>inp</span><span style="color: #F29E74;"> =</span><span> {</span><span style="color: #D5FF80;">&#39;vertices&#39;</span><span style="color: #CCCAC2B3;">:</span><span> vertices}</span></span>
+<span class="giallo-l"><span>out</span><span style="color: #F29E74;"> =</span><span> tr</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">triangulate</span><span>(inp</span><span style="color: #CCCAC2B3;">,</span><span> opts</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;qa0.05&#39;</span><span>)</span></span>
+<span class="giallo-l"><span>tr</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">compare</span><span>(plt</span><span style="color: #CCCAC2B3;">,</span><span> inp</span><span style="color: #CCCAC2B3;">,</span><span> out)</span></span>
+<span class="giallo-l"><span>plt</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">show</span><span>()</span></span></code></pre><figure>
+  <a href="example_1.webp">
+    <img src="example_1.webp" alt="Example 1">
+  </a>
+  <figcaption>Example 1</figcaption>
+</figure>
+<p><strong>Q</strong>: <em>So I see <code>triangle</code> fills the box with little triangles. How does that work?</em></p>
+<p><strong>S</strong>: Alright, let me break it down for you.</p>
+<p>First we import <code>matplotlib</code>, <code>numpy</code> and <code>triangle</code>.</p>
+<p>Second, we generate the vertices representing a square with edges of length <code>l</code> and store them in a dictionary.</p>
+<p>Next, we call <code>triangulate</code>. The options <code>opts=qa0.05</code> tell <code>triangle</code> to perform a quality mesh, and that no triangles have an area larger than <code>0.05</code>. A quality mesh is a mesh with all angles over 30 degrees.</p>
+<p>Finally, <code>triangle</code> has a useful function to compare the input and the output.</p>
+<p>Try playing around with the area to see what happens to the result!</p>
+<p><strong>Q</strong>: <em>Cool, so if I give it a set of points, it will generate a mesh surface. Can I specify different regions?</em></p>
+<p><strong>S</strong>: Yes, that is one of the strenghts of <code>triangle</code>. It makes multi-region meshing easy. This means that it can label triangles according to the region it belongs to. Let me give you an example:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">import</span><span> matplotlib</span><span style="color: #CCCAC2B3;">.</span><span>pyplot</span><span style="color: #FFA659;"> as</span><span> plt</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">import</span><span> numpy</span><span style="color: #FFA659;"> as</span><span> np</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">import</span><span> triangle</span><span style="color: #FFA659;"> as</span><span> tr</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>vertices</span><span style="color: #F29E74;"> =</span><span> np</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">array</span><span>([[</span><span style="color: #DFBFFF;">0</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 0</span><span>]</span><span style="color: #CCCAC2B3;">,</span><span> [</span><span style="color: #DFBFFF;">1</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 0</span><span>]</span><span style="color: #CCCAC2B3;">,</span><span> [</span><span style="color: #DFBFFF;">1</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 1</span><span>]</span><span style="color: #CCCAC2B3;">,</span><span> [</span><span style="color: #DFBFFF;">0</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 1</span><span>]])</span></span>
+<span class="giallo-l"><span>segments</span><span style="color: #F29E74;"> =</span><span> np</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">array</span><span>([[</span><span style="color: #DFBFFF;">0</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;">1</span><span>]</span><span style="color: #CCCAC2B3;">,</span><span> [</span><span style="color: #DFBFFF;">1</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;">2</span><span>]</span><span style="color: #CCCAC2B3;">,</span><span> [</span><span style="color: #DFBFFF;">2</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;">3</span><span>]</span><span style="color: #CCCAC2B3;">,</span><span> [</span><span style="color: #DFBFFF;">3</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;">0</span><span>]</span><span style="color: #CCCAC2B3;">,</span><span> [</span><span style="color: #DFBFFF;">1</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;">3</span><span>]])</span></span>
+<span class="giallo-l"><span>regions</span><span style="color: #F29E74;"> =</span><span> np</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">array</span><span>([[</span><span style="color: #DFBFFF;">0.25</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 0.25</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 0</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 0</span><span>]</span><span style="color: #CCCAC2B3;">,</span><span> [</span><span style="color: #DFBFFF;">0.75</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 0.75</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 1</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 0</span><span>]])</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>inp</span><span style="color: #F29E74;"> =</span><span>{</span><span style="color: #D5FF80;">&#39;vertices&#39;</span><span style="color: #CCCAC2B3;">:</span><span> vertices</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;"> &#39;segments&#39;</span><span style="color: #CCCAC2B3;">:</span><span> segments</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;"> &#39;regions&#39;</span><span style="color: #CCCAC2B3;">:</span><span> regions}</span></span>
+<span class="giallo-l"><span>out</span><span style="color: #F29E74;"> =</span><span> tr</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">triangulate</span><span>(inp</span><span style="color: #CCCAC2B3;">,</span><span> opts</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&#39;pqa0.05&#39;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>tr</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">compare</span><span>(plt</span><span style="color: #CCCAC2B3;">,</span><span> inp</span><span style="color: #CCCAC2B3;">,</span><span> out)</span></span>
+<span class="giallo-l"><span>plt</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">show</span><span>()</span></span></code></pre><figure>
+  <a href="example_2.webp">
+    <img src="example_2.webp" alt="Example 2">
+  </a>
+  <figcaption>Example 2</figcaption>
+</figure>
+<p><strong>Q</strong>: <em>Can you explain how it works?</em></p>
+<p>The difference here is that we specify the different segments. The segments describe the boundaries of a region inside the square. Triangles will be generated for each region independently. Each region thus contains its own set of triangles, and are labeled accordingly.</p>
+<p>The format for defining the regions can seem a bit tricky at first. The first two numbers describe the coordinate, and the third number is the label of the region. The final number can be used to set the maximum area in that region. We don't use that here, so we set it to 0.</p>
+<p>As before, use the compare function to check the result.</p>
+<p><strong>Q</strong>: <em>Wow! That makes it useful for my finite element analyses.</em></p>
+<p><strong>S</strong>: Yup, now you can get started meshing your own data using <code>triangle</code>.</p>
+<p>If you want to know more, the documentation for triangle is available <a rel="external" href="https://rufat.be/triangle/API.html">here</a>.</p>
+<p>For one of my projects, we use <code>triangle</code> as the triangle mesh generator in <a href="https://stefsmeets.nl/posts/triangle/nanomesh.readthedocs.org">nanomesh</a>. Nanomesh is a python workflow tool to prepare meshes for finite element analysis from 2D (and 3D!) microscopy image data.</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

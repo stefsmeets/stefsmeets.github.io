@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Co-sort multiple python lists
+</h1>
+<p class="subtitle"><strong>2012-03-08</strong></p>
+<div class="prose">
+  <p>I have written a small function to sort multiple lists. The values are sorted according to the values in the first list first, then the second etc. It can take any number of lists and returns the same number.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> cosort</span><span>(</span><span style="color: #F29E74;">*</span><span style="color: #DFBFFF;">lsts</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">    &quot;&quot;&quot;Takes a any number of lists and sorts them based on the values of the first list.&quot;&quot;&quot;</span></span>
+<span class="giallo-l"><span>    tmp</span><span style="color: #F29E74;"> =</span><span style="color: #F28779;"> zip</span><span>(</span><span style="color: #F29E74;">*</span><span>lsts)</span></span>
+<span class="giallo-l"><span>    tmp</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">sort</span><span>()</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    return</span><span style="color: #F28779;"> zip</span><span>(</span><span style="color: #F29E74;">*</span><span>tmp)</span></span></code></pre>
+<p>Little testing script:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">from</span><span> random</span><span style="color: #FFA659;"> import</span><span> shuffle</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> cosort</span><span>(</span><span style="color: #F29E74;">*</span><span style="color: #DFBFFF;">lsts</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">    &quot;&quot;&quot;Takes a few lists and sorts them based on the values of the first list.&quot;&quot;&quot;</span></span>
+<span class="giallo-l"><span>    tmp</span><span style="color: #F29E74;"> =</span><span style="color: #F28779;"> zip</span><span>(</span><span style="color: #F29E74;">*</span><span>lsts)</span></span>
+<span class="giallo-l"><span>    tmp</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">sort</span><span>()</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    return</span><span style="color: #F28779;"> zip</span><span>(</span><span style="color: #F29E74;">*</span><span>tmp)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>a</span><span style="color: #F29E74;"> =</span><span style="color: #F28779;"> range</span><span>(</span><span style="color: #DFBFFF;">10</span><span>)</span></span>
+<span class="giallo-l"><span>b</span><span style="color: #F29E74;"> =</span><span> [</span><span style="color: #D5FF80;">&#39;a&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;b&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;c&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;d&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;e&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;f&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;g&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;h&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;i&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;j&#39;</span><span>]</span></span>
+<span class="giallo-l"><span>c</span><span style="color: #F29E74;"> =</span><span> [</span><span style="color: #D5FF80;">&#39;j&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;i&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;h&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;g&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;f&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;e&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;d&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;c&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;b&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;">&#39;a&#39;</span><span>]</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFCD66;">shuffle</span><span>(a)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">for</span><span> i</span><span style="color: #FFA659;"> in</span><span style="color: #F28779;"> range</span><span>(</span><span style="color: #F28779;">len</span><span>(a))</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #F28779;">    print</span><span> a[i]</span><span style="color: #CCCAC2B3;">,</span><span>b[i]</span><span style="color: #CCCAC2B3;">,</span><span>c[i]</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>a</span><span style="color: #CCCAC2B3;">,</span><span>b</span><span style="color: #CCCAC2B3;">,</span><span>c</span><span style="color: #F29E74;"> =</span><span style="color: #FFCD66;"> cosort</span><span>(a</span><span style="color: #CCCAC2B3;">,</span><span>b</span><span style="color: #CCCAC2B3;">,</span><span>c)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F28779;">print</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">for</span><span> i</span><span style="color: #FFA659;"> in</span><span style="color: #F28779;"> range</span><span>(</span><span style="color: #F28779;">len</span><span>(a))</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #F28779;">    print</span><span> a[i]</span><span style="color: #CCCAC2B3;">,</span><span>b[i]</span><span style="color: #CCCAC2B3;">,</span><span>c[i]</span></span></code></pre>
+<p>Original post on <a rel="external" href="https://web.archive.org/web/20140602142618/http://eftrunk.blogspot.com/">web.archive.org</a>.</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

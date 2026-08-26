@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Writing to NTFS on OS X
+</h1>
+<p class="subtitle"><strong>2012-08-17</strong></p>
+<div class="prose">
+  <p>Out of the box, OS X only supports reading from NTFS drives. The following steps explain how to install and where to find drivers to write to NTFS drives as well. From my experience, this works well on all recent versions of OS X, from Snow Leopard to Mountain Lion.</p>
+<h2 id="step-1">Step 1</h2>
+<p>Install <a rel="external" href="https://github.com/osxfuse/osxfuse">osxfuse</a>. For use with NTFS-3G below, make sure to tick the option "Install MacFuse compatibility layer". This is the general framework for extending OS X with new file system drivers.</p>
+<h2 id="step-2">Step 2</h2>
+<p>Install <a rel="external" href="https://sourceforge.net/projects/catacombae/files/NTFS-3G%20for%20Mac%20OS%20X/2010.10.2/">NTFS 3g</a>. This is the NTFS driver for use with osxfuse. Make sure to reboot after installing. Writing to NTFS drives should now be possible. 2010.10.2 is the latest version available at the time of writing.</p>
+<h2 id="step-3-optional">Step 3 (optional)</h2>
+<p>In Lion and newer you might experience a timeout bug every 15 seconds. This can be remedied with this patch: <a rel="external" href="https://github.com/bfleischer/fuse_wait/">fuse_wait.</a> To uninstall, simply reinstall the NTFS-3G driver.</p>
+<p>More information is available on the <a rel="external" href="https://github.com/osxfuse/osxfuse/wiki/">osxfuse wiki page</a>.</p>
+<p>Original post on <a rel="external" href="https://web.archive.org/web/20140602142618/http://eftrunk.blogspot.com/">web.archive.org</a>.</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

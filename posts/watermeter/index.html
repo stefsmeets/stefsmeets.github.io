@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Measure your water usage in Home Assistant
+</h1>
+<p class="subtitle"><strong>2022-06-20</strong></p>
+<div class="prose">
+  <p>In the Netherlands we have smart utility meters for gas and electricity meters. They have a digital port that sends an update every 10 seconds. I measure our usage through the <a rel="external" href="https://www.home-assistant.io/integrations/dsmr/">DSMR integration</a> in <a rel="external" href="https://www.home-assistant.io">Home Assistant</a>.</p>
+<p>Most watermeters, however, are still completely anologue. We have a <a rel="external" href="https://sensus.com/emea/products/620-water-meter/">Sensus 620</a>, and I was interested in reading it out to get some insight in our water usage. This blog details the steps of how I automated it using Home Assistant.</p>
+<figure>
+  <a href="sensus620.webp">
+    <img src="sensus620.webp" alt="The Sensus 620 has a spinning disk that rotates for every liter.">
+  </a>
+  <figcaption>The Sensus 620 has a spinning disk that rotates for every liter.</figcaption>
+</figure>
+<p>The sensor I'm using is an <a rel="external" href="https://en.wikipedia.org/wiki/Bipolar_junction_transistor#Function=">inductive proximity sensor (NPN)</a>. The idea is that every cycle of the metal plate the sensor is activated and sends out a pulse. The specific model I'm using is the <em>LJ18A3-8-Z/BX - 5V</em>.</p>
+<p>I used this together with an old <a rel="external" href="https://www.theengineeringprojects.com/2018/10/introduction-to-nodemcu-v3.html">nodeMCU v3</a> (based on esp8266 board) I still had lying around. See the connection scheme below.</p>
+<figure>
+  <a href="scheme.webp">
+    <img src="scheme.webp" alt="Connection scheme">
+  </a>
+  <figcaption>Connection scheme</figcaption>
+</figure>
+<p>I connected it all together using a breadboard and some jumper wires.</p>
+<ul>
+<li>The brown wire is connected to VU, which passes through th epower from the usb connection. There is no explicit 5V output on this board, but since the USB input runs on 5V, this works as well.</li>
+<li>The black wire receives the pulses and is connected to any of the digital ports (I used D2).</li>
+<li>The blue wire is connected to the ground port G.</li>
+<li>There is a 10k Ohm resistor between the brown and black wire that acts as a <a rel="external" href="https://en.m.wikipedia.org/wiki/Pull-up_resistor">pull-up</a>, which helps with ghost pulses.</li>
+</ul>
+<h2 id="installing-esphome">Installing esphome</h2>
+<p>I setup the using <a rel="external" href="https://esphome.io/">ESPhome</a>. ESPHome is a system to control esp8266 and esp32 boards using simple configuration files. Once you flash the boards, you can control and update them remotely through different home automation systems.</p>
+<p>I first tried to set it up using the ESPHome integration in Home Assistant, but I ran into a bunch of weird issues. So I used the command-line version (which worked the first try!).</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">conda</span><span style="color: #D5FF80;"> create</span><span style="color: #95E6CB;"> -n</span><span style="color: #D5FF80;"> esphome python=</span><span style="color: #DFBFFF;">3.10</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">pip</span><span style="color: #D5FF80;"> install esphome</span></span></code></pre>
+<p>For nodeMCU v3 use <code>board: nodemcuv2</code> (that's not a typo, apparently for v2+ all uses the same interface).</p>
+<p>Below is the config I used.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="yaml"><span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;"># watermeter.yaml</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">esphome</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">  name</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> watermeter</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">  comment</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &quot;Measure water cycles&quot;</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">  platform</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> ESP8266</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">  esp8266_restore_from_flash</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;"> true</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">  board</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> nodemcuv2</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">wifi</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">  ssid</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &quot;mywifi&quot;</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">  password</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &quot;badpassword&quot;</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">  fast_connect</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;"> true</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">logger</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">api</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">time</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>  -</span><span style="color: #5CCFE6;"> platform</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> sntp</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    id</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> my_time</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">sensor</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>  -</span><span style="color: #5CCFE6;"> platform</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> pulse_meter</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    pin</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> D2</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    name</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &quot;Water usage&quot;</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    id</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> water_usage_per_min</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    icon</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &quot;mdi:water&quot;</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    unit_of_measurement</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &#39;L/min&#39;</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    accuracy_decimals</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;"> 0</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    total</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">      id</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> water_usage_total</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">      name</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &quot;Watermeter Total&quot;</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">      icon</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &quot;mdi:cube-outline&quot;</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">      state_class</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &quot;total_increasing&quot;</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">      device_class</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> water</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">      unit_of_measurement</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> &quot;L&quot;</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">      accuracy_decimals</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;"> 0</span></span></code></pre>
+<p>This sets up the D2 pin as a <a rel="external" href="https://esphome.io/components/sensor/pulse_counter.html">pulse counter</a>, that will be reported reported to Home assistant as <code>water_usage_per_min</code> (by default it reports the number of pulses per minute). It also keeps track of the total number of pulses under <code>water_usage_total</code>.</p>
+<p>Save the config and compile it using:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">esphome</span><span style="color: #D5FF80;"> compile watermeter.yaml</span></span></code></pre>
+<p>The build file is in <code>.esphome/build/watermeter/.pioenvs/watermeter/firmware.bin</code>. I uploaded the binary using <code>esphome-flasher</code> from <a rel="external" href="https://github.com/esphome/esphome-flasher">here</a>.</p>
+<p>You can test the sensor by holding a piece of metal near the blue part. The red LED will light up.</p>
+<p>I built a little encasing using lego. To hold the sensor in place, I drilled out a 17 mm hole from a piece of multiplex, and two smaller holes to fit the holding pins on the sensor.</p>
+<figure>
+  <a href="meterkast.webp">
+    <img src="meterkast.webp" alt="This is what it looks like in my utility closet.">
+  </a>
+  <figcaption>This is what it looks like in my utility closet.</figcaption>
+</figure>
+<p>Make sure to fix the IP of the water sensor, so it can be added to Home Assistant using the ESPHome integration. Afterwards, the setup was straightforward. The sensors were reported immediately. I added a <a rel="external" href="https://my.home-assistant.io/redirect/helpers/">utility meter helper</a> that cycles every day to keep track of our daily use (<code>water_per_day</code>). And I set up a card in our dashboard.</p>
+<figure>
+  <a href="graphs.webp">
+    <img src="graphs.webp" alt="Graphs in Home Assistant.">
+  </a>
+  <figcaption>Graphs in Home Assistant.</figcaption>
+</figure>
+<p>This is the code I used for the graphs:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="yaml"><span class="giallo-l"><span style="color: #5CCFE6;">type</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> vertical-stack</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">cards</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>  -</span><span style="color: #5CCFE6;"> type</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> custom:mushroom-title-card</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">    title = &quot;Watermeter&quot;</span></span>
+<span class="giallo-l"><span>  -</span><span style="color: #5CCFE6;"> type</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> horizontal-stack</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    cards</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>      -</span><span style="color: #5CCFE6;"> type</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> custom:mini-graph-card</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">        entities</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>          -</span><span style="color: #5CCFE6;"> entity</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> sensor.water_per_day</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">        name</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> Vandaag</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">        hours_to_show</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;"> 168</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">        aggregate_func</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> max</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">        group_by</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> date</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">        show</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">          graph</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> bar</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">        hour24</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;"> true</span></span>
+<span class="giallo-l"><span>      -</span><span style="color: #5CCFE6;"> type</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> custom:mini-graph-card</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">        entities</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>          -</span><span style="color: #5CCFE6;"> entity</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> sensor.water_usage_per_min</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">        name</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> Nu</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">        hours_to_show</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;"> 24</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">        hour24</span><span style="color: #CCCAC2B3;">:</span><span style="color: #DFBFFF;"> true</span></span></code></pre>
+<p>That's it! I already learned that we use between 70 and 100 L for our showers, and 400 L to water our garden!</p>
+<h2 id="update-for-home-assistant-2022-11">Update for Home Assistant 2022.11</h2>
+<p><a rel="external" href="https://www.home-assistant.io/blog/2022/11/02/release-202211/">Home Assistant Version 2022.11</a> adds support for water meters in the energy dashboard.</p>
+<p>To make this work, you will need to add <code>device_class: water</code>  to the sensor. I have updated the example above.</p>
+<p>If you don't want to reflash your esphome, you can also customize your sensor:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="yaml"><span class="giallo-l"><span style="color: #5CCFE6;">homeassistant</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">  customize</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">    sensor.water_usage_total</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #5CCFE6;">      device_class</span><span style="color: #CCCAC2B3;">:</span><span style="color: #D5FF80;"> water</span></span></code></pre>
+<p>Refresh your confg, and it should show up under the energy dashboard. 💦</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

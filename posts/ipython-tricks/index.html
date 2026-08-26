@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  My 5 favourite IPython tricks
+</h1>
+<p class="subtitle"><strong>2023-08-03</strong></p>
+<div class="prose">
+  <p>These are my 5 favourite tricks I use daily when developing code using <a rel="external" href="https://ipython.readthedocs.io">IPython</a>, either in the shell or via a <a rel="external" href="https://jupyter.org/">Jupyter notebook</a>.</p>
+<h2 id="auto-reload">Auto reload</h2>
+<p>My all time favourite IPython magic is the auto reload function. This is an extension that automatically reloads modules before executing a cell. Whenever I'm working on a library, I add these 2 lines at the top of my notebook. This means that whenever I change the library I'm working, without having to restart the kernel. Super convenient for debugging.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #F29E74;">%</span><span>load_ext autoreload</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">%</span><span>autoreload</span><span style="color: #DFBFFF;"> 2</span></span></code></pre><h2 id="timing">Timing</h2>
+<p>For some quick performance testing of benchmarking, you can use the built-in time magics.</p>
+<p>There are cell magics to time (<code>%%time</code>) or benchmark (<code>%%timeit</code>) the cell. Or you can time (<code>%time</code>) and (<code>%timeit</code>) a single line or function call.</p>
+<h2 id="add-virtual-environment-as-jupyter-kernel">Add virtual environment as Jupyter kernel</h2>
+<p>One of my habits is to create a custom virtual environment for every code that I'm working on. These are usually called <code>.venv</code>, and I want to enable these as a kernel in a Jupyter Notebook.</p>
+<p>I do this so infrequently that I can never remember the command:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">pip</span><span style="color: #D5FF80;"> install ipykernel</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">python</span><span style="color: #95E6CB;"> -m</span><span style="color: #D5FF80;"> ipykernel install</span><span style="color: #95E6CB;"> --user --name</span><span style="color: #D5FF80;"> .venv</span></span></code></pre><h2 id="breakpoint">Breakpoint</h2>
+<p>I use the <code>breakpoint()</code> function added in <a rel="external" href="https://docs.python.org/3/whatsnew/3.7.html#pep-553-built-in-breakpoint">Python 3.7</a> all the time when developing code. Before that I was already calling the <a rel="external" href="https://ipython.readthedocs.io/en/stable/api/generated/IPython.terminal.embed.html"><code>IPython.embed</code></a> module directly, but using a <code>breakpoint()</code> statement is much more convenient.</p>
+<p>Especially, because you can customize the debugger by setting the <code>PYTHONBREAKPOINT</code> environment variable. The snippet below will open an IPython shell instead of the default <code>pdb</code> by:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span>PYTHONBREAKPOINT</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">IPython.embed</span><span style="color: #73D0FF;"> python</span><span style="color: #D5FF80;"> my_script.py</span></span></code></pre>
+<p>Or in your <code>.bashrc</code>:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #FFA659;">export</span><span> PYTHONBREAKPOINT</span><span style="color: #F29E74;">=</span><span style="color: #D5FF80;">&quot;IPython.embed&quot;</span></span></code></pre><h2 id="sublime-keybindings-in-jupyter-notebook">Sublime keybindings in Jupyter Notebook</h2>
+<p>As a daily <a rel="external" href="https://www.sublimetext.com/">Sublime Text</a> user, the <kbd>ctrl-D</kbd> command to select the next word is burned into my fingers. One of my annoyances with the default install of Jupyter is that <kbd>ctrl-D</kbd> deletes the current line. There are <a rel="external" href="https://stackoverflow.com/questions/41553806">different ways to achieve this</a> ways to enable the Sublime keymap in a Jupyter environment. I found this way to be the most reliable.</p>
+<p>Copy this snippet into <code>~/.config/jupyter/custom/custom.js</code></p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="javascript"><span class="giallo-l"><span style="color: #FFCD66;">require</span><span>([</span><span style="color: #D5FF80;">&quot;codemirror/keymap/sublime&quot;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;"> &quot;notebook/js/cell&quot;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;"> &quot;base/js/namespace&quot;</span><span>]</span><span style="color: #CCCAC2B3;">,</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    function</span><span>(</span><span style="color: #DFBFFF;">sublime_keymap</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> cell</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> IPython</span><span>) {</span></span>
+<span class="giallo-l"><span>        cell</span><span style="color: #F29E74;">.</span><span>Cell</span><span style="color: #F29E74;">.</span><span>options_default</span><span style="color: #F29E74;">.</span><span>cm_config</span><span style="color: #F29E74;">.</span><span>keyMap</span><span style="color: #F29E74;"> =</span><span style="color: #D5FF80;"> &#39;sublime&#39;</span><span style="color: #CCCAC2B3;">;</span></span>
+<span class="giallo-l"><span>        cell</span><span style="color: #F29E74;">.</span><span>Cell</span><span style="color: #F29E74;">.</span><span>options_default</span><span style="color: #F29E74;">.</span><span>cm_config</span><span style="color: #F29E74;">.</span><span>extraKeys[</span><span style="color: #D5FF80;">&quot;Ctrl-Enter&quot;</span><span>]</span><span style="color: #F29E74;"> =</span><span style="color: #FFA659;"> function</span><span>(</span><span style="color: #DFBFFF;">cm</span><span>) {}</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        var</span><span> cells</span><span style="color: #F29E74;"> =</span><span> IPython</span><span style="color: #F29E74;">.</span><span>notebook</span><span style="color: #F29E74;">.</span><span style="color: #FFCD66;">get_cells</span><span>()</span><span style="color: #CCCAC2B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        for</span><span>(</span><span style="color: #FFA659;">var</span><span> cl</span><span style="color: #F29E74;">=</span><span style="color: #DFBFFF;">0</span><span style="color: #CCCAC2B3;">;</span><span> cl</span><span style="color: #F29E74;">&lt;</span><span> cells</span><span style="color: #F29E74;">.</span><span>length</span><span style="color: #CCCAC2B3;"> ;</span><span> cl</span><span style="color: #F29E74;">++</span><span>){</span></span>
+<span class="giallo-l"><span>            cells[cl]</span><span style="color: #F29E74;">.</span><span>code_mirror</span><span style="color: #F29E74;">.</span><span style="color: #FFCD66;">setOption</span><span>(</span><span style="color: #D5FF80;">&#39;keyMap&#39;</span><span style="color: #CCCAC2B3;">,</span><span style="color: #D5FF80;"> &#39;sublime&#39;</span><span>)</span><span style="color: #CCCAC2B3;">;</span></span>
+<span class="giallo-l"><span>            cells[cl]</span><span style="color: #F29E74;">.</span><span>code_mirror</span><span style="color: #F29E74;">.</span><span style="color: #FFCD66;">setOption</span><span>(</span><span style="color: #D5FF80;">&quot;extraKeys&quot;</span><span style="color: #CCCAC2B3;">,</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #D5FF80;">                &quot;Ctrl-Enter&quot;</span><span style="color: #CCCAC2B3;">:</span><span style="color: #FFA659;"> function</span><span>(</span><span style="color: #DFBFFF;">cm</span><span>) {}</span></span>
+<span class="giallo-l"><span>            })</span><span style="color: #CCCAC2B3;">;</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>)</span><span style="color: #CCCAC2B3;">;</span></span></code></pre>
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

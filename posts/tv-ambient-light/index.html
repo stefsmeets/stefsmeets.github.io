@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  Build log for ambilight on a rooted LG TV
+</h1>
+<p class="subtitle"><strong>2024-09-05</strong></p>
+<div class="prose">
+  <p>We recently bought a second-hand LG OLED TV to replace our old Phillips Ambilight TV. It's awesome, because <a rel="external" href="https://en.wikipedia.org/wiki/OLED#Advantages">OLED</a>, but I missed the Ambilight feature of my old TV.</p>
+<p>Although you can get these devices ready made, I thought it would be more fun to build it myself. These setups usually consist of the following:</p>
+<ol>
+<li>Frame capture device (HDMI Splitter + USB frame grabber)</li>
+<li>Image processing service + host (Raspberry Pi + HyperHDR)</li>
+<li>LED strip + Controller (ESP32 + WLED)</li>
+</ol>
+<p>The frame grabber is an hdmi video capture device video capture card that streams images to a Raspberry Pi. The Raspberry Pi runs <a rel="external" href="https://www.hyperhdr.eu/">HyperHDR</a>, an image processing service that analyzes the video stream, and turns it into a signal for the LED strip. Note that HyperHDR does not control the LED strip itself, this is done using <a rel="external" href="https://kno.wled.ge/">WLED</a>.</p>
+<p>Since many LG TVs running WebOS can be rooted, it can host PicCap (frame capture service) and HyperHDR directly. This avoids setting up a Rasperry Pi with video grabber, making the setup a whole lot cheaper and more efficient.</p>
+<h2 id="the-frame">The Frame</h2>
+<p>I build a custum frame from solid wood, and bits and pieces I found at the DIY store and at home. The idea is that the frame acts as a support for the LED strip. It sits about 10 cm behind my TV, and I used diagonally cut wooden slats with a 45 degree angle, so that the LEDs project outward onto the wall. The frame is roughly 5 cm smaller on all sides that my TV.</p>
+<p>For the LED strip, I used 2x WS2813 LED strips (1m / 30 LEDs). I cut the strip to size and soldered the corners.</p>
+<table><thead><tr><th></th><th></th></tr></thead><tbody>
+</tbody></table>
+<p>|</p>
+<figure>
+  <a href="frame-assembled.webp">
+    <img src="frame-assembled.webp" alt="Assembled frame">
+  </a>
+  <figcaption>Assembled frame</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="solder-corner.webp">
+    <img src="solder-corner.webp" alt="Corner detail, I used solid core wire to solder around the corner">
+  </a>
+  <figcaption>Corner detail, I used solid core wire to solder around the corner</figcaption>
+</figure>
+ |
+<h2 id="the-controller">The Controller</h2>
+<p>The second step was to set up the LED strip using WLED. I had an old ESP32 lying around, which I used to install <a rel="external" href="https://kno.wled.ge/">WLED</a>. I installed WLED through the very convenient <a rel="external" href="https://install.wled.me/">web interface</a>.</p>
+<p>Parts list:</p>
+<ul>
+<li>ESP32 (ESP-WROOM-32)</li>
+<li>100 Ohm resistance</li>
+<li>DC Jack Female 5.5mm to Terminal Block</li>
+<li>5V/2A power adapter with 5.5mm DC Jack</li>
+<li>Cable box from DIY store</li>
+</ul>
+<h3 id="install-wled">Install WLED</h3>
+<p>List USB devices:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">$</span><span style="color: #D5FF80;"> lsusb</span></span>
+<span class="giallo-l"><span style="color: #F28779;">...</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">Bus</span><span style="color: #DFBFFF;"> 001</span><span style="color: #D5FF80;"> Device 036: ID 10c4:ea60 Silicon Labs CP210x UART Bridge</span></span>
+<span class="giallo-l"><span style="color: #F28779;">...</span></span></code></pre>
+<p>I used <code>/dev/serial/</code> to find the right COM port:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>$ ls -ltr /dev/serial/by-id/</span></span>
+<span class="giallo-l"><span>total 0</span></span>
+<span class="giallo-l"><span>lrwxrwxrwx. 1 root root 13 Sep  3 08:42 usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0 -&gt; ../../ttyUSB0</span></span></code></pre>
+<p>To verify the installation was succesful, I could log in to the web interface and added it to Home Assistant for good measure 😅</p>
+<h3 id="wled-failed-to-open-serial-port"><code>wled failed to open serial port</code></h3>
+<p>I was struck with error: <code>wled failed to open serial port</code>. This means my browser does not have the correct rights to write to the USB device. This can be solved by setting read/write permissions. Do not forget to reset the permissions afterwards.</p>
+<ol>
+<li><code>sudo chmod a+rw /dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0</code></li>
+<li>Flash</li>
+<li><code>sudo chmod 600 /dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0</code></li>
+</ol>
+<h3 id="soldering">Soldering</h3>
+<p>I build everything on a bread board first following the scheme in the <a rel="external" href="https://kno.wled.ge/basics/getting-started/#quick-start-guide">quick-start guide</a>. Later on I soldered everything onto a prototype board and put it in small cable box.</p>
+<p>Some notes:</p>
+<ul>
+<li>Make sure to connect data to GPIO16, which is labeled RX2 on my ESP:
+https://www.mathaelectronics.com/wp-content/uploads/2022/08/image-19.png</li>
+<li>I used a 100 Ohm resistor, but apparently this is not necessary. When assembling the prototype board I had issues getting everything to work. It worked fine on the bread board, but no signal on the soldered prototype board. After a while I figured out that my resistor was faulty. To make things worse, I learned that is not necessary at all!! it turns out that the resistor only serves to clean up the data line. So I left it out in the final assembly.</li>
+<li>Solder bridges were very difficult to make for me. I ended using jump wires for everything, which was much easier.</li>
+</ul>
+<table><thead><tr><th></th><th></th></tr></thead><tbody>
+</tbody></table>
+<p>|</p>
+<figure>
+  <a href="breadboard.webp">
+    <img src="breadboard.webp" alt="Bread board setup">
+  </a>
+  <figcaption>Bread board setup</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="prototype-top.webp">
+    <img src="prototype-top.webp" alt="Prototype board top">
+  </a>
+  <figcaption>Prototype board top</figcaption>
+</figure>
+ |
+| 
+<figure>
+  <a href="prototype-bottom.webp">
+    <img src="prototype-bottom.webp" alt="Prototype board bottom">
+  </a>
+  <figcaption>Prototype board bottom</figcaption>
+</figure>
+ | 
+<figure>
+  <a href="cable-box.webp">
+    <img src="cable-box.webp" alt="The final product in a box">
+  </a>
+  <figcaption>The final product in a box</figcaption>
+</figure>
+ |
+<h2 id="the-tv">The TV</h2>
+<p>I wanted to run everything directly from my TV, which means that I needed root on my LG C3.</p>
+<p>I used this <a rel="external" href="https://www.webosbrew.org/rooting/#can-i-root-my-tv">table</a> to find a method root. I ended up using [dejavuln-autoroot](https://github.com/throwaway96/dejavuln-autoroot, which was very simple. Once succesful, this installs the <a rel="external" href="https://www.webosbrew.org/">homebrew channel</a>.</p>
+<h3 id="blocking-updates">Blocking updates</h3>
+<p>I added these addresses to my Adguard blocklist to block the TV from updating, which could break the root:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>lgtvonline.lge.com</span></span>
+<span class="giallo-l"><span>snu.lge.com</span></span>
+<span class="giallo-l"><span>su.lge.com</span></span>
+<span class="giallo-l"><span>su-ssl.lge.com</span></span>
+<span class="giallo-l"><span>snu-dev.lge.com</span></span>
+<span class="giallo-l"><span>su-dev.lge.com</span></span>
+<span class="giallo-l"><span>nsu.lge.com</span></span></code></pre><h3 id="software-setup">Software setup</h3>
+<p>Once rooted, I installed <a rel="external" href="https://github.com/TBSniller/piccap">PicCap</a> and <a rel="external" href="https://github.com/webosbrew/hyperhdr-webos-loader">HyperHDR</a>. These are meant to be used in combination.</p>
+<p>PicCap takes screenshots of the current image on the TV, and HyperHDR is an image processing that grabs the screenshots from Piccap and LED output, essentially rectreating ambilight frem Phillips TVs. s needed for WLED.</p>
+<p>Note that HyperHDR does not have an interface for WebOS, you have to connect and configure it via the web interface. It took me a while to find out the default port, so here it is: <code>http://&lt;IP_OF_LG_TV&gt;:8090</code>.</p>
+<p>Setting everything up in HyperHDR was a bit of fiddling, but it speaks for itself. To get the colors right, I had to tweak the Image processing settings to get the colors to pop on our green wall:</p>
+<figure>
+  <a href="settings.webp">
+    <img src="settings.webp" alt="HyperHDR settings">
+  </a>
+  <figcaption>HyperHDR settings</figcaption>
+</figure>
+<h2 id="the-satisfaction">The Satisfaction</h2>
+<p>Really happy with the end result. It's more reactive than what I'm used to from Ambilight, and the colours feel more vibrant. Bonus: I can tune the brightness via Home Assistant, and use it as a lamp when the TV is off.</p>
+<figure>
+  <a href="itsworking1.webp">
+    <img src="itsworking1.webp" alt="It's working!">
+  </a>
+  <figcaption>It's working!</figcaption>
+</figure>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>

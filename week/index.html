@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Week</title>
+    <style>
+        html, body {
+            height: 100%;
+            background-color: #33ff85;
+            overflow: hidden;
+            font-family: Arial, serif; }
+        time {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            margin: -0.5em 0 0 0;
+            height: 1em;
+            text-align: center;
+            color: #000000;
+            font-size: 20em;
+            line-height: 1em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <time id="week">-1</time>
+
+<script>
+today = new Date();
+start = new Date(today.getFullYear(), 0, 1);
+var days = Math.floor((today - start) /
+(24 * 3600 * 1000));
+
+var week_num = Math.ceil(days / 7);
+
+document.write("Today: " + today);
+document.getElementById("week").innerHTML = week_num;
+document.title = "week_num;"
+</script>
+
+</body>
+</html>

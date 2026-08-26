@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="/style.css">
+   <link rel="stylesheet" type="text/css" href="/custom.css">
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+    <a class="home" href="/"><strong>~</strong></a>
+    <a class="home" href="https://stefsmeets.nl/posts/">/posts</a></li>
+    <a class="home" href="https://stefsmeets.nl/articles/">/articles</a></li>
+    <a class="home" href="https://stefsmeets.nl/presentations/">/presentations</a></li>
+    <a class="home" href="https://stefsmeets.nl/code/">/code</a></li>
+    <a class="home" href="https://stefsmeets.nl/about/">/about</a></li>
+
+  <main>
+    <br>
+    
+<h1 class="title">
+  5 Python tricks I learned from Advent of Code 2022
+</h1>
+<p class="subtitle"><strong>2022-12-28</strong></p>
+<div class="prose">
+  <p>As someone who loves to practice code optimization techniques, December has become one of my favourite times of the year. Like last year, I participated in <a rel="external" href="https://adventofcode.com/">Advent of Code</a>. This is an annual set of Christmas-themed programming puzzles that follow an advent calendar. This is the second time I participated, because it is a great way to practice my coding skills on problems I do not normally encounter.</p>
+<p>One of my favourite things about it is that everyone is sharing their solutions <a rel="external" href="https://old.reddit.com/r/adventofcode/">on reddit</a> or other forums. I love to share my own tricks, and even more to read about how others approached the same problem. I often go back to improve my own solutions to implement what I learned.</p>
+<p>This is a short list of some of the tricks that I picked up this year.</p>
+<h2 id="count">Count</h2>
+<p>Many puzzles require you to keep of some round or iteration number. While you could manually increment <code>n</code> in a while-loop, you can also iterate over <code>count()</code>. I used this in <a rel="external" href="https://github.com/stefsmeets/aoc2022/blob/main/day23/solve.py">day 23</a> and <a rel="external" href="https://github.com/stefsmeets/aoc2022/blob/main/day24/solve.py">day 24</a>.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span style="color: #FFA659;"> from</span><span> itertools</span><span style="color: #FFA659;"> import</span><span> count</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span style="color: #FFA659;"> for</span><span> n</span><span style="color: #FFA659;"> in</span><span style="color: #FFCD66;"> count</span><span>()</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span style="color: #FFA659;">     if</span><span> n</span><span style="color: #F29E74;"> ==</span><span style="color: #DFBFFF;"> 3</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span style="color: #FFA659;">         break</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span style="color: #F28779;">     print</span><span>(n)</span></span>
+<span class="giallo-l"><span style="color: #DFBFFF;">1</span></span>
+<span class="giallo-l"><span style="color: #DFBFFF;">2</span></span>
+<span class="giallo-l"><span style="color: #DFBFFF;">3</span></span></code></pre>
+<p>This is especially useful to factor out the loop for some solutions. For <a rel="external" href="https://github.com/stefsmeets/aoc2022/blob/main/day23/solve.py">day 23</a> I used this pattern to re-use the same code for both part 1 and 2:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> part1</span><span>(</span><span style="color: #DFBFFF;">s</span><span style="color: #CCCAC2B3;">:</span><span style="color: #5CCFE6;"> str</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    return</span><span style="color: #FFCD66;"> solve</span><span>(s</span><span style="color: #CCCAC2B3;">,</span><span> rounds</span><span style="color: #F29E74;">=</span><span style="color: #F28779;">range</span><span>(</span><span style="color: #DFBFFF;">10</span><span>))</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFA659;">def</span><span style="color: #FFCD66;"> part2</span><span>(</span><span style="color: #DFBFFF;">s</span><span style="color: #CCCAC2B3;">:</span><span style="color: #5CCFE6;"> str</span><span>):</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    return</span><span style="color: #FFCD66;"> solve</span><span>(s</span><span style="color: #CCCAC2B3;">,</span><span> rounds</span><span style="color: #F29E74;">=</span><span style="color: #FFCD66;">count</span><span>(</span><span style="color: #DFBFFF;">1</span><span>))</span></span></code></pre><h2 id="divmod">Divmod</h2>
+<p><a rel="external" href="https://docs.python.org/3/library/functions.html#divmod">Divmod</a> is a python builtin that does division and modulo in a single function. It literally returns the (<code>x//y</code>, <code>x%y</code>):</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span style="color: #F28779;"> divmod</span><span>(</span><span style="color: #DFBFFF;">7</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;">2</span><span>)</span></span>
+<span class="giallo-l"><span>(</span><span style="color: #DFBFFF;">3</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 1</span><span>)</span></span></code></pre>
+<p>Cool! I used this in <a rel="external" href="https://github.com/stefsmeets/aoc2022/blob/main/day17/solve.py">day 17</a> and <a rel="external" href="https://github.com/stefsmeets/aoc2022/blob/main/day25/solve.py">25</a> to save a few lines of code.</p>
+<h2 id="complex-numbers-are-magic">Complex numbers are magic</h2>
+<p>Complex numbers can be used to store coordinates. Who knew!? I saw many solutions using this trick in combinations with sets hack to avoid having to set up a custom <code>Pointer(x, y)</code> class or <code>(x, y)</code> tuples. Where the real and imaginary components represent the <strong>x</strong> and <strong>y</strong> coordianates.</p>
+<p>Complex numbers have 3 distinct advantages:</p>
+<ul>
+<li>Complex numbers are immutable, so they can be added to sets (tuples or dataclasses cannot).</li>
+</ul>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span> coords</span><span style="color: #F29E74;"> =</span><span> {</span><span style="color: #DFBFFF;">1</span><span style="color: #FFA659;">j</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 1</span><span style="color: #F29E74;">+</span><span style="color: #DFBFFF;">2</span><span style="color: #FFA659;">j</span><span style="color: #CCCAC2B3;">,</span><span style="color: #DFBFFF;"> 2</span><span style="color: #F29E74;">+</span><span style="color: #DFBFFF;">3</span><span style="color: #FFA659;">j</span><span>}</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span style="color: #DFBFFF;"> 1</span><span style="color: #F29E74;">+</span><span style="color: #DFBFFF;">2</span><span style="color: #FFA659;">j</span><span style="color: #F29E74;"> in</span><span> coords</span></span>
+<span class="giallo-l"><span style="color: #DFBFFF;">True</span></span></code></pre>
+<ul>
+<li>They are a builtin type. This makes using them in list comprehensions a breeze.</li>
+</ul>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span> pos</span><span style="color: #F29E74;"> =</span><span style="color: #DFBFFF;"> 1</span><span style="color: #F29E74;">+</span><span style="color: #DFBFFF;">1</span><span style="color: #FFA659;">j</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span style="color: #FFA659;"> for</span><span> new_pos</span><span style="color: #FFA659;"> in</span><span> (pos</span><span style="color: #F29E74;"> +</span><span style="color: #DFBFFF;"> 1</span><span style="color: #FFA659;">j</span><span style="color: #CCCAC2B3;">,</span><span> pos</span><span style="color: #F29E74;"> -</span><span style="color: #DFBFFF;"> 1</span><span style="color: #F29E74;"> +</span><span style="color: #DFBFFF;"> 1</span><span style="color: #FFA659;">j</span><span style="color: #CCCAC2B3;">,</span><span> pos</span><span style="color: #F29E74;"> +</span><span style="color: #DFBFFF;"> 1</span><span style="color: #F29E74;"> +</span><span style="color: #DFBFFF;"> 1</span><span style="color: #FFA659;">j</span><span>)</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span style="color: #95E6CB;">     ...</span></span></code></pre>
+<ul>
+<li>Complex math is really interesting for coordinate systems. Complex numbers are almost a coordinate system in itself. For example, a clockwise rotation is simply a multiplication by <code>-1j</code>:</li>
+</ul>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span> a</span><span style="color: #F29E74;"> =</span><span style="color: #DFBFFF;"> 2</span><span style="color: #F29E74;"> +</span><span style="color: #DFBFFF;"> 1</span><span style="color: #FFA659;">j</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span style="color: #FFA659;"> for</span><span> x</span><span style="color: #FFA659;"> in</span><span style="color: #F28779;"> range</span><span>(</span><span style="color: #DFBFFF;">4</span><span>)</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span style="color: #F28779;">      print</span><span>(a</span><span style="color: #F29E74;"> :=</span><span> a</span><span style="color: #F29E74;"> * -</span><span style="color: #DFBFFF;">1</span><span style="color: #FFA659;">j</span><span>)</span></span>
+<span class="giallo-l"><span>(</span><span style="color: #DFBFFF;">1</span><span style="color: #F29E74;">-</span><span style="color: #DFBFFF;">2</span><span style="color: #FFA659;">j</span><span>)</span></span>
+<span class="giallo-l"><span>(</span><span style="color: #F29E74;">-</span><span style="color: #DFBFFF;">2</span><span style="color: #F29E74;">-</span><span style="color: #DFBFFF;">1</span><span style="color: #FFA659;">j</span><span>)</span></span>
+<span class="giallo-l"><span>(</span><span style="color: #F29E74;">-</span><span style="color: #DFBFFF;">1</span><span style="color: #F29E74;">+</span><span style="color: #DFBFFF;">2</span><span style="color: #FFA659;">j</span><span>)</span></span>
+<span class="giallo-l"><span>(</span><span style="color: #DFBFFF;">2</span><span style="color: #F29E74;">+</span><span style="color: #DFBFFF;">1</span><span style="color: #FFA659;">j</span><span>)</span></span></code></pre>
+<p>After seeing some solutions use this I tried it myself during <a rel="external" href="https://github.com/stefsmeets/aoc2022/blob/main/day14/solve.py">day 14</a>. While it made the code shorter, I thought it was a bit challenging to reason about it for myself. I tried again in some later solutions, but I prefer to pass row and column (<code>(r, c)</code>) tuples.</p>
+<h2 id="sets-are-useful-as-sparse-matrices">Sets are useful as sparse matrices</h2>
+<p>As someone with a background in image processing, I immediately reach for <code>numpy</code> whenever something can be parsed into an array. This turned out to be the wrong choice on <a rel="external" href="https://github.com/stefsmeets/aoc2022/blob/main/day14/solve.py">day 14</a> and <a rel="external" href="https://github.com/stefsmeets/aoc2022/blob/main/day23/solve.py">23</a>.</p>
+<p>In both cases, the array could be infinitely expanded which made numpy the wrong choice. In fact, in both puzzles, you could simply keep track of the 'blocked' positions as a set of coordinates. Bonus: checking whether coordinates are in a set is really fast in Python.</p>
+<p>For example, this snippet from my solution for <a rel="external" href="https://github.com/stefsmeets/aoc2022/blob/main/day24/solve.py">day 24</a>:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span style="color: #FFA659;"> for</span><span> rnd</span><span style="color: #FFA659;"> in</span><span style="color: #FFCD66;"> count</span><span>(</span><span style="color: #DFBFFF;">1</span><span>)</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span>     gusts</span><span style="color: #F29E74;"> =</span><span style="color: #FFCD66;"> its_gusty_here</span><span>(gusts)</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span>     gust_map</span><span style="color: #F29E74;"> =</span><span style="color: #F28779;"> sum</span><span>(gusts)</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span>     new_safe</span><span style="color: #F29E74;"> =</span><span> {start}</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span style="color: #FFA659;">     for</span><span> pos</span><span style="color: #FFA659;"> in</span><span> safe</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span>         new_safe</span><span style="color: #F29E74;"> |=</span><span style="color: #5CCFE6;"> set</span><span>(</span><span style="color: #FFCD66;">is_safe</span><span>(gust_map</span><span style="color: #CCCAC2B3;">,</span><span> pos))</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span>     safe</span><span style="color: #F29E74;"> =</span><span> new_safe</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span style="color: #FFA659;">     if</span><span> stop</span><span style="color: #F29E74;"> in</span><span> safe</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #F29E74;">&gt;&gt;&gt;</span><span style="color: #FFA659;">         break</span></span></code></pre><h2 id="for-else">for/else</h2>
+<p><code>for/else</code> and <code>while/else</code> are odd statements in Python. If it were up to Guido, <a rel="external" href="https://mail.python.org/pipermail/python-ideas/2009-October/006157.html">he would not have included them at all</a>. Their use is highly discouraged, because it's somewhat confusing what to do. In my head I read it as <code>for/nobreak</code>. However, they can be useful on some occasions. This advent of code I found two perfect opportunities to use them.</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">for</span><span> x</span><span style="color: #FFA659;"> in</span><span style="color: #F28779;"> range</span><span>(</span><span style="color: #DFBFFF;">5</span><span>)</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    if</span><span style="color: #FFCD66;"> some_condition</span><span>(x)</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        break</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">else</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #6E7C8F;font-style: italic;">    # loop completed</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    assert</span><span> x</span><span style="color: #F29E74;"> ==</span><span style="color: #DFBFFF;"> 4</span></span></code></pre>
+<p>For example, I used this in my solutions for <a rel="external" href="https://github.com/stefsmeets/aoc2022/blob/main/day14/solve.py">day 14</a>:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">while</span><span> hole</span><span style="color: #F29E74;"> not in</span><span> cave</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    for</span><span> new_pos</span><span style="color: #FFA659;"> in</span><span> (grain</span><span style="color: #F29E74;"> +</span><span style="color: #DFBFFF;"> 1</span><span style="color: #FFA659;">j</span><span style="color: #CCCAC2B3;">,</span><span> grain</span><span style="color: #F29E74;"> -</span><span style="color: #DFBFFF;"> 1</span><span style="color: #F29E74;"> +</span><span style="color: #DFBFFF;"> 1</span><span style="color: #FFA659;">j</span><span style="color: #CCCAC2B3;">,</span><span> grain</span><span style="color: #F29E74;"> +</span><span style="color: #DFBFFF;"> 1</span><span style="color: #F29E74;"> +</span><span style="color: #DFBFFF;"> 1</span><span style="color: #FFA659;">j</span><span>)</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        if</span><span> part1</span><span style="color: #F29E74;"> and</span><span> (new_pos</span><span style="color: #CCCAC2B3;">.</span><span>imag</span><span style="color: #F29E74;"> ==</span><span> abyss)</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">            return</span><span> n_grains</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        elif</span><span> new_pos</span><span style="color: #CCCAC2B3;">.</span><span>imag</span><span style="color: #F29E74;"> ==</span><span> abyss</span><span style="color: #F29E74;"> +</span><span style="color: #DFBFFF;"> 1</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">            pass</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        elif</span><span> new_pos</span><span style="color: #F29E74;"> not in</span><span> cave</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>            grain</span><span style="color: #F29E74;"> =</span><span> new_pos</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">            break</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    else</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>        cave</span><span style="color: #CCCAC2B3;">.</span><span style="color: #FFCD66;">add</span><span>(grain)</span></span>
+<span class="giallo-l"><span>        n_grains</span><span style="color: #F29E74;"> +=</span><span style="color: #DFBFFF;"> 1</span></span>
+<span class="giallo-l"><span>        grain</span><span style="color: #F29E74;"> =</span><span> hole</span></span></code></pre>
+<p>and <a rel="external" href="https://github.com/stefsmeets/aoc2022/blob/main/day23/solve.py">day 23</a>:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="python"><span class="giallo-l"><span style="color: #FFA659;">for</span><span> pos</span><span style="color: #FFA659;"> in</span><span> field</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    if</span><span style="color: #F29E74;"> not</span><span style="color: #FFCD66;"> all_empty</span><span>(field</span><span style="color: #CCCAC2B3;">,</span><span> pos)</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        for</span><span> func</span><span style="color: #FFA659;"> in</span><span> moves</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">            if</span><span> new_pos</span><span style="color: #F29E74;"> :=</span><span style="color: #FFCD66;"> func</span><span>(field</span><span style="color: #CCCAC2B3;">,</span><span> pos)</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">                break</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">        else</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>            new_pos</span><span style="color: #F29E74;"> =</span><span> pos</span></span>
+<span class="giallo-l"><span style="color: #FFA659;">    else</span><span style="color: #CCCAC2B3;">:</span></span>
+<span class="giallo-l"><span>        new_pos</span><span style="color: #F29E74;"> =</span><span> pos</span></span></code></pre><h2 id="conclusion">Conclusion</h2>
+<p>There you have it, some of the tricks I picked up during advent of code. See you next year! 🎄</p>
+
+</div>
+
+    <br>
+  </main>
+
+
+  <footer>
+    <p>© 2025 Stef Smeets | Powered by <a href="https://getzola.com">Zola</a></p>
+  </footer>
+
+</body>
+
+</html>
