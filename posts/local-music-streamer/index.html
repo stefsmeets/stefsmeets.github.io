@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="stylesheet" type="text/css" href="https://stefsmeets.nl/style.css">
+  <link rel="stylesheet" type="text/css" href="https://stefsmeets.nl/custom.css">
+
+  <link rel="icon" href="https://stefsmeets.nl/favicon.ico">
+  <link rel="apple-touch-icon" href="https://stefsmeets.nl/apple-touch-icon.png">
+
+  
+
+
+
+  
+  
+  
+    
+  
+  
+
+  <title>Local music streaming on a Raspberry Pi | Stef Smeets</title>
+  <meta name="description" content="Research Software Engineer writing open-source scientific software, mostly Python.">
+  <meta name="author" content="Stef Smeets">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Local music streaming on a Raspberry Pi | Stef Smeets">
+  <meta property="og:description" content="Research Software Engineer writing open-source scientific software, mostly Python.">
+  <meta name="twitter:card" content="summary">
+
+  <link rel="alternate" type="application/atom+xml" title="Stef Smeets" href="https://stefsmeets.nl/atom.xml">
+</head>
+
+<body>
+  <a class="skip" href="#main">skip to content</a>
+
+  
+  
+  <header class="topbar">
+    <nav class="topbar__inner" aria-label="Main">
+      <a href="https://stefsmeets.nl">~</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/posts/" aria-current="page">posts</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/articles/">articles</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/presentations/">presentations</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/code/">code</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/about/">about</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    
+<h1 class="title">
+  Local music streaming on a Raspberry Pi
+</h1>
+<p class="subtitle"><strong>2026-11-22</strong></p>
+<div class="prose">
+  <p>As part of an ongoing effort to be less dependent on big-tech, I have started ripping CDs and maintaining a local mp3 library. Not only is this cheaper than Spotify (you can get used CDs under a euro), it's also a good excuse to explore new open-source software.</p>
+<p>I wanted a streamer that plays my Navidrome library on an old Raspberry Pi 4. I had already bought a HiFiBerry DAC and set up <a rel="external" href="https://www.moodeaudio.org/">moOde</a> to stream to my receiver. moOde was incredibly straight-forward to set up, and worked with Navidrome using a SubSonic plugin for upmpd. The interface was the main bottleneck, and too much for anyone else in the house.</p>
+<p>This weekend I revisited this project to look for another option that is easier to use.</p>
+<h2 id="the-stack">The stack</h2>
+<p>This is what I ended up with:</p>
+<ul>
+<li><a rel="external" href="https://www.picoreplayer.org/">piCorePlayer</a> (pCP): the OS on the Pi. This is a very minimal OS that runs from RAM</li>
+<li><a rel="external" href="https://github.com/ralph-irving/squeezelite">Squeezelite</a>: headless player that talks to the DAC</li>
+<li><a rel="external" href="https://lyrion.org/">Lyrion Music Server</a> (LMS): runs as server on pCP. It has a Web UI and is the music interface / database / queue, etc.</li>
+<li><a rel="external" href="https://github.com/CDrummond/lms-material">Material Skin</a>: modern web front end for LMS</li>
+<li><a rel="external" href="https://github.com/xerootg/SqueezeSonic">SqueezeSonic (xerootg fork)</a>: plugin for LMS that pulls the a Navidrome library over the Subsonic API</li>
+<li><a rel="external" href="https://www.navidrome.org/">Navidrome</a>: music source, running on my local server</li>
+</ul>
+<p>pCP was just as easy to install as moOde via the <a rel="external" href="https://www.raspberrypi.com/software/">Raspberry Pi Imager</a>. The pCP web UI was a bit intimidating at first, but I quickly found my way around. The only things to do there were 1. follow the setup steps, 2. resize the filesystem (to the entire SD card) and 3. install LMS with a button.</p>
+<p>Squeezelite auto-detected my HAT right away (<code>sndrpihifiberry</code>).</p>
+<p>The LMS web UI is available on port 9000.</p>
+<h2 id="squeezesonic-plugin">SqueezeSonic plugin</h2>
+<p>There are two SqueezeSonic plugins. The original (<a rel="external" href="https://github.com/foobarjo/SqueezeSonic">foobarjo/SqueezeSonic</a>) is available via the Plugin manager. It works, but has an important usability issue: it hides music under <code>My Apps</code>. There is a hard fork (<a rel="external" href="https://github.com/xerootg/SqueezeSonic">xerootg/SqueezeSonic</a>) that imports the collection into <code>My Music</code> as a real library, so search, genres and album artists work. This seamlessly integrates my Navidrome library in the interface.</p>
+<p>The repo has no releases, so I had to install the main branch:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #73D0FF;">ssh</span><span style="color: #D5FF80;"> tc@pcp.home.arpa</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #73D0FF;">mkdir</span><span style="color: #95E6CB;"> -p</span><span style="color: #D5FF80;"> /usr/local/slimserver/Cache/Plugins</span><span style="color: #6E7C8F;font-style: italic;">  # create if it does not exist</span></span>
+<span class="giallo-l"><span style="color: #F28779;">cd</span><span style="color: #D5FF80;"> /usr/local/slimserver/Cache/Plugins</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #73D0FF;">wget</span><span style="color: #D5FF80;"> https://github.com/xerootg/SqueezeSonic/archive/refs/heads/master.zip</span></span>
+<span class="giallo-l"><span style="color: #73D0FF;">unzip</span><span style="color: #D5FF80;"> master.zip</span><span style="color: #CCCAC2B3;"> &amp;&amp;</span><span style="color: #73D0FF;"> rm</span><span style="color: #D5FF80;"> master.zip</span></span></code></pre>
+<p>The folder must be called exactly <code>SqueezeSonic</code>. The zip extracts to <code>SqueezeSonic-master</code>, so rename it and fix permissions:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>mv SqueezeSonic-master SqueezeSonic</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>sudo chown -R tc:staff SqueezeSonic</span></span>
+<span class="giallo-l"><span>sudo find SqueezeSonic -type d -exec chmod 755 {} \;</span></span>
+<span class="giallo-l"><span>sudo find SqueezeSonic -type f -exec chmod 644 {} \;</span></span></code></pre>
+<p>After copying the plugin, restart LMS from pCP for the plugin to load. Enable the library under 'My Music'</p>
+<p><code>/usr/local/slimserver/Cache/Plugins</code> is symlinked to the SD card, so it does not get nuked during reboots. Two folders to avoid:</p>
+<ul>
+<li><code>/usr/local/slimserver/Cache/InstalledPlugins/Plugins</code> is managed by the plugin manager. The plugin will be overwritten by the official version on restart</li>
+<li><code>/usr/local/slimserver/Plugins</code> is the official manual folder, but it lives in RAM, so it does not survive a reboot.</li>
+</ul>
+<h2 id="linking-with-navidrome">Linking with Navidrome</h2>
+<p>In LMS, under <code>Settings &gt; Advanced &gt; SqueezeSonic</code>, set the URL for Navidrome, plus the username and password.</p>
+<p>In <code>Settings &gt; Basic Settings</code>, trigger a library rescan (this will refresh the database if it goes stale).</p>
+<p>A full scan with a few thousand songs took a couple of minutes. After that the albums showed up under My Music, and imported playlists appear prefixed with <code>SqueezeSonic:</code>.</p>
+<p>New albums in Navidrome need a rescan in LMS to appear.</p>
+<h2 id="reverse-proxy">Reverse proxy</h2>
+<p>In <a rel="external" href="https://adguard.com/en/adguard-home/overview.html">AdGuard Home</a> I added DNS rewrites for <code>pcp.home.arpa -&gt; &lt;Raspberry Pi IP&gt;</code> and <code>lms.home.arpa -&gt; &lt;Caddy server IP&gt;</code>.</p>
+<p>In <a rel="external" href="https://caddyserver.com/">Caddy</a> (running on my main server), I set up a reverse proxy to have a nice URL for lms:</p>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain"><span class="giallo-l"><span>lms.home.arpa {</span></span>
+<span class="giallo-l"><span>    reverse_proxy pcp.home.arpa:9000</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre><h2 id="conclusion">Conclusion</h2>
+<p>The interface of LMS felt familiar right away. Material Skin on a phone looks like a normal music app, no complaints so far. It runs like a charm on a Raspberry Pi. The SqueezeSonic plugin feels a bit fragile, but so far so good.</p>
+
+</div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <span>© 2026 Stef Smeets</span>
+      <span class="dot" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/atom.xml">atom</a>
+      <span class="dot" aria-hidden="true">/</span>
+      <span>powered by <a href="https://getzola.org" rel="noopener">Zola</a></span>
+    </div>
+  </footer>
+
+</body>
+
+</html>

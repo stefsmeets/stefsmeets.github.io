@@ -1,0 +1,204 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500">
+<style>@font-face{font-family:'Droid Sans Mono';font-weight:normal;font-style:normal;src:url("data:application/font-woff;charset=utf-8;base64,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")format("woff");}</style>
+<style>text{font-family:'Droid Sans Mono';font-weight:normal;font-style:normal;}</style>
+<text transform="translate(66,329)" font-size="231" style="fill:rgb(66, 95, 250)">Jezus</text>
+<text transform="translate(128,455)" font-size="180" style="fill:rgb(100, 251, 195)">mensen</text>
+<text transform="translate(198,176)" font-size="168" style="fill:rgb(139, 254, 174)">zei</text>
+<text transform="translate(500,162)" font-size="151" style="fill:rgb(30, 145, 243)">God</text>
+<text transform="translate(125,79)" font-size="126" style="fill:rgb(255, 80, 41)">man</text>
+<text transform="translate(460,39)" font-size="47" style="fill:rgb(242, 194, 107)">leerlingen</text>
+<text transform="translate(381,485)" font-size="40" style="fill:rgb(244, 192, 105)">ging</text>
+<text transform="translate(34,106)" font-size="39" style="fill:rgb(72, 86, 251)">goed</text>
+<text transform="translate(32,481)" font-size="34" style="fill:rgb(162, 249, 160)">Heer</text>
+<text transform="translate(29,290)" font-size="34" style="fill:rgb(98, 251, 196)">leven</text>
+<text transform="translate(569,489)" font-size="34" style="fill:rgb(102, 252, 194)">zeiden</text>
+<text transform="translate(791,310) rotate(-90)" font-size="34" style="fill:rgb(74, 242, 207)">doen</text>
+<text transform="translate(109,158)" font-size="34" style="fill:rgb(50, 227, 218)">zien</text>
+<text transform="translate(33,425)" font-size="34" style="fill:rgb(134, 255, 176)">komt</text>
+<text transform="translate(531,197)" font-size="33" style="fill:rgb(242, 194, 107)">komen</text>
+<text transform="translate(181,483)" font-size="33" style="fill:rgb(204, 227, 133)">wereld</text>
+<text transform="translate(37,32)" font-size="33" style="fill:rgb(224, 211, 119)">huis</text>
+<text transform="translate(15,246)" font-size="33" style="fill:rgb(66, 95, 250)">zeggen</text>
+<text transform="translate(49,390)" font-size="33" style="fill:rgb(48, 225, 218)">gaan</text>
+<text transform="translate(584,76)" font-size="33" style="fill:rgb(255, 50, 25)">Johannes</text>
+<text transform="translate(1,70)" font-size="33" style="fill:rgb(255, 41, 20)">andere</text>
+<text transform="translate(16,188)" font-size="33" style="fill:rgb(34, 214, 224)">gingen</text>
+<text transform="translate(2,367)" font-size="33" style="fill:rgb(200, 230, 136)">kwam</text>
+<text transform="translate(649,197)" font-size="33" style="fill:rgb(255, 126, 65)">woorden</text>
+<text transform="translate(342,30)" font-size="33" style="fill:rgb(255, 155, 82)">dingen</text>
+<text transform="translate(138,355)" font-size="33" style="fill:rgb(130, 255, 179)">nieuwe</text>
+<text transform="translate(372,355)" font-size="33" style="fill:rgb(15, 196, 231)">stad</text>
+<text transform="translate(694,355)" font-size="33" style="fill:rgb(52, 228, 217)">eten</text>
+<text transform="translate(463,349)" font-size="33" style="fill:rgb(255, 3, 2)">vrouw</text>
+<text transform="translate(155,123)" font-size="33" style="fill:rgb(86, 65, 253)">geld</text>
+<text transform="translate(422,202)" font-size="33" style="fill:rgb(255, 169, 91)">beter</text>
+<text transform="translate(689,488)" font-size="32" style="fill:rgb(255, 134, 70)">zegt</text>
+<text transform="translate(39,221)" font-size="32" style="fill:rgb(109, 253, 191)">Maria</text>
+<text transform="translate(344,67)" font-size="32" style="fill:rgb(192, 235, 141)">Gods</text>
+<text transform="translate(356,358) rotate(-90)" font-size="32" style="fill:rgb(255, 157, 83)">Jeruzalem</text>
+<text transform="translate(256,200)" font-size="32" style="fill:rgb(255, 167, 89)">zoon</text>
+<text transform="translate(18,156)" font-size="32" style="fill:rgb(90, 59, 253)">heel</text>
+<text transform="translate(431,290)" font-size="32" style="fill:rgb(48, 225, 218)">dag</text>
+<text transform="translate(210,275) rotate(-90)" font-size="32" style="fill:rgb(30, 145, 243)">goede</text>
+<text transform="translate(475,497)" font-size="32" style="fill:rgb(52, 228, 217)">volk</text>
+<text transform="translate(22,449)" font-size="32" style="fill:rgb(0, 181, 235)">kwade</text>
+<text transform="translate(567,355)" font-size="32" style="fill:rgb(55, 230, 216)">maken</text>
+<text transform="translate(798,157) rotate(-90)" font-size="32" style="fill:rgb(48, 121, 247)">kwamen</text>
+<text transform="translate(498,154) rotate(-90)" font-size="32" style="fill:rgb(62, 101, 250)">hebben</text>
+<text transform="translate(788,497) rotate(-90)" font-size="32" style="fill:rgb(144, 254, 171)">heilige</text>
+<text transform="translate(8,498)" font-size="22" style="fill:rgb(17, 160, 241)">antwoordde</text>
+<text transform="translate(11,338)" font-size="22" style="fill:rgb(124, 6, 255)">wil</text>
+<text transform="translate(273,428)" font-size="22" style="fill:rgb(2, 183, 235)">tempel</text>
+<text transform="translate(763,334) rotate(-90)" font-size="22" style="fill:rgb(255, 145, 76)">dood</text>
+<text transform="translate(390,125)" font-size="22" style="fill:rgb(60, 104, 249)">gaf</text>
+<text transform="translate(605,296)" font-size="22" style="fill:rgb(156, 251, 164)">koning</text>
+<text transform="translate(348,156)" font-size="22" style="fill:rgb(255, 6, 3)">dienaar</text>
+<text transform="translate(250,289)" font-size="22" style="fill:rgb(41, 129, 246)">vroeg</text>
+<text transform="translate(62,123)" font-size="22" style="fill:rgb(255, 50, 25)">krijgen</text>
+<text transform="translate(564,461) rotate(-90)" font-size="22" style="fill:rgb(66, 237, 211)">gebeuren</text>
+<text transform="translate(778,134) rotate(-90)" font-size="22" style="fill:rgb(255, 172, 92)">Mensenzoon</text>
+<text transform="translate(677,246)" font-size="22" style="fill:rgb(255, 109, 56)">Luister</text>
+<text transform="translate(303,485)" font-size="21" style="fill:rgb(251, 185, 101)">Petrus</text>
+<text transform="translate(99,263)" font-size="21" style="fill:rgb(214, 219, 126)">gaat</text>
+<text transform="translate(370,84)" font-size="21" style="fill:rgb(255, 98, 50)">doet</text>
+<text transform="translate(740,224)" font-size="21" style="fill:rgb(182, 241, 147)">kind</text>
+<text transform="translate(165,498)" font-size="20" style="fill:rgb(122, 255, 183)">wetsleraren</text>
+<text transform="translate(171,328)" font-size="20" style="fill:rgb(48, 121, 247)">weg</text>
+<text transform="translate(439,431)" font-size="20" style="fill:rgb(104, 38, 254)">nieuws</text>
+<text transform="translate(522,240)" font-size="20" style="fill:rgb(78, 243, 205)">bang</text>
+<text transform="translate(607,434)" font-size="20" style="fill:rgb(228, 207, 116)">hemel</text>
+<text transform="translate(61,49)" font-size="20" style="fill:rgb(236, 200, 111)">staan</text>
+<text transform="translate(524,292)" font-size="20" style="fill:rgb(176, 243, 151)">heer</text>
+<text transform="translate(5,307)" font-size="20" style="fill:rgb(18, 200, 230)">gedaan</text>
+<text transform="translate(266,347)" font-size="20" style="fill:rgb(190, 236, 142)">laten</text>
+<text transform="translate(129,96)" font-size="20" style="fill:rgb(255, 115, 59)">had</text>
+<text transform="translate(359,199)" font-size="20" style="fill:rgb(251, 185, 101)">staat</text>
+<text transform="translate(529,97)" font-size="20" style="fill:rgb(20, 157, 241)">heeft</text>
+<text transform="translate(246,155)" font-size="20" style="fill:rgb(219, 216, 123)">geven</text>
+<text transform="translate(111,473)" font-size="20" style="fill:rgb(255, 162, 86)">geest</text>
+<text transform="translate(700,410)" font-size="20" style="fill:rgb(185, 239, 146)">zag</text>
+<text transform="translate(17,463) rotate(-90)" font-size="20" style="fill:rgb(32, 142, 244)">geesten</text>
+<text transform="translate(357,241)" font-size="20" style="fill:rgb(68, 92, 251)">keer</text>
+<text transform="translate(66,346)" font-size="20" style="fill:rgb(50, 227, 218)">bidden</text>
+<text transform="translate(148,244) rotate(-90)" font-size="20" style="fill:rgb(122, 9, 255)">slechte</text>
+<text transform="translate(402,310)" font-size="20" style="fill:rgb(255, 167, 89)">Simon</text>
+<text transform="translate(486,469)" font-size="20" style="fill:rgb(28, 147, 243)">was</text>
+<text transform="translate(688,172) rotate(-90)" font-size="20" style="fill:rgb(68, 92, 251)">kinderen</text>
+<text transform="translate(390,455) rotate(-90)" font-size="20" style="fill:rgb(94, 53, 254)">engel</text>
+<text transform="translate(628,282) rotate(-90)" font-size="20" style="fill:rgb(20, 157, 241)">gekomen</text>
+<text transform="translate(483,267) rotate(-90)" font-size="20" style="fill:rgb(255, 152, 80)">begon</text>
+<text transform="translate(281,84) rotate(-90)" font-size="20" style="fill:rgb(255, 53, 27)">zitten</text>
+<text transform="translate(319,87) rotate(-90)" font-size="20" style="fill:rgb(255, 56, 28)">grote</text>
+<text transform="translate(171,456) rotate(-90)" font-size="20" style="fill:rgb(80, 244, 204)">slecht</text>
+<text transform="translate(16,185) rotate(-90)" font-size="20" style="fill:rgb(255, 71, 36)">farizeeën</text>
+<text transform="translate(245,463) rotate(-90)" font-size="20" style="fill:rgb(255, 77, 39)">voorbeeld</text>
+<text transform="translate(546,177)" font-size="20" style="fill:rgb(204, 227, 133)">weet</text>
+<text transform="translate(211,450) rotate(-90)" font-size="20" style="fill:rgb(188, 237, 143)">Jozef</text>
+<text transform="translate(411,450) rotate(-90)" font-size="20" style="fill:rgb(49, 118, 248)">gezegd</text>
+<text transform="translate(532,214)" font-size="20" style="fill:rgb(236, 200, 111)">hebt</text>
+<text transform="translate(676,411) rotate(-90)" font-size="20" style="fill:rgb(255, 62, 31)">wilden</text>
+<text transform="translate(684,54)" font-size="20" style="fill:rgb(255, 126, 65)">wilde</text>
+<text transform="translate(531,274)" font-size="20" style="fill:rgb(146, 253, 169)">tijd</text>
+<text transform="translate(419,83)" font-size="20" style="fill:rgb(220, 214, 122)">Vader</text>
+<text transform="translate(718,261)" font-size="20" style="fill:rgb(60, 104, 249)">land</text>
+<text transform="translate(23,83)" font-size="17" style="fill:rgb(8, 172, 238)">Zacharias</text>
+<text transform="translate(593,177)" font-size="17" style="fill:rgb(20, 202, 229)">hoorde</text>
+<text transform="translate(80,365)" font-size="17" style="fill:rgb(230, 205, 115)">stond</text>
+<text transform="translate(659,464)" font-size="17" style="fill:rgb(230, 205, 115)">vrouwen</text>
+<text transform="translate(8,49)" font-size="17" style="fill:rgb(120, 13, 255)">Stel</text>
+<text transform="translate(311,498)" font-size="17" style="fill:rgb(90, 248, 200)">sabbat</text>
+<text transform="translate(141,496)" font-size="17" style="fill:rgb(52, 228, 217)">Ga</text>
+<text transform="translate(506,48)" font-size="12" style="fill:rgb(76, 80, 252)">priesters</text>
+<text transform="translate(175,89)" font-size="12" style="fill:rgb(212, 221, 128)">blij</text>
+<text transform="translate(88,302)" font-size="12" style="fill:rgb(178, 243, 150)">profeet</text>
+<text transform="translate(306,468)" font-size="12" style="fill:rgb(74, 83, 251)">vertellen</text>
+<text transform="translate(54,168)" font-size="12" style="fill:rgb(29, 209, 226)">Galilea</text>
+<text transform="translate(705,426)" font-size="12" style="fill:rgb(150, 252, 167)">macht</text>
+<text transform="translate(70,459)" font-size="12" style="fill:rgb(255, 34, 17)">horen</text>
+<text transform="translate(703,397)" font-size="12" style="fill:rgb(255, 155, 82)">Laat</text>
+<text transform="translate(615,122)" font-size="12" style="fill:rgb(124, 6, 255)">geeft</text>
+<text transform="translate(213,196)" font-size="12" style="fill:rgb(255, 176, 95)">moment</text>
+<text transform="translate(16,316)" font-size="12" style="fill:rgb(255, 176, 95)">profeten</text>
+<text transform="translate(586,467)" font-size="12" style="fill:rgb(255, 71, 36)">hele</text>
+<text transform="translate(400,137)" font-size="12" style="fill:rgb(118, 16, 255)">zeg</text>
+<text transform="translate(511,11)" font-size="12" style="fill:rgb(255, 126, 65)">boeken</text>
+<text transform="translate(193,312)" font-size="12" style="fill:rgb(22, 155, 242)">riep</text>
+<text transform="translate(73,399)" font-size="12" style="fill:rgb(62, 101, 250)">Geest</text>
+<text transform="translate(746,171)" font-size="12" style="fill:rgb(88, 62, 253)">zorgen</text>
+<text transform="translate(244,252)" font-size="12" style="fill:rgb(255, 3, 2)">stuurde</text>
+<text transform="translate(606,498)" font-size="12" style="fill:rgb(255, 123, 64)">luisteren</text>
+<text transform="translate(544,223)" font-size="12" style="fill:rgb(255, 83, 42)">rijke</text>
+<text transform="translate(654,11)" font-size="12" style="fill:rgb(168, 247, 156)">Abraham</text>
+<text transform="translate(34,137)" font-size="12" style="fill:rgb(114, 254, 187)">vader</text>
+<text transform="translate(350,39)" font-size="12" style="fill:rgb(86, 247, 202)">messias</text>
+<text transform="translate(534,128)" font-size="12" style="fill:rgb(122, 255, 183)">jaar</text>
+<text transform="translate(505,388)" font-size="12" style="fill:rgb(255, 169, 91)">willen</text>
+<text transform="translate(292,177)" font-size="12" style="fill:rgb(102, 252, 194)">liep</text>
+<text transform="translate(472,158)" font-size="12" style="fill:rgb(176, 243, 151)">mannen</text>
+<text transform="translate(600,386)" font-size="12" style="fill:rgb(128, 0, 255)">wijn</text>
+<text transform="translate(763,326)" font-size="12" style="fill:rgb(102, 41, 254)">zijn</text>
+<text transform="translate(50,263)" font-size="12" style="fill:rgb(23, 203, 228)">praten</text>
+<text transform="translate(581,45)" font-size="12" style="fill:rgb(255, 107, 55)">vroegen</text>
+<text transform="translate(178,132)" font-size="12" style="fill:rgb(100, 251, 195)">maakte</text>
+<text transform="translate(196,35)" font-size="12" style="fill:rgb(255, 22, 11)">Meester</text>
+<text transform="translate(463,312)" font-size="12" style="fill:rgb(126, 255, 181)">dorp</text>
+<text transform="translate(623,303)" font-size="12" style="fill:rgb(48, 121, 247)">ga</text>
+<text transform="translate(210,205)" font-size="12" style="fill:rgb(156, 251, 164)">juist</text>
+<text transform="translate(254,298)" font-size="12" style="fill:rgb(255, 150, 79)">ander</text>
+<text transform="translate(464,389) rotate(-90)" font-size="12" style="fill:rgb(12, 167, 239)">Herodes</text>
+<text transform="translate(396,10)" font-size="12" style="fill:rgb(78, 77, 252)">Elisabet</text>
+<text transform="translate(186,240) rotate(-90)" font-size="12" style="fill:rgb(106, 253, 192)">David</text>
+<text transform="translate(19,124)" font-size="12" style="fill:rgb(61, 234, 213)">worden</text>
+<text transform="translate(714,10)" font-size="12" style="fill:rgb(255, 71, 36)">verder</text>
+<text transform="translate(188,295) rotate(-90)" font-size="12" style="fill:rgb(232, 203, 114)">plaats</text>
+<text transform="translate(3,256)" font-size="12" style="fill:rgb(255, 53, 27)">gezien</text>
+<text transform="translate(699,448)" font-size="12" style="fill:rgb(29, 209, 226)">dagen</text>
+<text transform="translate(484,182)" font-size="12" style="fill:rgb(162, 249, 160)">waren</text>
+<text transform="translate(104,165)" font-size="12" style="fill:rgb(255, 56, 28)">paar</text>
+<text transform="translate(265,130)" font-size="12" style="fill:rgb(44, 126, 247)">brood</text>
+<text transform="translate(399,44)" font-size="12" style="fill:rgb(206, 225, 132)">synagoge</text>
+<text transform="translate(12,347)" font-size="12" style="fill:rgb(144, 254, 171)">kleren</text>
+<text transform="translate(331,116)" font-size="12" style="fill:rgb(174, 244, 152)">Kijk</text>
+<text transform="translate(523,256)" font-size="12" style="fill:rgb(9, 169, 238)">doden</text>
+<text transform="translate(447,451)" font-size="12" style="fill:rgb(222, 213, 121)">is</text>
+<text transform="translate(358,251)" font-size="12" style="fill:rgb(10, 192, 232)">gebeurd</text>
+<text transform="translate(333,320) rotate(-90)" font-size="12" style="fill:rgb(162, 249, 160)">hadden</text>
+<text transform="translate(742,206)" font-size="12" style="fill:rgb(23, 203, 228)">stonden</text>
+<text transform="translate(612,421)" font-size="12" style="fill:rgb(255, 89, 45)">Israël</text>
+<text transform="translate(258,142)" font-size="12" style="fill:rgb(208, 224, 130)">klaar</text>
+<text transform="translate(2,283)" font-size="12" style="fill:rgb(112, 25, 255)">Zoon</text>
+<text transform="translate(557,498)" font-size="12" style="fill:rgb(124, 6, 255)">later</text>
+<text transform="translate(342,405) rotate(-90)" font-size="12" style="fill:rgb(52, 115, 248)">gered</text>
+<text transform="translate(604,318)" font-size="12" style="fill:rgb(77, 243, 206)">groep</text>
+<text transform="translate(270,391)" font-size="12" style="fill:rgb(84, 246, 203)">wet</text>
+<text transform="translate(522,468)" font-size="12" style="fill:rgb(82, 245, 203)">sterven</text>
+<text transform="translate(676,498)" font-size="12" style="fill:rgb(15, 196, 231)">anderen</text>
+<text transform="translate(529,305)" font-size="12" style="fill:rgb(61, 234, 213)">echt</text>
+<text transform="translate(126,452) rotate(-90)" font-size="12" style="fill:rgb(112, 25, 255)">vrienden</text>
+<text transform="translate(690,177)" font-size="12" style="fill:rgb(255, 9, 5)">Pilatus</text>
+<text transform="translate(307,356)" font-size="12" style="fill:rgb(156, 251, 164)">boom</text>
+<text transform="translate(249,241)" font-size="12" style="fill:rgb(16, 162, 240)">leiders</text>
+<text transform="translate(191,299)" font-size="12" style="fill:rgb(255, 3, 2)">zaad</text>
+<text transform="translate(281,109)" font-size="12" style="fill:rgb(203, 228, 134)">heb</text>
+<text transform="translate(403,495)" font-size="12" style="fill:rgb(63, 235, 213)">brengen</text>
+<text transform="translate(640,239) rotate(-90)" font-size="12" style="fill:rgb(206, 225, 132)">gestuurd</text>
+<text transform="translate(129,480)" font-size="8" style="fill:rgb(4, 176, 237)">belangrijk</text>
+<text transform="translate(758,43) rotate(-90)" font-size="8" style="fill:rgb(226, 209, 118)">krijgt</text>
+<text transform="translate(439,403)" font-size="8" style="fill:rgb(88, 248, 201)">moeder</text>
+<text transform="translate(188,140)" font-size="8" style="fill:rgb(255, 142, 74)">dachten</text>
+<text transform="translate(224,184)" font-size="8" style="fill:rgb(16, 162, 240)">licht</text>
+<text transform="translate(746,270)" font-size="8" style="fill:rgb(255, 179, 96)">vrede</text>
+<text transform="translate(5,374)" font-size="8" style="fill:rgb(22, 155, 242)">jongen</text>
+<text transform="translate(355,420) rotate(-90)" font-size="8" style="fill:rgb(255, 0, 0)">laat</text>
+<text transform="translate(490,169)" font-size="8" style="fill:rgb(17, 160, 241)">soldaten</text>
+<text transform="translate(710,117)" font-size="8" style="fill:rgb(74, 83, 251)">eigen</text>
+<text transform="translate(13,216)" font-size="8" style="fill:rgb(68, 238, 210)">geluk</text>
+<text transform="translate(710,106)" font-size="8" style="fill:rgb(70, 239, 209)">heette</text>
+<text transform="translate(708,435)" font-size="8" style="fill:rgb(255, 150, 79)">familie</text>
+<text transform="translate(359,268)" font-size="8" style="fill:rgb(110, 254, 190)">drinken</text>
+<text transform="translate(464,417)" font-size="8" style="fill:rgb(254, 181, 98)">kracht</text>
+<text transform="translate(625,8)" font-size="8" style="fill:rgb(255, 107, 55)">reis</text>
+<text transform="translate(713,135)" font-size="8" style="fill:rgb(57, 107, 249)">liet</text>
+<text transform="translate(462,324)" font-size="8" style="fill:rgb(114, 254, 187)">engelen</text>
+<text transform="translate(274,305)" font-size="8" style="fill:rgb(82, 71, 252)">kijken</text>
+</svg>

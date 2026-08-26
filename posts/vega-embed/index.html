@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="stylesheet" type="text/css" href="https://stefsmeets.nl/style.css">
+  <link rel="stylesheet" type="text/css" href="https://stefsmeets.nl/custom.css">
+
+  <link rel="icon" href="https://stefsmeets.nl/favicon.ico">
+  <link rel="apple-touch-icon" href="https://stefsmeets.nl/apple-touch-icon.png">
+
+  
+
+    <script defer src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+
+
+  
+  
+  
+    
+  
+  
+
+  <title>Embedding vega-lite charts in Zola | Stef Smeets</title>
+  <meta name="description" content="Research Software Engineer writing open-source scientific software, mostly Python.">
+  <meta name="author" content="Stef Smeets">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Embedding vega-lite charts in Zola | Stef Smeets">
+  <meta property="og:description" content="Research Software Engineer writing open-source scientific software, mostly Python.">
+  <meta name="twitter:card" content="summary">
+
+  <link rel="alternate" type="application/atom+xml" title="Stef Smeets" href="https://stefsmeets.nl/atom.xml">
+</head>
+
+<body>
+  <a class="skip" href="#main">skip to content</a>
+
+  
+  
+  <header class="topbar">
+    <nav class="topbar__inner" aria-label="Main">
+      <a href="https://stefsmeets.nl">~</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/posts/" aria-current="page">posts</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/articles/">articles</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/presentations/">presentations</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/code/">code</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/about/">about</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    
+<h1 class="title">
+  Embedding vega-lite charts in Zola
+</h1>
+<p class="subtitle"><strong>2022-11-20</strong></p>
+<div class="prose">
+  <p><em>Updated 2026-11-26: Updated blog snippets to work with Zola instead of Hugo.</em></p>
+<p><a rel="external" href="https://altair-viz.github.io/">Altair</a> is one of my favourite libraries for data vizualization in Python.</p>
+<p>Altair is a declarative statistical visualization library. It is based around the grammar of graphics, which means that you tell it what your data look like and its relations, and the library figures out the rest. This makes it completely different approach for generating graphics than what I'm used to with <a rel="external" href="https://matplotlib.org/">matplotlib</a>.</p>
+<p>It is based on <a rel="external" href="https://vega.github.io/vega">Vega</a> and <a rel="external" href="https://vega.github.io/vega-lite">Vega-Lite</a>, which means altair can render to <code>html</code> or <code>json</code>, which makes it great for showing data in an interactive web environment.</p>
+<p><a rel="external" href="http://github.com/vega/vega-embed">Vega-Embed</a> is a javascript library to make it easy to embed interactive Vega-lite views into web pages. Naturally, I was curious if such plots could be embedded in <a rel="external" href="https://www.getzola.org/">Zola</a> blogs using components.</p>
+<p>This is how I got this to work:</p>
+<ol>
+<li>Load the required javascript libraries by adding a few lines to the page header. I think the exact filename depends on the theme. This worked for me -- I added the following code to <code>./templates/base.html</code>. The libraries can be enabled by adding <code>vega = true</code> to the <code>[extra]</code> section of the pre-amble of your post.</li>
+</ol>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain" data-html-name="./templates/base.html"><span class="giallo-l"><span>{% set vega_scripts = page is defined and page.extra is defined and page.extra.vega | default(value=false) %}</span></span>
+<span class="giallo-l"><span>{% if vega_scripts %}</span></span>
+<span class="giallo-l"><span>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdn.jsdelivr.net/npm//vega@5&quot;&gt;&lt;/script&gt;</span></span>
+<span class="giallo-l"><span>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdn.jsdelivr.net/npm//vega-lite@4.17.0&quot;&gt;&lt;/script&gt;</span></span>
+<span class="giallo-l"><span>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdn.jsdelivr.net/npm//vega-embed@6&quot;&gt;&lt;/script&gt;</span></span>
+<span class="giallo-l"><span>{% endif %}</span></span></code></pre>
+<ol start="2">
+<li>Set up the component in <code>./templates/components/vega.html</code>. This makes the <code>vega</code> component available.</li>
+</ol>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain" data-html-name="./templates/components/vega.html"><span class="giallo-l"><span>{% component vega(id, spec) %}</span></span>
+<span class="giallo-l"><span>&lt;div id=&quot;{{ id }}&quot;&gt;&lt;/div&gt;</span></span>
+<span class="giallo-l"><span>&lt;script type=&quot;text/javascript&quot;&gt;</span></span>
+<span class="giallo-l"><span>  window.addEventListener(&quot;DOMContentLoaded&quot;, function () {</span></span>
+<span class="giallo-l"><span>    vegaEmbed(document.getElementById({{ id | json_encode | safe }}), {{ spec | json_encode | safe }}).then(function(result) {</span></span>
+<span class="giallo-l"><span>    }).catch(console.error);</span></span>
+<span class="giallo-l"><span>  });</span></span>
+<span class="giallo-l"><span>&lt;/script&gt;</span></span>
+<span class="giallo-l"><span>{% endcomponent vega %}</span></span></code></pre>
+<p>Note that this uses the component syntax introduced in Zola 0.23</p>
+<ol start="3">
+<li>In a zola post (e.g. <code>./content/posts/vega.md</code>), enable the vega libraries with <code>vega = true</code> in the pre-amble. You can use the component shown below. Spec is the url to the data in json format.</li>
+</ol>
+<pre class="giallo" style="color: #CCCAC2; background-color: #1F2430;" ><code data-lang="plain" data-markdown-name="vega_post.md"><span class="giallo-l"><span>+++</span></span>
+<span class="giallo-l"><span>title = &quot;Vega embed example&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>[extra]</span></span>
+<span class="giallo-l"><span>vega = true</span></span>
+<span class="giallo-l"><span>+++</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>{{&lt;vega id=&quot;vis&quot; spec=&quot;https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json&quot; /&gt;}}</span></span></code></pre>
+<p>The chart below is rendered using the code above:</p>
+<div id="vis"></div>
+<script type="text/javascript">
+  window.addEventListener("DOMContentLoaded", function () {
+    vegaEmbed(document.getElementById("vis"), "https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json").then(function(result) {
+    }).catch(console.error);
+  });
+</script>
+
+</div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <span>© 2026 Stef Smeets</span>
+      <span class="dot" aria-hidden="true">/</span>
+      <a href="https://stefsmeets.nl/atom.xml">atom</a>
+      <span class="dot" aria-hidden="true">/</span>
+      <span>powered by <a href="https://getzola.org" rel="noopener">Zola</a></span>
+    </div>
+  </footer>
+
+</body>
+
+</html>
